@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background-app: #f4f6f9; /* Soft light grey backdrop */
+  --text-app: #0f172a;       /* Slate-900 */
+  --card-bg: #ffffff;
+  --border-app: #f1f5f9;     /* Slate-100 */
+}
+
+.dark {
+  --background-app: #070d19; /* Lighter than deep blue but very dark */
+  --text-app: #f1f5f9;       /* Slate-100 */
+  --card-bg: #111a33;        /* Slate-900 styled cards */
+  --border-app: #1e293b;     /* Slate-800 */
+}
+
+@theme {
+  --font-sans: "Inter", "Titillium Web", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-brand-blue: #0321a1;
+  --color-brand-blue-dark: #001261;
+  --color-brand-blue-light: #284cff;
+  --color-brand-orange: #ff6200;
+  --color-brand-orange-light: #ffa366;
+  --color-brand-orange-dark: #cc4e00;
+  --color-brand-red: #c2140a;
+  --color-brand-cream: #fffaf5;
+
+  /* Theme variables mapped to our CSS custom properties */
+  --color-background-app: var(--background-app);
+  --color-text-app: var(--text-app);
+  --color-card-bg: var(--card-bg);
+  --color-border-app: var(--border-app);
+}
+
+/* Explicitly configure manual dark mode utility selectors for Tailwind CSS v4 */
+@variant dark (&:where(.dark, .dark *));
+
+html, body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background-color: var(--background-app);
+  color: var(--text-app);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+@keyframes floatBadge {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-float-badge {
+  animation: floatBadge 2.8s ease-in-out infinite;
+}
+
+

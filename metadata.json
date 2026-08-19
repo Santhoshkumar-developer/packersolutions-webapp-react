@@ -1,0 +1,6 @@
+{
+  "name": "Packersolution",
+  "description": "SEO-optimized, modern company website for Packersolution with custom pages and forms for shifting, relocation, transportation, and warehousing services.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

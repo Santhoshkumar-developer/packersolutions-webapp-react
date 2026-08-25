@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, CheckCircle2, ShieldCheck, Tag, Star, RefreshCw, Smartphone, User, Mail, ArrowRight, UserPlus } from 'lucide-react';
 import loginPackersImg from '../assets/images/login_popup_packers_1786289109238.jpg';
+import { useAddress } from '../context/AddressContext';
 
 interface RegisteredUser {
   name: string;
@@ -24,6 +25,7 @@ export const LoginOtpModal: React.FC<LoginOtpModalProps> = ({
   titleText = "Enter mobile number to continue",
   subtitleText = "Never shared, never spammed."
 }) => {
+  const { loginUser } = useAddress();
   const [step, setStep] = useState<'mobile' | 'register' | 'otp' | 'success'>('mobile');
   const [mobileNumber, setMobileNumber] = useState('');
   const [fullName, setFullName] = useState('');
@@ -196,11 +198,9 @@ export const LoginOtpModal: React.FC<LoginOtpModalProps> = ({
 
     setTimeout(() => {
       setIsSubmitting(false);
-      // Store logged in user info in localStorage
-      localStorage.setItem('ps_user_mobile', mobileNumber);
-      localStorage.setItem('ps_user_logged_in', 'true');
-      if (fullName) localStorage.setItem('ps_user_name', fullName);
-      if (email) localStorage.setItem('ps_user_email', email);
+      const cleanMobile = mobileNumber.replace(/\D/g, '');
+      // Store logged in user info in localStorage & migrate guest addresses
+      loginUser(cleanMobile, fullName, email);
 
       setStep('success');
 

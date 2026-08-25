@@ -44,6 +44,7 @@ import { LucideIcon } from './components/LucideIcon';
 import { BlogView } from './components/BlogView';
 import { PolicyPages } from './components/PolicyPages';
 import { EnquiryDrawer } from './components/EnquiryDrawer';
+import { SavedAddressesModal } from './components/SavedAddressesModal';
 import parcelVectorImg from './assets/images/service_parcel_vector_1785319730384.jpg';
 import packersVectorImg from './assets/images/service_packers_vector_1785319746387.jpg';
 import truckVectorImg from './assets/images/service_truck_vector_1785319761125.jpg';
@@ -77,6 +78,7 @@ import { ContactView } from './components/ContactView';
 import { CityAreaDirectory } from './components/CityAreaDirectory';
 import { LocationPromptModal } from './components/LocationPromptModal';
 import { AddonServicesView } from './components/AddonServicesView';
+import { DrivingPartnerView } from './components/DrivingPartnerView';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -253,6 +255,12 @@ export default function App() {
         window.scrollTo(0, 0);
         return;
       }
+      if (hash === '#driving-partner' || hash === '#partner') {
+        setCurrentPage('driving-partner');
+        setSelectedBlogSlug(null);
+        window.scrollTo(0, 0);
+        return;
+      }
       if (['#cancellation-refund', '#terms-conditions', '#shipment-policy', '#privacy-policy'].includes(hash)) {
         setCurrentPage(hash.replace('#', ''));
         setSelectedBlogSlug(null);
@@ -280,6 +288,8 @@ export default function App() {
       window.location.hash = serviceId ? `#blog/${serviceId}` : '#blog';
     } else if (page === 'addons') {
       window.location.hash = serviceId ? `#addons/${serviceId}` : '#addons';
+    } else if (page === 'driving-partner' || page === 'partner') {
+      window.location.hash = '#driving-partner';
     } else if (page === 'about') {
       window.location.hash = '#about';
     } else if (page === 'locations') {
@@ -929,6 +939,15 @@ export default function App() {
             onNavigate={navigateTo}
             selectedCity={selectedCity}
           />
+        ) : currentPage === 'driving-partner' ? (
+          /* ==================== B2B DELIVERY PARTNER RECRUITMENT LANDING PAGE ==================== */
+          <DrivingPartnerView 
+            onNavigate={navigateTo}
+            onOpenRegisterModal={() => setShowDeliveryModal(true)}
+            onRegisterSuccess={(partnerData) => {
+              setLatestTicketId(partnerData.ticketId);
+            }}
+          />
         ) : ['cancellation-refund', 'terms-conditions', 'shipment-policy', 'privacy-policy'].includes(currentPage) ? (
           /* ==================== POLICY PAGES VIEW ==================== */
           <PolicyPages 
@@ -1465,6 +1484,8 @@ export default function App() {
         onClose={() => setIsEstimateModalOpen(false)}
         defaultCity={selectedCity}
       />
+      {/* ==================== SAVED ADDRESSES MODAL ==================== */}
+      <SavedAddressesModal />
       </div>
     </HelmetProvider>
   );

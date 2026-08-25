@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MapPin, Truck, ChevronDown, Calendar, ArrowRight, ShieldCheck, Sparkles, Check, Navigation, Building2, Search } from 'lucide-react';
 import { CITIES_DATA } from '../data/cities';
+import { LocationInputSelector } from './LocationInputSelector';
 
 const SERVICED_CITIES = ['bangalore', 'chennai', 'coimbatore', 'mumbai', 'pune', 'delhi', 'delhi ncr', 'hyderabad', 'mysore', 'kochi'];
 
@@ -455,27 +456,25 @@ export const HouseShiftingCardForm: React.FC<HouseShiftingCardFormProps> = ({
 
             {/* Input Fields Column */}
             <div className="flex-1 space-y-1.5 min-w-0">
-              {/* Pickup Location Textbox */}
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={pickupLoc}
-                  onChange={(e) => setPickupLoc(e.target.value)}
-                  placeholder="Enter Pickup locality, apartment or landmark"
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 placeholder:font-normal outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-all shadow-2xs"
-                />
-              </div>
+              {/* Pickup Location Selector */}
+              <LocationInputSelector
+                value={pickupLoc}
+                onChange={(val) => setPickupLoc(val)}
+                placeholder="Enter Pickup locality, apartment or landmark"
+                type="pickup"
+                serviceId="household-shifting"
+                cityContext={selectedCity}
+              />
 
-              {/* Drop Location Textbox */}
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={dropLoc}
-                  onChange={(e) => setDropLoc(e.target.value)}
-                  placeholder="Enter Drop locality, apartment or landmark"
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 placeholder:font-normal outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/20 transition-all shadow-2xs"
-                />
-              </div>
+              {/* Drop Location Selector */}
+              <LocationInputSelector
+                value={dropLoc}
+                onChange={(val) => setDropLoc(val)}
+                placeholder="Enter Drop locality, apartment or landmark"
+                type="drop"
+                serviceId="household-shifting"
+                cityContext={relocateType === 'between-city' ? destinationCity : selectedCity}
+              />
             </div>
           </div>
 

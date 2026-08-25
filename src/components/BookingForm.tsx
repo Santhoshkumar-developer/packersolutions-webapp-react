@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { ServiceItem, Booking } from '../types';
 import { LucideIcon } from './LucideIcon';
 import { apiService } from '../services/api';
+import { LocationInputSelector } from './LocationInputSelector';
 
 interface BookingFormProps {
   service: ServiceItem;
@@ -311,6 +312,14 @@ export const BookingForm: React.FC<BookingFormProps> = ({ service, onSuccess }) 
                         <option key={idx} value={opt} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">{opt}</option>
                       ))}
                     </select>
+                  ) : (field.name.toLowerCase().includes('pickup') || field.name.toLowerCase().includes('drop') || field.name.toLowerCase().includes('address') || field.name.toLowerCase().includes('origin') || field.name.toLowerCase().includes('destination')) ? (
+                    <LocationInputSelector
+                      value={details[field.name] || ''}
+                      onChange={(val) => handleDetailChange(field.name, val)}
+                      placeholder={field.placeholder}
+                      type={field.name.toLowerCase().includes('drop') || field.name.toLowerCase().includes('dest') ? 'drop' : 'pickup'}
+                      serviceId={service.id}
+                    />
                   ) : (
                     <input
                       id={`input-${field.name}`}

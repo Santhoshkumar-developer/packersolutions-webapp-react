@@ -10,6 +10,7 @@ import {
   Search
 } from 'lucide-react';
 import { CITIES_DATA } from '../data/cities';
+import { LocationInputSelector } from './LocationInputSelector';
 
 const SERVICED_CITIES = ['bangalore', 'chennai', 'coimbatore', 'mumbai', 'pune', 'delhi', 'delhi ncr', 'hyderabad', 'mysore', 'kochi'];
 
@@ -472,25 +473,23 @@ export const OfficeShiftingCardForm: React.FC<OfficeShiftingCardFormProps> = ({
 
             {/* Input Fields Column */}
             <div className="flex-1 space-y-1.5 min-w-0">
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={pickupAddress}
-                  onChange={(e) => setPickupAddress(e.target.value)}
-                  placeholder="Enter Pickup office, IT park, building or floor"
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 placeholder:font-normal outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-all shadow-2xs"
-                />
-              </div>
+              <LocationInputSelector
+                value={pickupAddress}
+                onChange={(val) => setPickupAddress(val)}
+                placeholder="Enter Pickup office, IT park, building or floor"
+                type="pickup"
+                serviceId="office-shifting"
+                cityContext={selectedCity}
+              />
 
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={dropAddress}
-                  onChange={(e) => setDropAddress(e.target.value)}
-                  placeholder="Enter Drop destination office, commercial park or tower"
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 placeholder:font-normal outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/20 transition-all shadow-2xs"
-                />
-              </div>
+              <LocationInputSelector
+                value={dropAddress}
+                onChange={(val) => setDropAddress(val)}
+                placeholder="Enter Drop destination office, commercial park or tower"
+                type="drop"
+                serviceId="office-shifting"
+                cityContext={relocateType === 'between-city' ? destinationCity : selectedCity}
+              />
             </div>
           </div>
 

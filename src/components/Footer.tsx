@@ -254,10 +254,8 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
               </li>
               <li>
                 <button
-                  onClick={() => {
-                    const modal = document.getElementById('delivery-partner-modal');
-                    if (modal) modal.style.display = 'flex';
-                  }}
+                  id="footer-link-driving-partner"
+                  onClick={() => onNavigate('driving-partner')}
                   className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <span className="text-orange-500">›</span>

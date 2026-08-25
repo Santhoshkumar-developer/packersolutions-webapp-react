@@ -50,6 +50,37 @@ export const SEOConsole: React.FC<SEOConsoleProps> = ({ currentPage, activeServi
       };
     }
 
+    if (currentPage === 'driving-partner') {
+      return {
+        title: 'Earn ₹30,000–₹40,000/mo as a Delivery Partner | Packer Solutions',
+        description: 'Join India\'s fastest-growing household shifting logistics network with 900+ vehicles. High earnings, weekly payouts, insurance discounts, and zero dry runs.',
+        keywords: ['attach truck', 'delivery partner recruitment', 'driver app', 'packer solutions partner', 'goods tempo attachment', 'tata ace attachment'],
+        canonicalUrl: 'https://packersolution.com/#driving-partner',
+        structuredData: {
+          '@context': 'https://schema.org',
+          '@type': 'JobPosting',
+          'title': 'Commercial Delivery & Logistics Vehicle Partner',
+          'description': 'Attach your mini-truck, pickup, or heavy container vehicle to earn ₹30,000–₹40,000 monthly with weekly direct bank payouts.',
+          'hiringOrganization': {
+            '@type': 'Organization',
+            'name': 'Packer Solutions Logistics',
+            'sameAs': 'https://packersolution.com'
+          },
+          'employmentType': 'CONTRACTOR',
+          'baseSalary': {
+            '@type': 'MonetaryAmount',
+            'currency': 'INR',
+            'value': {
+              '@type': 'QuantitativeValue',
+              'minValue': 30000,
+              'maxValue': 40000,
+              'unitText': 'MONTH'
+            }
+          }
+        }
+      };
+    }
+
     // Default Home SEO config
     return {
       title: 'Packersolution | Premium Packers and Movers Relocation Services',

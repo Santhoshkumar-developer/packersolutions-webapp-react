@@ -3,10 +3,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { LucideIcon } from './LucideIcon';
 import { ServiceItem } from '../types';
 import logoImg from '../assets/images/packersolution_logo.jpg';
+import { useAddress } from '../context/AddressContext';
+import { User, MapPin, LogOut, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
   currentPage: string;
@@ -31,6 +33,11 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const accountMenuRef = useRef<HTMLDivElement>(null);
+  
+  const { isLoggedIn, currentUser, logoutUser, openSavedAddressesModal, savedAddresses } = useAddress();
+
   const [isDark, setIsDark] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -39,6 +46,17 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
     return false;
   });
+
+  // Close account menu on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target as Node)) {
+        setAccountMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (isDark) {
@@ -133,15 +151,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             id="nav-link-driving-partner"
-            onClick={() => {
-              if (onOpenPartnerModal) {
-                onOpenPartnerModal();
-              } else {
-                const modal = document.getElementById('delivery-partner-modal');
-                if (modal) modal.style.display = 'flex';
-              }
-            }}
-            className="text-sm font-bold tracking-tight text-slate-700 hover:text-orange-500 dark:text-slate-200 dark:hover:text-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 px-3 py-2 rounded-xl transition-colors cursor-pointer"
+            onClick={() => onNavigate('driving-partner')}
+            className={`text-sm font-bold tracking-tight transition-colors cursor-pointer px-3 py-2 rounded-xl ${
+              currentPage === 'driving-partner'
+                ? 'text-orange-600 dark:text-orange-400 bg-orange-50/80 dark:bg-orange-500/10'
+                : 'text-slate-700 hover:text-orange-500 dark:text-slate-200 dark:hover:text-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+            }`}
           >
             <span>Driving Partner</span>
           </button>
@@ -178,14 +193,105 @@ export const Navbar: React.FC<NavbarProps> = ({
               <path d="M12 0C5.373 0 0 5.373 0 12c0 2.119.553 4.11 1.524 5.845L0 24l6.316-1.48C7.973 23.472 9.923 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.87 0-3.626-.502-5.143-1.378l-.368-.211-3.753.88.905-3.619-.232-.38C2.477 15.727 1.96 13.921 1.96 12c0-5.535 4.505-10.04 10.04-10.04 5.535 0 10.04 4.505 10.04 10.04C22.04 17.535 17.535 22 12 22z"/>
             </svg>
           </a>
-          <button
-            id="btn-nav-login"
-            onClick={onOpenLoginModal}
-            className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-extrabold text-xs px-4 h-11 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700 shrink-0"
-          >
-            <LucideIcon name="Smartphone" className="w-4 h-4 text-orange-500" />
-            <span>Login / OTP</span>
-          </button>
+          {/* User Account / Login Button */}
+          {isLoggedIn ? (
+            <div className="relative" ref={accountMenuRef}>
+              <button
+                id="btn-nav-account"
+                type="button"
+                onClick={() => setAccountMenuOpen(!accountMenuOpen)}
+                className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-extrabold text-xs px-3.5 h-11 rounded-xl transition-all flex items-center gap-2 cursor-pointer border border-slate-200 dark:border-slate-700 shrink-0"
+              >
+                <div className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-[11px] font-black">
+                  {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
+                </div>
+                <div className="text-left leading-tight hidden xl:block">
+                  <div className="text-xs font-black truncate max-w-[90px]">
+                    {currentUser?.name || 'My Account'}
+                  </div>
+                  <div className="text-[10px] text-slate-500 dark:text-slate-400">
+                    {savedAddresses.length} saved addr
+                  </div>
+                </div>
+                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${accountMenuOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              {/* Account Dropdown */}
+              {accountMenuOpen && (
+                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 py-2 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+                  <div className="px-4 py-2.5 border-b border-slate-100 dark:border-slate-800">
+                    <div className="text-xs font-black text-slate-900 dark:text-white">
+                      {currentUser?.name || 'Valued User'}
+                    </div>
+                    <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                      +91 {currentUser?.mobile}
+                    </div>
+                  </div>
+
+                  <div className="py-1">
+                    <button
+                      id="btn-nav-saved-addresses"
+                      type="button"
+                      onClick={() => {
+                        setAccountMenuOpen(false);
+                        openSavedAddressesModal();
+                      }}
+                      className="w-full px-4 py-2.5 text-left text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-between transition-colors"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-6 h-6 rounded-lg bg-orange-100 dark:bg-orange-950/80 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+                          <MapPin className="w-3.5 h-3.5" />
+                        </div>
+                        <span>Saved Addresses</span>
+                      </div>
+                      <span className="text-[10px] font-extrabold bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">
+                        {savedAddresses.length}
+                      </span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAccountMenuOpen(false);
+                        logoutUser();
+                      }}
+                      className="w-full px-4 py-2 text-left text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 flex items-center gap-2.5 transition-colors"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2">
+              <button
+                id="btn-nav-saved-addresses-guest"
+                type="button"
+                onClick={openSavedAddressesModal}
+                className="hidden xl:flex bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs px-3 h-11 rounded-xl transition-all items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700/80"
+                title="View & manage saved addresses"
+              >
+                <MapPin className="w-3.5 h-3.5 text-orange-500" />
+                <span>Addresses</span>
+                {savedAddresses.length > 0 && (
+                  <span className="text-[10px] bg-orange-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-black">
+                    {savedAddresses.length}
+                  </span>
+                )}
+              </button>
+              
+              <button
+                id="btn-nav-login"
+                onClick={onOpenLoginModal}
+                className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-extrabold text-xs px-4 h-11 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700 shrink-0"
+              >
+                <LucideIcon name="Smartphone" className="w-4 h-4 text-orange-500" />
+                <span>Login / OTP</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Mobile menu trigger */}
@@ -248,12 +354,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
-                if (onOpenPartnerModal) {
-                  onOpenPartnerModal();
-                } else {
-                  const modal = document.getElementById('delivery-partner-modal');
-                  if (modal) modal.style.display = 'flex';
-                }
+                onNavigate('driving-partner');
               }}
               className="flex items-center justify-center gap-1.5 p-3 rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold text-xs border border-orange-200 dark:border-orange-500/20"
             >
@@ -371,6 +472,66 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               Contact Us
             </button>
+
+            {/* Saved Addresses in Mobile Navigation */}
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                openSavedAddressesModal();
+              }}
+              className="w-full text-left px-4 py-3 rounded-xl font-bold text-sm text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/40 flex items-center justify-between transition-all"
+            >
+              <span className="flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-orange-500" />
+                <span>Saved Addresses</span>
+              </span>
+              <span className="text-xs bg-orange-100 dark:bg-orange-950/80 text-orange-600 dark:text-orange-400 font-extrabold px-2 py-0.5 rounded-full">
+                {savedAddresses.length}
+              </span>
+            </button>
+          </div>
+
+          {/* User Account / Login in Mobile Navigation */}
+          <div className="pt-2">
+            {isLoggedIn ? (
+              <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                    {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-black text-slate-900 dark:text-white truncate">
+                      {currentUser?.name || 'My Account'}
+                    </div>
+                    <div className="text-[10px] text-slate-500 truncate">
+                      +91 {currentUser?.mobile}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    logoutUser();
+                  }}
+                  className="px-2.5 py-1 text-xs font-bold text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/50 rounded-lg transition-colors"
+                >
+                  Logout
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (onOpenLoginModal) onOpenLoginModal();
+                }}
+                className="w-full h-11 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-extrabold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200 dark:border-slate-700"
+              >
+                <LucideIcon name="Smartphone" className="w-4 h-4 text-orange-500" />
+                <span>Login / Register with OTP</span>
+              </button>
+            )}
           </div>
 
           <div className="flex flex-col gap-3 pt-4 border-t border-slate-100 dark:border-slate-800/80">

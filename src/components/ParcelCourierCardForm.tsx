@@ -13,6 +13,7 @@ import {
   Clock
 } from 'lucide-react';
 import { CITIES_DATA } from '../data/cities';
+import { LocationInputSelector } from './LocationInputSelector';
 
 const SERVICED_CITIES = ['bangalore', 'chennai', 'coimbatore', 'mumbai', 'pune', 'delhi', 'delhi ncr', 'hyderabad', 'mysore', 'kochi'];
 
@@ -453,27 +454,23 @@ export const ParcelCourierCardForm: React.FC<ParcelCourierCardFormProps> = ({
 
             {/* Input Fields Column */}
             <div className="flex-1 space-y-1.5 min-w-0">
-              {/* Where are you sending from? (Pickup) */}
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={pickupLocation}
-                  onChange={(e) => setPickupLocation(e.target.value)}
-                  placeholder="Where are you sending from? (Pickup address, locality or pincode)"
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 placeholder:font-normal outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/20 transition-all shadow-2xs"
-                />
-              </div>
+              <LocationInputSelector
+                value={pickupLocation}
+                onChange={(val) => setPickupLocation(val)}
+                placeholder="Where are you sending from? (Pickup address, locality or pincode)"
+                type="pickup"
+                serviceId="parcel-courier"
+                cityContext={selectedCity}
+              />
 
-              {/* Where should we deliver? (Delivery) */}
-              <div className="relative flex items-center">
-                <input
-                  type="text"
-                  value={deliveryLocation}
-                  onChange={(e) => setDeliveryLocation(e.target.value)}
-                  placeholder="Where should we deliver? (Delivery address, recipient area or pincode)"
-                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 placeholder:font-normal outline-none focus:border-rose-500 focus:ring-1 focus:ring-rose-500/20 transition-all shadow-2xs"
-                />
-              </div>
+              <LocationInputSelector
+                value={deliveryLocation}
+                onChange={(val) => setDeliveryLocation(val)}
+                placeholder="Where should we deliver? (Delivery address, recipient area or pincode)"
+                type="drop"
+                serviceId="parcel-courier"
+                cityContext={relocateType === 'between-city' ? destinationCity : selectedCity}
+              />
             </div>
           </div>
         </div>

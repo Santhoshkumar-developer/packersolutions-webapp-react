@@ -14,6 +14,7 @@ import {
   Zap 
 } from 'lucide-react';
 import { CITIES_DATA } from '../data/cities';
+import { LocationInputSelector } from './LocationInputSelector';
 
 const SERVICED_CITIES = ['bangalore', 'chennai', 'coimbatore', 'mumbai', 'pune', 'delhi', 'delhi ncr', 'hyderabad', 'mysore', 'kochi'];
 
@@ -235,12 +236,13 @@ export const LoadingUnloadingCardForm: React.FC<LoadingUnloadingCardFormProps> =
 
         {/* Address / Locality Textbox */}
         <div className="relative flex items-center">
-          <input
-            type="text"
+          <LocationInputSelector
             value={locationAddress}
-            onChange={(e) => setLocationAddress(e.target.value)}
+            onChange={(val) => setLocationAddress(val)}
             placeholder="Enter loading address, floor, apartment or locality"
-            className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 dark:text-white placeholder:text-slate-400 placeholder:font-normal outline-none focus:border-blue-600 focus:ring-1 focus:ring-blue-500/20 transition-all shadow-2xs"
+            type="pickup"
+            serviceId="loading-unloading"
+            cityContext={selectedCity}
           />
         </div>
       </div>

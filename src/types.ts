@@ -80,3 +80,63 @@ export interface BlogPost {
   seo: SEOData;
 }
 
+export type AddressLabelType = 'Home' | 'Office' | 'Warehouse' | 'Shop' | 'Factory' | 'Other';
+
+export type ServiceTagType = 
+  | 'household-shifting'
+  | 'office-shifting'
+  | 'parcel-courier'
+  | 'truck-booking'
+  | 'vehicle-transportation'
+  | 'warehousing-storage'
+  | 'loading-unloading'
+  | 'packing-unpacking';
+
+export interface UserAddress {
+  id: string;
+  label: AddressLabelType;
+  customLabel?: string;
+  flatBuilding: string;
+  streetLocality: string;
+  landmark?: string;
+  city: string;
+  state?: string;
+  pincode?: string;
+  contactName?: string;
+  contactPhone?: string;
+  formattedAddress: string;
+  serviceTags: ServiceTagType[];
+  isDefault?: boolean;
+  createdAt: string;
+  updatedAt: string;
+  placeId?: string;
+  lat?: number;
+  lng?: number;
+}
+
+export interface RecentAddressItem {
+  id: string;
+  formattedAddress: string;
+  shortAddress: string;
+  city: string;
+  area: string;
+  usedAt: string;
+  label?: AddressLabelType;
+  serviceId?: string;
+  placeId?: string;
+}
+
+export interface LocationSearchResult {
+  id: string;
+  title: string;
+  subtitle: string;
+  city: string;
+  state: string;
+  pincode: string;
+  area: string;
+  fullAddress: string;
+  placeId?: string;
+  lat?: number;
+  lng?: number;
+}
+

@@ -19,7 +19,14 @@ import {
   Weight,
   Maximize2,
   FileText,
-  X
+  X,
+  Award,
+  DollarSign,
+  Zap,
+  Building2,
+  MessageSquare,
+  Home,
+  Briefcase
 } from 'lucide-react';
 import { ServiceItem } from '../types';
 
@@ -349,10 +356,93 @@ const OTHER_SERVICES_MENU = [
   }
 ];
 
+const PAN_INDIA_ROUTES = [
+  { destination: 'Kochi', distance: '190 Kms', estTime: '~5 - 6 hrs' },
+  { destination: 'Madurai', distance: '215 Kms', estTime: '~5 - 6 hrs' },
+  { destination: 'Bengaluru', distance: '365 Kms', estTime: '~7 - 8 hrs' },
+  { destination: 'Chennai', distance: '505 Kms', estTime: '~9 - 10 hrs' },
+  { destination: 'Hyderabad', distance: '730 Kms', estTime: '~14 - 16 hrs' },
+  { destination: 'Pune', distance: '1,175 Kms', estTime: '~24 - 28 hrs' },
+  { destination: 'Mumbai', distance: '1,340 Kms', estTime: '~28 - 32 hrs' },
+  { destination: 'Ahmedabad', distance: '1,750 Kms', estTime: '~36 - 40 hrs' },
+  { destination: 'Kolkata', distance: '1,950 Kms', estTime: '~42 - 46 hrs' },
+  { destination: 'Jaipur', distance: '2,150 Kms', estTime: '~45 - 50 hrs' },
+  { destination: 'Delhi', distance: '2,250 Kms', estTime: '~48 - 54 hrs' },
+  { destination: 'Guwahati', distance: '2,650 Kms', estTime: '~60 - 72 hrs' },
+];
+
+const ADDITIONAL_TRUCK_ROUTES = [
+  {
+    region: 'Tamil Nadu',
+    routes: [
+      'Coimbatore to Tiruppur',
+      'Coimbatore to Erode',
+      'Coimbatore to Salem',
+      'Coimbatore to Tiruchirappalli',
+      'Coimbatore to Dindigul',
+      'Coimbatore to Tirunelveli',
+      'Coimbatore to Thanjavur',
+      'Coimbatore to Vellore',
+      'Coimbatore to Hosur',
+      'Coimbatore to Kanyakumari',
+    ]
+  },
+  {
+    region: 'Kerala',
+    routes: [
+      'Coimbatore to Palakkad',
+      'Coimbatore to Thrissur',
+      'Coimbatore to Kozhikode',
+      'Coimbatore to Malappuram',
+      'Coimbatore to Kannur',
+      'Coimbatore to Thiruvananthapuram',
+    ]
+  },
+  {
+    region: 'Karnataka',
+    routes: [
+      'Coimbatore to Mysuru',
+      'Coimbatore to Mangaluru',
+      'Coimbatore to Hubballi',
+      'Coimbatore to Belagavi',
+    ]
+  },
+  {
+    region: 'Andhra Pradesh & Telangana',
+    routes: [
+      'Coimbatore to Vijayawada',
+      'Coimbatore to Visakhapatnam',
+      'Coimbatore to Tirupati',
+      'Coimbatore to Warangal',
+    ]
+  },
+  {
+    region: 'Maharashtra & Gujarat',
+    routes: [
+      'Coimbatore to Nashik',
+      'Coimbatore to Aurangabad',
+      'Coimbatore to Kolhapur',
+      'Coimbatore to Rajkot',
+    ]
+  },
+  {
+    region: 'North & East India',
+    routes: [
+      'Coimbatore to Lucknow',
+      'Coimbatore to Kanpur',
+      'Coimbatore to Chandigarh',
+      'Coimbatore to Patna',
+      'Coimbatore to Ranchi',
+      'Coimbatore to Bhubaneswar',
+      'Coimbatore to Guwahati',
+    ]
+  },
+];
+
 interface TruckBookingServiceContentProps {
   selectedCity: string;
-  activeService: ServiceItem;
-  onSelectCity: (city: string) => void;
+  activeService?: ServiceItem;
+  onSelectCity?: (city: string) => void;
   onSelectService: (serviceId: string) => void;
   onOpenEnquiry: () => void;
   onOpenLoginModal?: () => void;
@@ -367,14 +457,8 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
   const [selectedTruckId, setSelectedTruckId] = useState<string>('tata-ace-750kg');
   const [detailModalVehicle, setDetailModalVehicle] = useState<FleetVehicle | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [tableFilter, setTableFilter] = useState<'all' | 'light' | 'intermediate' | 'heavy'>('all');
 
   const filteredVehicles = ALL_TRUCK_FLEET.filter((v) => v.category === activeTab);
-  const tableVehicles = tableFilter === 'all' 
-    ? ALL_TRUCK_FLEET 
-    : ALL_TRUCK_FLEET.filter((v) => v.category === tableFilter);
-
-  const selectedVehicleObj = ALL_TRUCK_FLEET.find((v) => v.id === selectedTruckId) || ALL_TRUCK_FLEET[1];
 
   const faqs = [
     {
@@ -402,372 +486,722 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
   return (
     <div id="truck-booking-details-view" className="space-y-12">
       
-      {/* 1. PORTER FLEET SHOWCASE WITH TABS */}
+      {/* =========================================================================
+          1. PORTER FLEET SHOWCASE & HERO SECTION WITH TABS
+         ========================================================================= */}
       <section id="truck-fleet-showcase" className="space-y-8">
         
-        {/* Header Title Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-2 border-b border-slate-200/80 dark:border-slate-800">
-          <div className="space-y-1.5">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 text-xs font-bold uppercase tracking-wider">
-              <Truck className="w-3.5 h-3.5" />
-              <span>Commercial Fleet Logistics</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-              Book Your Trucks in {selectedCity}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium">
-              Choose from 13 verified vehicle classes categorized by payload capacity for seamless intra-city and intercity cargo transit.
-            </p>
-          </div>
+        {/* Hero Banner with House Shifting Styled Gradient Card */}
+        <div className="bg-gradient-to-br from-slate-900 via-[#001261] to-slate-950 text-white rounded-3xl p-6 sm:p-8 border border-blue-500/20 shadow-xl relative overflow-hidden space-y-5">
+          <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
           
-          <div className="flex items-center gap-2 self-start md:self-auto bg-slate-900 text-white dark:bg-slate-800 px-4 py-2 rounded-2xl shadow-xs text-xs font-bold shrink-0">
-            <Clock className="w-4 h-4 text-orange-400 animate-pulse" />
-            <span>~15 Min Pickup in {selectedCity}</span>
+          <div className="space-y-3 relative z-10">
+            <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-400/30 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider">
+              <Truck className="w-3.5 h-3.5 text-blue-400" />
+              <span>1. Commercial Fleet Logistics • {selectedCity}</span>
+            </div>
+
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                  Book Your Trucks in {selectedCity}
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-2xl font-normal mt-2">
+                  Choose from 13 verified vehicle classes categorized by payload capacity for seamless intra-city and intercity cargo transit.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 self-start md:self-auto bg-white/10 text-white px-4 py-2.5 rounded-2xl border border-white/15 shadow-xs text-xs font-bold shrink-0">
+                <Clock className="w-4 h-4 text-orange-400 animate-pulse" />
+                <span>~15 Min Pickup in {selectedCity}</span>
+              </div>
+            </div>
+
+            <div className="pt-2 flex flex-wrap items-center gap-3">
+              <button
+                type="button"
+                onClick={onOpenEnquiry}
+                id="truck-hero-quote-btn"
+                className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer group"
+              >
+                <span>Book Instant Truck</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <button
+                type="button"
+                onClick={onOpenEnquiry}
+                id="truck-hero-rate-btn"
+                className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl border border-white/15 transition-all flex items-center gap-2 cursor-pointer"
+              >
+                <Calculator className="w-4 h-4 text-blue-400" />
+                <span>Calculate Freight Fare</span>
+              </button>
+            </div>
           </div>
         </div>
 
-        {/* TAB SWITCHER */}
-        <div className="bg-slate-100 dark:bg-slate-900/90 p-1.5 rounded-2xl sm:rounded-3xl border border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row gap-1.5 sm:gap-2">
-          {TRUCK_TABS.map((tab) => {
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                id={`tab-btn-${tab.id}`}
-                onClick={() => {
-                  setActiveTab(tab.id as 'light' | 'intermediate' | 'heavy');
-                  const firstInTab = ALL_TRUCK_FLEET.find((v) => v.category === tab.id);
-                  if (firstInTab) setSelectedTruckId(firstInTab.id);
-                }}
-                className={`flex-1 py-3 px-4 rounded-xl sm:rounded-2xl text-center transition-all duration-200 cursor-pointer relative ${
-                  isActive
-                    ? 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-md border border-slate-200/60 dark:border-slate-700'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-white/50 dark:hover:bg-slate-800/50'
-                }`}
-              >
-                <span className={`text-xs sm:text-sm font-bold tracking-tight text-center block ${isActive ? 'text-orange-600 dark:text-orange-400 font-extrabold' : ''}`}>
-                  {tab.title}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* VEHICLE CARDS GRID FOR ACTIVE TAB - LARGE CLEAR IMAGES & UNIFORM COMPACT CARDS */}
-        <div className="flex flex-wrap gap-3.5 sm:gap-4.5 items-stretch justify-start">
-          {filteredVehicles.map((vehicle) => {
-            const isSelected = selectedTruckId === vehicle.id;
-            return (
-              <div
-                key={vehicle.id}
-                id={`truck-card-${vehicle.id}`}
-                onClick={() => {
-                  setSelectedTruckId(vehicle.id);
-                  setDetailModalVehicle(vehicle);
-                }}
-                className={`group w-[calc(50%-7px)] sm:w-[210px] md:w-[225px] shrink-0 rounded-2xl border transition-all duration-200 p-3.5 sm:p-4.5 flex flex-col items-center text-center cursor-pointer relative bg-white dark:bg-slate-900 ${
-                  isSelected
-                    ? 'border-orange-500 ring-2 ring-orange-500/20 shadow-md'
-                    : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 shadow-xs hover:shadow-md'
-                }`}
-              >
-                {/* 1. Large High-Clarity Vehicle Image (includes dimensions & payload inside image) */}
-                <div className="w-full h-36 sm:h-44 md:h-48 flex items-center justify-center overflow-hidden bg-white dark:bg-slate-900 rounded-xl p-1">
-                  <img
-                    src={vehicle.image}
-                    alt={`${vehicle.name} (${vehicle.dimensions} - ${vehicle.capacity})`}
-                    referrerPolicy="no-referrer"
-                    className="w-full h-full object-contain filter contrast-[1.05] brightness-[1.01] drop-shadow-xs group-hover:scale-105 transition-transform duration-300"
-                  />
-                </div>
-
-                {/* 2. Vehicle Title */}
-                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mt-2 tracking-tight line-clamp-1">
-                  {vehicle.name}
-                </h3>
-
-                {/* 3. Starting Fare */}
-                <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
-                  Starting from <strong className="text-slate-900 dark:text-white font-bold text-xs sm:text-sm">₹{vehicle.baseFare}</strong>
-                </p>
-
-                {/* 4. Know More Link Button */}
+        {/* TAB SWITCHER - HIGH CONTRAST CLEAN BUTTONS */}
+        <div className="space-y-4">
+          <div className="flex flex-wrap items-center gap-3 pb-2 pt-1">
+            {TRUCK_TABS.map((tab) => {
+              const isActive = activeTab === tab.id;
+              return (
                 <button
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
+                  key={tab.id}
+                  id={`tab-btn-${tab.id}`}
+                  onClick={() => {
+                    setActiveTab(tab.id as 'light' | 'intermediate' | 'heavy');
+                    const firstInTab = ALL_TRUCK_FLEET.find((v) => v.category === tab.id);
+                    if (firstInTab) setSelectedTruckId(firstInTab.id);
+                  }}
+                  className={`px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all duration-150 cursor-pointer flex items-center gap-2 ${
+                    isActive
+                      ? 'bg-[#001261] dark:bg-blue-600 text-white shadow-md'
+                      : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-800 hover:border-blue-400'
+                  }`}
+                >
+                  <Truck className="w-3.5 h-3.5" />
+                  <span>{tab.title}</span>
+                  <span className={`text-[10px] px-1.5 py-0.5 rounded-md font-extrabold ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
+                    {tab.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* VEHICLE CARDS GRID FOR ACTIVE TAB - LARGE CLEAR IMAGES & UNIFORM COMPACT CARDS */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3.5 sm:gap-4.5">
+            {filteredVehicles.map((vehicle) => {
+              const isSelected = selectedTruckId === vehicle.id;
+              return (
+                <div
+                  key={vehicle.id}
+                  id={`truck-card-${vehicle.id}`}
+                  onClick={() => {
+                    setSelectedTruckId(vehicle.id);
                     setDetailModalVehicle(vehicle);
                   }}
-                  className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold text-xs underline underline-offset-4 decoration-dotted hover:decoration-solid mt-2.5 cursor-pointer"
+                  className={`group rounded-2xl border transition-all duration-200 p-3.5 sm:p-4.5 flex flex-col items-center text-center cursor-pointer relative bg-white dark:bg-slate-900 ${
+                    isSelected
+                      ? 'border-[#001261] dark:border-blue-500 ring-2 ring-blue-500/20 shadow-md'
+                      : 'border-slate-200/80 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 shadow-xs hover:shadow-md'
+                  }`}
                 >
-                  Know More
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+                  {/* 1. Large High-Clarity Vehicle Image */}
+                  <div className="w-full h-32 sm:h-36 flex items-center justify-center overflow-hidden bg-white dark:bg-slate-900 rounded-xl p-1">
+                    <img
+                      src={vehicle.image}
+                      alt={`${vehicle.name} (${vehicle.dimensions} - ${vehicle.capacity})`}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-contain filter contrast-[1.05] brightness-[1.01] drop-shadow-xs group-hover:scale-105 transition-transform duration-300"
+                    />
+                  </div>
 
-      {/* 2. INSTANT FARE ESTIMATOR CALCULATOR */}
-      <section id="instant-fare-estimator" className="bg-gradient-to-br from-[#001261] to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
-        <div className="max-w-3xl space-y-4 relative z-10">
-          <div className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-xs font-bold text-orange-400">
-            <Calculator className="w-3.5 h-3.5" />
-            <span>Transparent Pricing Engine</span>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-bold tracking-tight">
-            Get an Accurate Transport Estimate for {selectedCity}
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
-            No hidden driver charges, no surprise surge fees. Calculate your accurate goods transport fare based on exact pickup and drop pin-codes with optional helper assistance.
-          </p>
-          <div className="pt-2 flex flex-wrap gap-3">
-            <button
-              onClick={onOpenEnquiry}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-2xl shadow-lg hover:shadow-orange-500/25 transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <span>Calculate Precise Trip Fare</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              onClick={onOpenEnquiry}
-              className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-2xl transition-colors flex items-center gap-2 cursor-pointer border border-white/20"
-            >
-              <Phone className="w-4 h-4 text-orange-400" />
-              <span>Talk to Fleet Dispatcher</span>
-            </button>
+                  {/* 2. Vehicle Title */}
+                  <h3 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white mt-2 tracking-tight line-clamp-1">
+                    {vehicle.name}
+                  </h3>
+
+                  {/* 3. Starting Fare */}
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                    Starting from <strong className="text-slate-900 dark:text-white font-bold text-xs sm:text-sm">₹{vehicle.baseFare}</strong>
+                  </p>
+
+                  {/* 4. Know More Link Button */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDetailModalVehicle(vehicle);
+                    }}
+                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold text-xs underline underline-offset-4 decoration-dotted hover:decoration-solid mt-2 cursor-pointer"
+                  >
+                    Know More
+                  </button>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>
 
-      {/* 3. WHY CHOOSE PACKERSOLUTION TRUCK BOOKING */}
-      <section id="why-choose-trucks" className="space-y-6">
+      {/* =========================================================================
+          2. POPULAR PAN-INDIA TRUCK ROUTES FROM COIMBATORE
+         ========================================================================= */}
+      <section id="pan-india-truck-routes" className="space-y-6">
         <div className="space-y-1">
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Why Choose Packersolution Truck Booking in {selectedCity}?
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <MapPin className="w-3.5 h-3.5 text-blue-600" />
+            <span>2. Pan-India Freight Corridors</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Popular Pan-India Truck Routes from Coimbatore
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium pl-3.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Direct full-truckload (FTL) and scheduled part-load freight transit across major interstate commercial corridors.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+          {PAN_INDIA_ROUTES.map((route) => (
+            <div
+              key={route.destination}
+              id={`route-item-${route.destination.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-3 shadow-xs hover:border-blue-400 transition-colors flex items-center justify-between gap-2"
+            >
+              <div className="min-w-0">
+                <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                  Coimbatore to {route.destination}
+                </div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">
+                  {route.estTime}
+                </div>
+              </div>
+              <span className="text-[11px] font-mono font-bold text-[#001261] dark:text-blue-400 bg-slate-50 dark:bg-slate-800 px-2 py-0.5 rounded-md shrink-0 border border-slate-100 dark:border-slate-700">
+                {route.distance}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          3. ADDITIONAL TRUCK BOOKING ROUTES FROM COIMBATORE - SEO OPTIMIZED
+         ========================================================================= */}
+      <section
+        id="additional-truck-routes"
+        className="space-y-6"
+        aria-label="Additional Truck Booking Routes from Coimbatore"
+      >
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Navigation className="w-3.5 h-3.5 text-blue-600" />
+            <span>3. Regional Logistics Networks</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Additional Truck Booking Routes from Coimbatore
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Verified goods transport services, mini truck hire, and commercial truck transport corridors connecting Coimbatore to major industrial hubs across India.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {ADDITIONAL_TRUCK_ROUTES.map((group) => (
+            <article
+              key={group.region}
+              id={`additional-routes-${group.region.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+              itemScope
+              itemType="https://schema.org/ItemList"
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs flex flex-col justify-start"
+            >
+              <div className="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-500" />
+                  <h4 itemProp="name" className="font-bold text-sm text-slate-900 dark:text-white tracking-tight">
+                    {group.region}
+                  </h4>
+                </div>
+                <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800/80 px-2 py-0.5 rounded-md">
+                  {group.routes.length} Routes
+                </span>
+              </div>
+
+              <ul className="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                {group.routes.map((route, rIndex) => (
+                  <li
+                    key={route}
+                    itemProp="itemListElement"
+                    itemScope
+                    itemType="https://schema.org/ListItem"
+                    className="flex items-center gap-2"
+                  >
+                    <meta itemProp="position" content={String(rIndex + 1)} />
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-300 dark:bg-slate-700 shrink-0" />
+                    <a
+                      href="#booking-section"
+                      itemProp="name"
+                      title={`Online truck transport & goods booking for ${route}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        onOpenEnquiry();
+                      }}
+                      className="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors cursor-pointer"
+                    >
+                      {route}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          4. TRUCK BOOKING SERVICES IN COIMBATORE
+         ========================================================================= */}
+      <section id="truck-booking-services-coimbatore" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Building2 className="w-3.5 h-3.5 text-blue-600" />
+            <span>4. Comprehensive Truck Services</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Truck Booking Services in Coimbatore
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Our Online Truck Booking service in Coimbatore helps customers book suitable vehicles for household shifting, office relocation, commercial transportation, industrial goods movement, warehouse transportation, furniture delivery, and full truck load requirements.
+          </p>
+        </div>
+
+        {/* WE SUPPORT OVERVIEW CARD */}
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-4">
+          <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-blue-600" />
+            <span>We Support</span>
+          </h4>
+          <div className="flex flex-wrap gap-2 sm:gap-2.5">
+            {[
+              'House Shifting – Local',
+              'House Shifting – Domestic',
+              'Office Shifting',
+              'Corporate Shifting',
+              'Commercial Goods Transportation',
+              'Industrial Goods Transportation',
+              'Warehouse Transportation',
+              'Business Goods Delivery',
+              'Furniture Transportation',
+              'Full Truck Load (FTL) Transportation',
+            ].map((item) => (
+              <div
+                key={item}
+                className="inline-flex items-center gap-2 bg-slate-50 dark:bg-slate-800/60 rounded-xl px-3 py-2 border border-slate-100 dark:border-slate-800 text-xs font-medium text-slate-700 dark:text-slate-300"
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+                <span className="leading-snug">{item}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-xs text-slate-500 dark:text-slate-400 pt-1 font-medium">
+            Customers can select a suitable vehicle based on shipment volume, load requirements, distance, and transportation needs.
+          </p>
+        </div>
+
+        {/* 5 DETAILED SERVICE BREAKDOWN CARDS - FULL-WIDTH UNIFORM STRUCTURE */}
+        <div className="space-y-4">
+          {/* 1. Local House Shifting Truck Booking */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-3.5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2.5">
+                <span className="w-7 h-7 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                  1
+                </span>
+                <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                  Local House Shifting Truck Booking
+                </h4>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                For house shifting within Coimbatore, customers can book suitable mini trucks, pickup vehicles, and container vehicles based on the size and quantity of household goods.
+              </p>
+
+              <div className="pt-1">
+                <h5 className="text-xs font-bold text-slate-900 dark:text-slate-200 mb-2.5">Suitable For:</h5>
+                <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
+                  {[
+                    '1 RK Shifting',
+                    '1 BHK Shifting',
+                    '2 BHK Shifting',
+                    '3 BHK Shifting',
+                    'Partial Household Shifting',
+                    'Furniture Transportation',
+                    'Single-Item Transportation',
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/70 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-800 font-medium"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
+              Customers who need a complete relocation service can also coordinate packing, loading, transportation, unloading, and unpacking.
+            </p>
+          </div>
+
+          {/* 2. Domestic House Shifting Truck Booking */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-3.5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2.5">
+                <span className="w-7 h-7 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                  2
+                </span>
+                <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                  Domestic House Shifting Truck Booking
+                </h4>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Our domestic truck booking service helps customers transport household goods from Coimbatore to other cities across India.
+              </p>
+
+              <div className="pt-1">
+                <h5 className="text-xs font-bold text-slate-900 dark:text-slate-200 mb-2.5">Popular Routes:</h5>
+                <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
+                  {[
+                    'Coimbatore to Chennai',
+                    'Coimbatore to Bengaluru',
+                    'Coimbatore to Hyderabad',
+                    'Coimbatore to Kochi',
+                    'Coimbatore to Mumbai',
+                    'Coimbatore to Pune',
+                    'Coimbatore to Delhi',
+                    'Coimbatore to Madurai',
+                    'Coimbatore to Salem',
+                    'Coimbatore to Erode',
+                    'Coimbatore to Tiruppur',
+                  ].map((route) => (
+                    <div
+                      key={route}
+                      className="inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/70 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-800 font-medium"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                      <span>{route}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
+              Vehicle selection depends on shipment volume, weight, dimensions, route, loading requirements, and vehicle availability.
+            </p>
+          </div>
+
+          {/* 3. Office & Corporate Truck Booking */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-3.5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2.5">
+                <span className="w-7 h-7 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                  3
+                </span>
+                <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                  Office &amp; Corporate Truck Booking
+                </h4>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Our Office &amp; Corporate Truck Booking service in Coimbatore supports businesses relocating offices, warehouses, showrooms, corporate workspaces, and commercial facilities.
+              </p>
+
+              <div className="pt-1">
+                <h5 className="text-xs font-bold text-slate-900 dark:text-slate-200 mb-2.5">Suitable For:</h5>
+                <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
+                  {[
+                    'Office Furniture',
+                    'Workstations',
+                    'Computers & IT Equipment',
+                    'Documents & Cartons',
+                    'Conference Tables',
+                    'Office Cabinets',
+                    'Commercial Inventory',
+                    'Warehouse Stock',
+                    'Business Equipment',
+                    'Corporate Assets',
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/70 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-800 font-medium"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
+              For larger office and corporate relocations, multiple vehicles or container trucks can be arranged based on total shipment volume.
+            </p>
+          </div>
+
+          {/* 4. Full Truck Load (FTL) Transportation */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-3.5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2.5">
+                <span className="w-7 h-7 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                  4
+                </span>
+                <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                  Full Truck Load (FTL) Transportation
+                </h4>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Our Full Truck Load (FTL) Transportation service is suitable for customers who require an entire vehicle for their shipment.
+              </p>
+
+              <div className="pt-1">
+                <h5 className="text-xs font-bold text-slate-900 dark:text-slate-200 mb-2.5">FTL Transportation Is Suitable For:</h5>
+                <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
+                  {[
+                    'Large Household Shifting',
+                    'Factory Goods',
+                    'Industrial Machinery',
+                    'Commercial Inventory',
+                    'Production Materials',
+                    'Warehouse Stock',
+                    'Bulk Goods Transportation',
+                    'Long-Distance Logistics',
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/70 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-800 font-medium"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
+              The vehicle is assigned specifically to the customer's shipment, helping minimize unnecessary handling and providing dedicated transportation for larger consignments.
+            </p>
+          </div>
+
+          {/* 5. Commercial & Industrial Truck Booking */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-3.5">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2.5">
+                <span className="w-7 h-7 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
+                  5
+                </span>
+                <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
+                  Commercial &amp; Industrial Truck Booking
+                </h4>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+                Our Commercial &amp; Industrial Truck Booking service in Coimbatore supports retailers, manufacturers, wholesalers, distributors, production companies, warehouses, and other businesses.
+              </p>
+
+              <div className="pt-1">
+                <h5 className="text-xs font-bold text-slate-900 dark:text-slate-200 mb-2.5">Commercial &amp; Industrial Goods We Transport:</h5>
+                <div className="flex flex-wrap gap-2 text-xs text-slate-600 dark:text-slate-400">
+                  {[
+                    'Industrial Equipment',
+                    'Machinery',
+                    'Production Materials',
+                    'Commercial Products',
+                    'Retail Inventory',
+                    'Warehouse Goods',
+                    'Office Equipment',
+                    'Heavy Cargo',
+                    'Bulk Shipments',
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/70 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-800 font-medium"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0" />
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <p className="text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800">
+              Vehicle selection can be planned according to the type, size, weight, quantity, and destination of the goods.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          5. HOW ONLINE TRUCK BOOKING WORKS (8 STEPS)
+         ========================================================================= */}
+      <section id="how-truck-booking-works" className="space-y-6" aria-label="How Online Truck Booking Works">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Clock className="w-3.5 h-3.5 text-blue-600" />
+            <span>5. Booking Process</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            How Online Truck Booking Works
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+            Packer Solutions makes Online Truck Booking Services in Coimbatore simple through a structured booking process. Customers can request a vehicle without visiting a transport office or spending time contacting multiple vehicle owners.
+          </p>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              {
+                step: 1,
+                title: 'Enter Pickup & Drop Location',
+                desc: 'Enter the complete pickup location and destination where the vehicle is required. Our team uses the route information to identify suitable transportation options.'
+              },
+              {
+                step: 2,
+                title: 'Select the Vehicle Type',
+                desc: 'Based on your shipment size, weight, CFT volume, and transportation requirement, you can select a suitable vehicle from available options such as mini pickups, LCV trucks, container vehicles, and heavy commercial vehicles.'
+              },
+              {
+                step: 3,
+                title: 'Check Recommended Price',
+                desc: 'Our system provides a recommended transportation price based on the route, vehicle type, distance, and expected transportation requirements.'
+              },
+              {
+                step: 4,
+                title: 'Submit Your Bid Price',
+                desc: 'If you have a specific transportation budget, you can submit a Bid Price. The request is forwarded to our logistics operations team for verification.'
+              },
+              {
+                step: 5,
+                title: 'Vehicle Availability Verification',
+                desc: 'Our transport coordinators check available vehicles through our logistics network and verified transport partners. The team compares the requested rate, route, vehicle capacity, and availability before confirming the vehicle.'
+              },
+              {
+                step: 6,
+                title: 'Receive Vehicle & Driver Details',
+                desc: 'After vehicle confirmation, customers receive available vehicle information, driver details, estimated pickup time, and booking confirmation through WhatsApp or SMS.'
+              },
+              {
+                step: 7,
+                title: 'Pay Booking Token',
+                desc: 'After approving the quotation, customers can securely pay the applicable online booking token to confirm the vehicle reservation.'
+              },
+              {
+                step: 8,
+                title: 'Vehicle Pickup',
+                desc: 'The assigned vehicle arrives at the scheduled pickup location according to the confirmed booking time and transportation plan.'
+              },
+            ].map((item) => (
+              <div
+                key={item.step}
+                id={`booking-step-${item.step}`}
+                className="flex items-start gap-3 p-3.5 bg-slate-50/80 dark:bg-slate-950/60 rounded-2xl border border-slate-100 dark:border-slate-800"
+              >
+                <div className="w-8 h-8 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-xs">
+                  {item.step}
+                </div>
+                <div className="space-y-1 min-w-0">
+                  <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-tight">
+                    {item.title}
+                  </h4>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          6. WHY CHOOSE PACKER SOLUTIONS
+         ========================================================================= */}
+      <section id="why-choose-trucks" className="space-y-6" aria-label="Why Choose Packer Solutions">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Award className="w-3.5 h-3.5 text-blue-600" />
+            <span>6. Why Choose Packer Solutions?</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Why Choose Packer Solutions?
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             The smartest, fastest, and most transparent way to move goods locally or intercity.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-orange-600 dark:text-orange-400 flex items-center justify-center">
-              <Clock className="w-6 h-6" />
-            </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">15-Minute Instant Dispatch</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Nearby driver partner assigned within minutes. Fast pickup across all major industrial and residential hubs in {selectedCity}.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-              <Calculator className="w-6 h-6" />
-            </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Transparent Fixed Rate Card</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              No driver haggling or unannounced surge charges. Pay exact fare calculated by distance and vehicle payload class.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center">
-              <Navigation className="w-6 h-6" />
-            </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Live GPS Shipment Tracking</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Track your vehicle live from pickup point to drop location with real-time location sharing via SMS and WhatsApp.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-              <UserCheck className="w-6 h-6" />
-            </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Verified Commercial Drivers</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Background-checked, commercial-license verified drivers ensuring high cargo safety, punctuality, and courtesy.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-              <Boxes className="w-6 h-6" />
-            </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Helper Assistance Available</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Opt for skilled helpers to assist in loading and unloading heavy boxes, appliances, industrial machinery, or furniture.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center">
-              <ShieldCheck className="w-6 h-6" />
-            </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Multi-Stop Drop Facility</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Deliver goods to multiple clients or branch locations across {selectedCity} in a single organized truck route.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. COMPLETE FLEET RATE CARD TABLE (ALL 13 VEHICLES) */}
-      <section id="truck-fare-table" className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-              <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-              Complete Vehicle Rate Matrix in {selectedCity}
-            </h3>
-            <p className="text-xs text-slate-500 dark:text-slate-400 font-medium pl-3.5">
-              Standard base rates and per km distance charges for all 13 commercial vehicle classes.
-            </p>
-          </div>
-
-          {/* Table Filter buttons */}
-          <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1 rounded-xl shrink-0 self-start sm:self-auto">
-            {(['all', 'light', 'intermediate', 'heavy'] as const).map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setTableFilter(filter)}
-                className={`px-3 py-1 text-xs font-bold rounded-lg transition-colors cursor-pointer capitalize ${
-                  tableFilter === filter
-                    ? 'bg-orange-500 text-white shadow-xs'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                {filter === 'all' ? 'All (13)' : filter}
-              </button>
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+            {[
+              'Professional Online Truck Booking in Coimbatore',
+              'Local and domestic truck booking',
+              'House shifting vehicle booking',
+              'Office and corporate shifting support',
+              'LCV, ICV, MCV and HCV transportation',
+              '7 Ft to 22 Ft vehicle options',
+              'Mini pickup and container trucks',
+              'Full Truck Load transportation',
+              'Commercial and industrial goods transportation',
+              'Verified transport partner network',
+              'Vehicle availability verification',
+              'Transparent recommended pricing',
+              'Bid price facility',
+              'WhatsApp / SMS booking confirmation',
+              'Driver and vehicle details after confirmation',
+              'Online booking token payment',
+              'Professional logistics coordination',
+              'Local and interstate transportation support',
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-2.5 p-2 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#001261] dark:bg-blue-400 mt-2 shrink-0" />
+                <span className="font-medium leading-relaxed">{item}</span>
+              </li>
             ))}
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-900 dark:bg-slate-950 text-white font-semibold font-mono text-[10px] uppercase tracking-wider">
-                  <th className="px-5 py-3.5 border-b border-slate-800">#</th>
-                  <th className="px-5 py-3.5 border-b border-slate-800">Vehicle Model</th>
-                  <th className="px-5 py-3.5 border-b border-slate-800">Category</th>
-                  <th className="px-5 py-3.5 border-b border-slate-800">Payload</th>
-                  <th className="px-5 py-3.5 border-b border-slate-800">Deck Size</th>
-                  <th className="px-5 py-3.5 border-b border-slate-800 text-right">Base Fare</th>
-                  <th className="px-5 py-3.5 border-b border-slate-800 text-right">Per KM</th>
-                  <th className="px-5 py-3.5 border-b border-slate-800 text-center">Action</th>
-                </tr>
-              </thead>
-              <tbody className="text-xs font-medium text-slate-700 dark:text-slate-300 divide-y divide-slate-100 dark:divide-slate-800">
-                {tableVehicles.map((f) => (
-                  <tr key={f.id} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="px-5 py-3.5 font-mono text-slate-400 font-bold">{f.itemNumber}</td>
-                    <td className="px-5 py-3.5 font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg overflow-hidden shrink-0 bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700">
-                        <img src={f.image} alt={f.name} className="w-full h-full object-contain" referrerPolicy="no-referrer" />
-                      </div>
-                      <span>{f.name}</span>
-                    </td>
-                    <td className="px-5 py-3.5">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full capitalize ${
-                        f.category === 'light' 
-                          ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400' 
-                          : f.category === 'intermediate'
-                          ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-400'
-                          : 'bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-400'
-                      }`}>
-                        {f.category}
-                      </span>
-                    </td>
-                    <td className="px-5 py-3.5 text-slate-800 dark:text-slate-200 font-bold">{f.capacity}</td>
-                    <td className="px-5 py-3.5 text-slate-600 dark:text-slate-400 font-mono text-[11px]">{f.dimensions}</td>
-                    <td className="px-5 py-3.5 text-right font-mono font-black text-slate-900 dark:text-white text-sm">₹{f.baseFare}</td>
-                    <td className="px-5 py-3.5 text-right font-mono font-black text-orange-600 dark:text-orange-400 text-sm">₹{f.ratePerKm}/km</td>
-                    <td className="px-5 py-3.5 text-center">
-                      <button
-                        onClick={onOpenEnquiry}
-                        className="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-[11px] font-bold rounded-lg transition-colors cursor-pointer"
-                      >
-                        Book
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="bg-slate-50 dark:bg-slate-950 px-6 py-3.5 border-t border-slate-200/80 dark:border-slate-800 text-[10px] text-slate-400 font-semibold font-mono">
-            * Base fares include initial 1.0 km travel. Toll taxes, parking charges, and state permits (for intercity) payable as applicable.
-          </div>
+          </ul>
         </div>
       </section>
 
-      {/* 5. HOW TO BOOK A TRUCK */}
-      <section id="how-to-book-truck" className="space-y-6">
+      {/* =========================================================================
+          7. BOOK YOUR ONLINE TRUCK IN COIMBATORE TODAY
+         ========================================================================= */}
+      <section id="how-to-book-truck" className="space-y-6" aria-label="Book Your Online Truck in Coimbatore Today">
         <div className="space-y-1">
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            How to Rent a Commercial Truck in {selectedCity}
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <CheckCircle className="w-3.5 h-3.5 text-blue-600" />
+            <span>7. Easy Booking &amp; Coordination</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Book Your Online Truck in Coimbatore Today
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium pl-3.5">
-            4 quick steps to dispatch your cargo truck in under 2 minutes.
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+          <p>
+            Whether you need a mini pickup for local house shifting, a container truck for domestic relocation, or a heavy commercial vehicle for industrial transportation, Packer Solutions provides convenient Online Truck Booking in Coimbatore with transparent pricing and professional logistics coordination.
+          </p>
+          <p>
+            Enter your pickup and drop locations, select the required vehicle category, check the recommended price, or submit your preferred bid price. Our logistics team will verify vehicle availability and provide the most suitable transportation option for your requirement.
+          </p>
+          <p className="pt-3 border-t border-slate-100 dark:border-slate-800 font-medium text-slate-800 dark:text-slate-200">
+            Contact Packer Solutions today to book a truck for House Shifting, Office Shifting, Corporate Shifting, Commercial Goods Transportation, Industrial Cargo, Full Truck Load (FTL), or Long-Distance Logistics Services.
           </p>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs relative space-y-2">
-            <span className="w-8 h-8 rounded-full bg-orange-500 text-white font-black text-xs flex items-center justify-center">
-              1
-            </span>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Select Vehicle Category</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Choose from Light, Intermediate, or Heavy truck categories based on your cargo payload and dimensions.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs relative space-y-2">
-            <span className="w-8 h-8 rounded-full bg-orange-500 text-white font-black text-xs flex items-center justify-center">
-              2
-            </span>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Enter Pickup &amp; Drop</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Add pickup address, drop destination, and choose optional helper assistance if heavy lifting is needed.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs relative space-y-2">
-            <span className="w-8 h-8 rounded-full bg-orange-500 text-white font-black text-xs flex items-center justify-center">
-              3
-            </span>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Instant Driver Partner Match</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Get connected with the nearest verified commercial driver who arrives at your doorstep in ~15 minutes.
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs relative space-y-2">
-            <span className="w-8 h-8 rounded-full bg-orange-500 text-white font-black text-xs flex items-center justify-center">
-              4
-            </span>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-slate-100">Live Track &amp; Safe Delivery</h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Track live transit via GPS map sharing and receive prompt digital delivery confirmation with OTP.
-            </p>
-          </div>
-        </div>
       </section>
 
-      {/* 6. FAQS */}
+      {/* =========================================================================
+          8. FREQUENTLY ASKED QUESTIONS
+         ========================================================================= */}
       <section id="truck-booking-faqs" className="space-y-6">
         <div className="space-y-1">
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+            <span>8. Frequently Asked Questions</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Frequently Asked Questions on Truck Rental in {selectedCity}
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-medium pl-3.5">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Clear answers to common questions about truck sizing, pricing, and transit.
           </p>
         </div>
@@ -781,17 +1215,18 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
                 className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs"
               >
                 <button
+                  type="button"
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
                   className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 cursor-pointer"
                 >
                   <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2.5">
-                    <HelpCircle className="w-4 h-4 text-orange-500 shrink-0" />
+                    <HelpCircle className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
                     <span>{faq.q}</span>
                   </span>
                   <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 shrink-0 ${isOpen ? 'rotate-180' : ''}`} />
                 </button>
                 {isOpen && (
-                  <div className="px-4 sm:px-5 pb-5 pt-0 text-xs text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 mt-1 pt-3">
+                  <div className="px-4 sm:px-5 pb-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed border-t border-slate-100 dark:border-slate-800/60 mt-1 pt-3 font-normal">
                     {faq.a}
                   </div>
                 )}
@@ -801,26 +1236,72 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
         </div>
       </section>
 
-      {/* 7. OTHER SERVICES NAVIGATION */}
+      {/* =========================================================================
+          9. 24/7 HELPLINE & FAST BOOKING CALLOUT
+         ========================================================================= */}
+      <section id="section-callout-contact" className="bg-gradient-to-r from-blue-900 to-[#001261] text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="space-y-2 text-center md:text-left relative z-10">
+          <div className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-blue-200">
+            <Phone className="w-3.5 h-3.5 text-orange-400" />
+            <span>24/7 Priority Truck Dispatch Hotline</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+            Need Immediate Truck Assistance in {selectedCity}?
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-200 max-w-xl font-normal">
+            Speak directly with our dedicated truck freight coordinators. Get instant vehicle matching, custom tonnage rates, and live vehicle status updates.
+          </p>
+        </div>
+
+        <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 relative z-10 w-full md:w-auto">
+          <button
+            type="button"
+            onClick={onOpenEnquiry}
+            className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Book Instant Truck</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
+          
+          <a
+            href="tel:1800123000"
+            className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-5 py-3.5 rounded-xl border border-white/20 transition-all flex items-center justify-center gap-2"
+          >
+            <Phone className="w-4 h-4 text-blue-300" />
+            <span>1800-123-000</span>
+          </a>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          10. OTHER SERVICES NAVIGATION
+         ========================================================================= */}
       <section id="other-truck-services" className="space-y-4">
-        <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
-          Explore Other Logistics Channels
-        </h4>
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Layers className="w-3.5 h-3.5 text-blue-600" />
+            <span>10. Additional Relocation Services</span>
+          </div>
+          <h4 className="text-sm font-bold text-slate-700 dark:text-slate-300 uppercase tracking-wider">
+            Explore Other Logistics Channels
+          </h4>
+        </div>
+
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
           {OTHER_SERVICES_MENU.map((svc) => (
             <button
               key={svc.id}
               onClick={() => onSelectService(svc.id)}
-              className="bg-white dark:bg-slate-900 hover:bg-orange-50/40 dark:hover:bg-slate-800 p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-left transition-all group flex flex-col items-center text-center gap-2 cursor-pointer shadow-xs"
+              className="bg-white dark:bg-slate-900 hover:bg-blue-50/40 dark:hover:bg-slate-800 p-3 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-left transition-all group flex flex-col items-center text-center gap-2 cursor-pointer shadow-xs"
             >
               <div className="w-12 h-12 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700">
                 <img src={svc.image} alt={svc.name} className="w-full h-full object-cover rounded-full" referrerPolicy="no-referrer" />
               </div>
               <div>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-orange-500 block leading-tight">
+                <span className="text-xs font-bold text-slate-800 dark:text-slate-200 group-hover:text-blue-600 dark:group-hover:text-blue-400 block leading-tight">
                   {svc.name}
                 </span>
-                <span className="text-[10px] text-orange-600 dark:text-orange-400 font-bold">
+                <span className="text-[10px] text-blue-600 dark:text-blue-400 font-bold">
                   {svc.badge}
                 </span>
               </div>
@@ -846,7 +1327,7 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
 
             {/* Modal Header */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-orange-50 dark:bg-orange-950/60 text-orange-600 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950/60 text-[#001261] dark:text-blue-400 flex items-center justify-center font-bold">
                 <Truck className="w-5 h-5" />
               </div>
               <div>
@@ -881,7 +1362,7 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
               </div>
               <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200/60 dark:border-slate-800">
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Base Fare (1st km)</span>
-                <span className="font-bold text-orange-600 dark:text-orange-400 text-sm mt-0.5 block">₹{detailModalVehicle.baseFare}</span>
+                <span className="font-bold text-blue-600 dark:text-blue-400 text-sm mt-0.5 block">₹{detailModalVehicle.baseFare}</span>
               </div>
               <div className="bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl border border-slate-200/60 dark:border-slate-800">
                 <span className="text-[10px] uppercase font-bold text-slate-400 block">Distance Rate</span>
@@ -890,8 +1371,8 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
             </div>
 
             {/* Best For Note */}
-            <div className="text-xs text-slate-600 dark:text-slate-300 bg-orange-50/50 dark:bg-orange-950/20 p-3.5 rounded-xl border border-orange-200/50 dark:border-orange-900/40">
-              <strong className="text-orange-900 dark:text-orange-300 font-bold">Ideal Cargo: </strong>
+            <div className="text-xs text-slate-600 dark:text-slate-300 bg-blue-50/50 dark:bg-blue-950/20 p-3.5 rounded-xl border border-blue-200/50 dark:border-blue-900/40">
+              <strong className="text-[#001261] dark:text-blue-300 font-bold">Ideal Cargo: </strong>
               <span>{detailModalVehicle.idealFor}</span>
             </div>
 

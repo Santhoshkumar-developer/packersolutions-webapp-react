@@ -75,18 +75,95 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
 
       {/* Main Footer Links & Info */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-        {/* Column 1: Brand & Description */}
+        {/* Column 1: App Download QR & Description */}
         <div className="space-y-5">
-          <div className="flex items-center gap-2.5">
-            <img 
-              src={logoImg} 
-              alt="Packer Solutions Logo" 
-              className="h-12 sm:h-14 w-auto object-contain rounded-lg"
-              referrerPolicy="no-referrer"
-            />
-            <span className="text-lg font-bold text-slate-100 tracking-tight">
-              Packer<span className="text-brand-orange"> Solutions</span>
-            </span>
+          <div className="space-y-2">
+            <h4 className="text-base sm:text-lg font-bold text-white tracking-tight">
+              Download our app now!
+            </h4>
+            <p className="text-xs text-slate-400 font-medium">
+              Scan the QR Code to download
+            </p>
+            <div className="pt-2 flex items-center gap-3.5">
+              <div className="bg-white p-2.5 rounded-2xl shadow-xl border border-white/20 w-fit flex flex-col items-center group transition-transform hover:scale-105">
+                {/* Clean, high contrast vector QR Code */}
+                <svg
+                  className="w-24 h-24 sm:w-28 sm:h-28 text-slate-900"
+                  viewBox="0 0 100 100"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-label="Download App QR Code"
+                >
+                  {/* Top-Left Position Detection Pattern */}
+                  <rect x="10" y="10" width="24" height="24" rx="3" fill="#001261" />
+                  <rect x="14" y="14" width="16" height="16" rx="2" fill="#ffffff" />
+                  <rect x="18" y="18" width="8" height="8" rx="1" fill="#ea580c" />
+
+                  {/* Top-Right Position Detection Pattern */}
+                  <rect x="66" y="10" width="24" height="24" rx="3" fill="#001261" />
+                  <rect x="70" y="14" width="16" height="16" rx="2" fill="#ffffff" />
+                  <rect x="74" y="18" width="8" height="8" rx="1" fill="#ea580c" />
+
+                  {/* Bottom-Left Position Detection Pattern */}
+                  <rect x="10" y="66" width="24" height="24" rx="3" fill="#001261" />
+                  <rect x="14" y="70" width="16" height="16" rx="2" fill="#ffffff" />
+                  <rect x="18" y="74" width="8" height="8" rx="1" fill="#ea580c" />
+
+                  {/* Timing Patterns & Alignment dots */}
+                  <rect x="38" y="12" width="4" height="4" fill="#001261" />
+                  <rect x="46" y="12" width="4" height="4" fill="#001261" />
+                  <rect x="54" y="12" width="4" height="4" fill="#001261" />
+                  <rect x="12" y="38" width="4" height="4" fill="#001261" />
+                  <rect x="12" y="46" width="4" height="4" fill="#001261" />
+                  <rect x="12" y="54" width="4" height="4" fill="#001261" />
+
+                  {/* Data Matrix Modules */}
+                  <rect x="38" y="24" width="5" height="5" rx="1" fill="#1e293b" />
+                  <rect x="48" y="24" width="5" height="5" rx="1" fill="#ea580c" />
+                  <rect x="58" y="24" width="5" height="5" rx="1" fill="#1e293b" />
+                  <rect x="38" y="34" width="5" height="5" rx="1" fill="#ea580c" />
+                  <rect x="46" y="34" width="8" height="5" rx="1" fill="#001261" />
+                  <rect x="58" y="34" width="5" height="5" rx="1" fill="#1e293b" />
+                  <rect x="68" y="38" width="6" height="6" rx="1" fill="#001261" />
+                  <rect x="78" y="38" width="6" height="6" rx="1" fill="#ea580c" />
+                  <rect x="88" y="38" width="4" height="6" rx="1" fill="#1e293b" />
+                  
+                  {/* Center Modules */}
+                  <rect x="38" y="44" width="5" height="5" rx="1" fill="#1e293b" />
+                  <rect x="46" y="44" width="8" height="8" rx="2" fill="#001261" />
+                  <rect x="58" y="44" width="5" height="5" rx="1" fill="#ea580c" />
+                  <rect x="68" y="48" width="5" height="5" rx="1" fill="#1e293b" />
+                  <rect x="76" y="48" width="6" height="5" rx="1" fill="#001261" />
+                  <rect x="86" y="48" width="6" height="5" rx="1" fill="#ea580c" />
+
+                  {/* Bottom Area Data */}
+                  <rect x="38" y="58" width="6" height="6" rx="1" fill="#001261" />
+                  <rect x="48" y="58" width="6" height="6" rx="1" fill="#ea580c" />
+                  <rect x="58" y="58" width="6" height="6" rx="1" fill="#1e293b" />
+                  <rect x="68" y="58" width="6" height="6" rx="1" fill="#001261" />
+                  <rect x="78" y="58" width="6" height="6" rx="1" fill="#ea580c" />
+                  <rect x="38" y="68" width="5" height="5" rx="1" fill="#1e293b" />
+                  <rect x="46" y="68" width="8" height="5" rx="1" fill="#001261" />
+                  <rect x="58" y="68" width="5" height="5" rx="1" fill="#ea580c" />
+                  <rect x="68" y="68" width="8" height="8" rx="2" fill="#001261" />
+                  <rect x="80" y="68" width="6" height="6" rx="1" fill="#1e293b" />
+                  <rect x="38" y="78" width="6" height="6" rx="1" fill="#ea580c" />
+                  <rect x="48" y="78" width="6" height="6" rx="1" fill="#001261" />
+                  <rect x="58" y="78" width="6" height="6" rx="1" fill="#1e293b" />
+                  <rect x="80" y="78" width="6" height="6" rx="1" fill="#ea580c" />
+                </svg>
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center gap-1.5 text-[11px] font-semibold text-slate-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Android &amp; iOS
+                </div>
+                <div className="text-[10px] text-slate-400 leading-snug">
+                  Fast booking &amp; live move tracker
+                </div>
+              </div>
+            </div>
           </div>
           <p className="text-xs text-slate-400 leading-relaxed">
             Packersolution is a premium logistics and relocation company specializing in end-to-end safe moving solutions across India. Inspired by modern smart protection, we bring absolute transparency and premium materials to your doorstep.
@@ -119,8 +196,26 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
           </ul>
 
           <div className="mt-8 pt-6 border-t border-slate-800/80">
-            <h5 className="font-bold text-slate-100 text-xs uppercase tracking-widest mb-4">Quick Resources</h5>
+            <h5 className="font-bold text-slate-100 text-xs uppercase tracking-widest mb-4">Explore &amp; Company Menus</h5>
             <ul className="space-y-3 text-xs text-slate-400">
+              <li>
+                <button
+                  onClick={() => onNavigate('home')}
+                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer font-semibold text-slate-100"
+                >
+                  <span className="text-orange-500">›</span>
+                  Home
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('about')}
+                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer font-semibold text-slate-100"
+                >
+                  <span className="text-orange-500">›</span>
+                  About Us
+                </button>
+              </li>
               <li>
                 <button
                   onClick={() => onNavigate('locations')}
@@ -150,20 +245,11 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
               </li>
               <li>
                 <button
-                  onClick={() => onNavigate('blog')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span className="text-orange-500">›</span>
-                  Moving Tips & Blog
-                </button>
-              </li>
-              <li>
-                <button
                   onClick={() => onNavigate('service', 'office-relocation')}
                   className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <span className="text-orange-500">›</span>
-                  For Corporate
+                  For Business (Enterprise Solutions)
                 </button>
               </li>
               <li>
@@ -175,7 +261,16 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
                   className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <span className="text-orange-500">›</span>
-                  Delivery Partner
+                  Driver &amp; Vehicle Partners
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => onNavigate('blog')}
+                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span className="text-orange-500">›</span>
+                  Moving Tips &amp; Blog
                 </button>
               </li>
               <li>
@@ -189,7 +284,7 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
                   className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <span className="text-orange-500">›</span>
-                  Reviews
+                  Customer Reviews
                 </button>
               </li>
               <li>
@@ -203,7 +298,7 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
                   className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <span className="text-orange-500">›</span>
-                  FAQs
+                  Frequently Asked Questions (FAQs)
                 </button>
               </li>
             </ul>
@@ -299,20 +394,24 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
             © {new Date().getFullYear()} Packersolution Logistics Private Limited. All Rights Reserved.
           </div>
           <div className="flex flex-wrap gap-x-4 gap-y-2 justify-center sm:justify-end">
+            <button onClick={() => onNavigate('home')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">Home</button>
+            <span>•</span>
             <button onClick={() => onNavigate('about')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">About Us</button>
+            <span>•</span>
+            <button onClick={() => onNavigate('locations')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">Locations</button>
             <span>•</span>
             <button onClick={() => onNavigate('how-it-works')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">How It Works</button>
             <span>•</span>
             <button onClick={() => onNavigate('contact')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">Contact Us</button>
             <span>•</span>
-            <button onClick={() => onNavigate('blog')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Moving Tips (Blog)</button>
-            <span>•</span>
-            <button onClick={() => onNavigate('service', 'office-relocation')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">For Corporate</button>
+            <button onClick={() => onNavigate('service', 'office-relocation')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">For Business</button>
             <span>•</span>
             <button onClick={() => {
               const modal = document.getElementById('delivery-partner-modal');
               if (modal) modal.style.display = 'flex';
-            }} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Delivery Partner</button>
+            }} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">Driver &amp; Vehicle Partners</button>
+            <span>•</span>
+            <button onClick={() => onNavigate('blog')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Moving Tips (Blog)</button>
             <span>•</span>
             <button onClick={() => {
               onNavigate('home');
@@ -330,7 +429,7 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
             <span>•</span>
             <button onClick={() => onNavigate('privacy-policy')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Privacy Policy</button>
             <span>•</span>
-            <button onClick={() => onNavigate('terms-conditions')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Terms & Conditions</button>
+            <button onClick={() => onNavigate('terms-conditions')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Terms &amp; Conditions</button>
             <span>•</span>
             <button onClick={() => onNavigate('shipment-policy')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Shipment Policy</button>
             <span>•</span>

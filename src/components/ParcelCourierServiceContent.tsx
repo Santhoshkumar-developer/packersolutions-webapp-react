@@ -26,7 +26,18 @@ import {
   ShoppingBag, 
   Sparkles,
   Search,
-  Check
+  Check,
+  Award,
+  DollarSign,
+  Lock,
+  Eye,
+  AlertCircle,
+  ClipboardCheck,
+  Navigation,
+  Wrench,
+  Gauge,
+  Send,
+  Plane
 } from 'lucide-react';
 import { ServiceItem } from '../types';
 
@@ -39,6 +50,177 @@ interface ParcelCourierServiceContentProps {
   onOpenLoginModal?: () => void;
 }
 
+// Local service hubs helper for selected city
+const getParcelDeliveryAreas = (city: string): string[] => {
+  const areas: Record<string, string[]> = {
+    'Coimbatore': [
+      'Peelamedu IT & Commercial Hub', 
+      'RS Puram Central Staging', 
+      'Gandhipuram Bus & Parcel Depot', 
+      'Saibaba Colony Commercial', 
+      'Singanallur Logistics Corridor', 
+      'Saravanampatti Tech Zone', 
+      'Ganapathy Industrial Estate', 
+      'Kurichi SIDCO Industrial Area', 
+      'Trichy Road Express Corridor', 
+      'Avinashi Road Tech Belt', 
+      'Eachanari Toll Logistics Junction', 
+      'Thudiyalur Commercial Center'
+    ],
+    'Bangalore': [
+      'Electronic City Phase 1 & 2 Hub', 
+      'Whitefield ITPL & EPIP Zone', 
+      'Peenya Industrial Freight Depot', 
+      'Koramangala & HSR Commercial Belt', 
+      'Indiranagar & Domlur Central', 
+      'Hebbal & Manyata Tech Corridor', 
+      'Yeshwanthpur Logistics Terminal', 
+      'Jayanagar & JP Nagar Hub', 
+      'Marathahalli & Bellandur Belt', 
+      'Bommasandra Industrial Area', 
+      'Yelahanka Express Hub', 
+      'Rajajinagar Industrial Sector'
+    ],
+    'Chennai': [
+      'Guindy Industrial Logistics Hub', 
+      'Ambattur Industrial Estate', 
+      'OMR IT Corridor & Sholinganallur', 
+      'T. Nagar & Mount Road Commercial', 
+      'Anna Nagar Central Terminal', 
+      'Sriperumbudur Logistics Park', 
+      'Koyambedu Wholesale Depot', 
+      'Velachery & Madipakkam Belt', 
+      'Porur & DLF Commercial Hub', 
+      'Tambaram & GST Road Staging Yard', 
+      'Parrys & George Town Trading Belt', 
+      'Adyar & Besant Nagar Hub'
+    ],
+    'Mumbai': [
+      'Andheri East & MIDC Terminal', 
+      'BKC & Kurla Commercial Corridor', 
+      'Vashi & Turbhe Navi Mumbai Depot', 
+      'Bhiwandi Major Parcel Hub', 
+      'Thane Wagle Estate Freight Center', 
+      'Lower Parel & Worli Commercial', 
+      'Borivali & Kandivali Western Belt', 
+      'Goregaon East Logistics Hub', 
+      'Dadar & Central Mumbai Hub', 
+      'Fort & Nariman Point Business', 
+      'Panvel Express Transit Hub', 
+      'Ghatkopar & Powai Commercial'
+    ],
+    'Hyderabad': [
+      'Hitec City & Madhapur IT Belt', 
+      'Gachibowli Financial District', 
+      'Secunderabad Railway Cargo Depot', 
+      'Kukatpally & Miyapur Transit Hub', 
+      'Sanathnagar Industrial Terminal', 
+      'Begumpet & Somajiguda Commercial', 
+      'Balanagar & Jeedimetla IDA', 
+      'Cherlapally & Nacharam Industrial', 
+      'Banjara Hills & Jubilee Hills', 
+      'Uppal & LB Nagar Logistics Zone', 
+      'Ameerpet & SR Nagar Hub', 
+      'Shamshabad Airport Cargo Belt'
+    ],
+    'Pune': [
+      'Hinjewadi IT Park Phase 1-3', 
+      'Bhosari MIDC & PCMC Auto Hub', 
+      'Viman Nagar & Kalyani Nagar', 
+      'Hadapsar & Magarpatta City', 
+      'Kothrud & Deccan Gymkhana Hub', 
+      'Wakad & Baner Expressway Hub', 
+      'Swargate & Camp Commercial', 
+      'Shivaji Nagar Central Depot', 
+      'Kharadi EON Free Zone Hub', 
+      'Chakan Industrial Express Hub', 
+      'Pimpri Commercial Center', 
+      'Katraj & Kondhwa Belt'
+    ],
+    'Delhi': [
+      'Okhla Industrial Area Phase 1-3', 
+      'Connaught Place & Central Hub', 
+      'Karol Bagh Commercial Depot', 
+      'Udyog Vihar & Cyber City Gurgaon', 
+      'Noida Sector 62 & 63 Hub', 
+      'Mayapuri Industrial Belt', 
+      'Nehru Place IT Hub', 
+      'Dwarka & IGI Airport Cargo Belt', 
+      'Patparganj Industrial Staging', 
+      'Chandni Chowk & Old Delhi Trading', 
+      'Laxmi Nagar & East Delhi Hub', 
+      'Faridabad Industrial Corridor'
+    ],
+    'Ahmedabad': [
+      'SG Highway Corporate Belt', 
+      'Sanand & Changodar Logistics Park', 
+      'Prahlad Nagar & Satellite CBD', 
+      'Vatva GIDC Industrial Phase 1-4', 
+      'Naroda Industrial Estate', 
+      'Ashram Road Commercial Corridor', 
+      'Maninagar & Old City Depot', 
+      'CG Road & Navrangpura Hub', 
+      'Aslali Transport Nagar Hub', 
+      'Sarkhej Highway Terminal', 
+      'Gota & Chandkheda Belt', 
+      'Odhav Industrial Area'
+    ],
+    'Kolkata': [
+      'Sector V Salt Lake IT & CBD', 
+      'Park Street & BBD Bagh Commercial', 
+      'Burrabazar Wholesale Trading Hub', 
+      'Rajarhat New Town Expressway', 
+      'Taratala Industrial Logistics Park', 
+      'Howrah Freight Terminal', 
+      'Gariahat & South Kolkata Hub', 
+      'Dankuni Logistics & Container Hub', 
+      'Kasba Industrial Estate', 
+      'Dum Dum Airport Cargo Hub', 
+      'Behala Commercial Center', 
+      'Ballygunge & Alipore Hub'
+    ],
+    'Kochi': [
+      'Kalamassery Industrial Transit Hub', 
+      'Kakkanad Infopark & SmartCity', 
+      'MG Road & Marine Drive Commercial', 
+      'Ernakulam South Railway Depot', 
+      'Willingdon Island Port Cargo Hub', 
+      'Aluva Highway Transit Center', 
+      'Edappally Bypass Commercial Hub', 
+      'Ravipuram & Panampilly Nagar', 
+      'Vyttila Mobility Logistics Hub', 
+      'Palarivattom & Kaloor Hub'
+    ],
+    'Madurai': [
+      'Mattuthavani Central Parcel Terminal', 
+      'Simmakkal Wholesale Trading Hub', 
+      'Goripalayam & Tallakulam Commercial', 
+      'Anna Nagar & K.K. Nagar Belt', 
+      'Villapuram Industrial Estate', 
+      'South Masi & West Masi Street Markets', 
+      'Teppakulam Commercial Sector', 
+      'Kappalur SIDCO Industrial Corridor', 
+      'Tirunagar Highway Junction', 
+      'Ellis Nagar Commercial Belt'
+    ]
+  };
+
+  return areas[city] || [
+    'Central Commercial Parcel Terminal',
+    'Industrial Express Logistics Hub',
+    'National Highway Staging Depot',
+    'Tech Park & CBD Collection Center',
+    'Residential Doorstep Pickup Belt',
+    'Commercial Trading Sector',
+    'Air Freight & Express Facility',
+    'Ring Road Logistics Junction'
+  ];
+};
+
+const POPULAR_PARCEL_CITIES = [
+  'Coimbatore', 'Bangalore', 'Chennai', 'Mumbai', 'Hyderabad', 'Pune', 'Delhi', 'Ahmedabad', 'Kolkata', 'Kochi', 'Madurai'
+];
+
 export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentProps> = ({
   selectedCity,
   activeService,
@@ -47,646 +229,664 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
   onOpenEnquiry,
   onOpenLoginModal
 }) => {
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [selectedWeightTier, setSelectedWeightTier] = useState<string>('std-parcel');
+  const city = selectedCity || 'Coimbatore';
+  const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
 
-  const originCity = selectedCity || 'Coimbatore';
-  const destinationCity = selectedCity === 'Madurai' ? 'Chennai' : 'Madurai';
+  // Interactive Parcel Cost Estimator state
+  const [calcParcelTier, setCalcParcelTier] = useState<'document' | 'small-box' | 'medium-box' | 'heavy-box' | 'bulk-50' | 'freight-100'>('medium-box');
+  const [calcDistance, setCalcDistance] = useState<number>(450);
+  const [calcDeliverySpeed, setCalcDeliverySpeed] = useState<'standard' | 'express'>('standard');
 
-  const SERVICE_INCLUSIONS = [
-    { title: `Parcel Pickup in ${originCity}`, desc: `Convenient doorstep collection directly from your home, office, or store.`, icon: Home },
-    { title: `Parcel Delivery in ${destinationCity}`, desc: `Timely doorstep delivery to residential, commercial, or institutional addresses.`, icon: MapPin },
-    { title: 'Standard Parcel Delivery', desc: 'Cost-effective regular scheduled surface transportation across highways.', icon: Truck },
-    { title: 'Express Parcel Delivery', desc: 'Priority transit for time-sensitive packages, emergency spares, and documents.', icon: Zap },
-    { title: 'Door-to-Door Parcel Delivery', desc: 'Full end-to-end handling from sender doorstep to receiver hands.', icon: ShieldCheck },
-    { title: 'Business Parcel Delivery', desc: 'Commercial dispatch for product samples, invoices, and retail shipments.', icon: Briefcase },
-    { title: 'Commercial Parcel Transportation', desc: 'Tailored logistics for small and medium enterprises and wholesale lots.', icon: Building2 },
-    { title: 'Document Delivery', desc: 'Fast, secure envelopes and tamper-proof pouches for legal/business papers.', icon: FileText },
-    { title: 'Small Package Delivery', desc: 'Secure transit for small gift boxes, electronics, apparel, and personal parcels.', icon: Package },
-    { title: 'Bulk Parcel Transportation', desc: 'Consolidated shipments and dedicated part-load arrangements for 20kg+ loads.', icon: Boxes },
-    { title: 'Parcel Packaging Support', desc: 'Professional 5-ply cartons, bubble wrap, foam, and stretch film sealing.', icon: Layers },
-    { title: 'Shipment Status Updates', desc: 'Live GPS milestones, dispatch tracking, and digital delivery confirmations.', icon: Clock }
-  ];
+  const parcelAreas = getParcelDeliveryAreas(city);
 
-  const WHAT_YOU_CAN_SEND = [
-    {
-      title: 'Personal Parcels',
-      subtitle: 'For individuals, families & students',
-      badgeColor: 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border-blue-200 dark:border-blue-800',
-      icon: Home,
-      items: [
-        'Clothes & Apparel',
-        'Books & Study Material',
-        'Important Documents',
-        'Gifts & Festive Hampers',
-        'Household Items',
-        'Personal Belongings',
-        'Accessories & Footwear',
-        'Small Electronic Gadgets'
-      ]
-    },
-    {
-      title: 'Business Parcels',
-      subtitle: 'For offices, manufacturers & dealers',
-      badgeColor: 'bg-orange-50 text-orange-700 dark:bg-orange-950/60 dark:text-orange-300 border-orange-200 dark:border-orange-800',
-      icon: Briefcase,
-      items: [
-        'Business Documents & Contracts',
-        'Product Samples & Prototypes',
-        'Office Materials & Stationery',
-        'Industrial Spare Parts',
-        'Small Machinery & Equipment',
-        'Commercial Packages',
-        'Retail Products & Goods',
-        'Business Inventory Stock'
-      ]
-    },
-    {
-      title: 'E-commerce Parcels',
-      subtitle: 'For online brands & local sellers',
-      badgeColor: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800',
-      icon: ShoppingBag,
-      items: [
-        'Online E-commerce Orders',
-        'Small Businesses & Startups',
-        'Retailers & Wholesalers',
-        'Home-based Businesses',
-        'D2C Brand Shipments',
-        'Local City & Regional Sellers',
-        'Marketplace Merchant Returns',
-        'Scheduled Merchant Dispatches'
-      ]
+  // Dynamic price calculation
+  const calculateParcelPrice = (
+    tier: 'document' | 'small-box' | 'medium-box' | 'heavy-box' | 'bulk-50' | 'freight-100',
+    distanceKm: number,
+    speed: 'standard' | 'express'
+  ) => {
+    let baseRate = 180;
+    let ratePerKm = 0.55;
+
+    switch (tier) {
+      case 'document':
+        baseRate = 120;
+        ratePerKm = 0.25;
+        break;
+      case 'small-box':
+        baseRate = 220;
+        ratePerKm = 0.50;
+        break;
+      case 'medium-box':
+        baseRate = 480;
+        ratePerKm = 0.95;
+        break;
+      case 'heavy-box':
+        baseRate = 950;
+        ratePerKm = 1.75;
+        break;
+      case 'bulk-50':
+        baseRate = 1800;
+        ratePerKm = 2.90;
+        break;
+      case 'freight-100':
+        baseRate = 3200;
+        ratePerKm = 4.80;
+        break;
     }
-  ];
 
-  const SERVICE_OPTIONS_TABLE = [
-    { service: 'Standard Parcel', weight: 'Up to 20 kg', suitableFor: 'Regular personal & household shipments', tag: 'Economical' },
-    { service: 'Express Parcel', weight: 'Up to 20 kg', suitableFor: 'Urgent & time-sensitive packages', tag: 'Fastest' },
-    { service: 'Bulk Parcel', weight: '20 kg+', suitableFor: 'Business inventory & commercial cargo', tag: 'Volume Rates' },
-    { service: 'Document Delivery', weight: 'Up to 1 kg', suitableFor: 'Official papers, certificates & contracts', tag: 'Priority' },
-    { service: 'Fragile Parcel', weight: 'Subject to assessment', suitableFor: 'Electronics, glassware & delicate items', tag: 'Extra Cushion' }
-  ];
+    let calculated = Math.round(baseRate + (distanceKm * ratePerKm));
+    if (speed === 'express') {
+      calculated = Math.round(calculated * 1.35);
+    }
+    return calculated;
+  };
 
-  const BULK_TIERS_TABLE = [
-    { tier: '1 – 5 kg', service: 'Standard Parcel', desc: 'Everyday personal boxes, gift packs & documents' },
-    { tier: '5 – 20 kg', service: 'Parcel Service', desc: 'Luggage bags, apparel cartons & mid-weight goods' },
-    { tier: '20 – 50 kg', service: 'Bulk Parcel', desc: 'Multiple cartons, product samples & trader goods' },
-    { tier: '50 – 100 kg', service: 'Commercial Transportation', desc: 'Wholesale merchandise & retail distribution' },
-    { tier: '100 kg+', service: 'Truck / Part Load', desc: 'Dedicated mini truck (Tata Ace/Pickup) or part load' }
-  ];
+  const getEstimatedTransit = (distanceKm: number, speed: 'standard' | 'express') => {
+    if (speed === 'express') {
+      if (distanceKm <= 500) return 'Same Day – 24 Hours';
+      if (distanceKm <= 1200) return '24 – 36 Hours';
+      return '1 – 2 Days';
+    }
+    if (distanceKm <= 350) return '1 Day (Next Day)';
+    if (distanceKm <= 850) return '1 – 2 Days';
+    if (distanceKm <= 1600) return '2 – 4 Days';
+    return '4 – 6 Days';
+  };
 
-  const PACKING_MATERIALS = [
-    '5-Ply Heavy-Duty Carton Boxes',
-    'Corrugated Protective Sheets',
-    'High-Density Bubble Wrap',
-    'Shock-Absorbent Foam Sheets',
-    'Industrial Stretch Film',
-    'Reinforced Packing Tape',
-    'Fragile & Handle With Care Stickers',
-    'Waterproof Plastic Wrapping',
-    'Protective Corner Edge Sheets'
-  ];
-
-  const PRICING_FACTORS = [
-    { title: 'Actual Physical Weight', desc: 'Gross weight measured on certified digital scales.' },
-    { title: 'Volumetric Dimensions', desc: 'Calculated as (Length × Width × Height in cm) / 5000.' },
-    { title: 'Package Dimensions', desc: 'Overall length, width, and height profile of each box.' },
-    { title: 'Number of Packages', desc: 'Total box / parcel count within a single consignment.' },
-    { title: 'Doorstep Accessibility', desc: 'Pickup and delivery accessibility at origin and destination.' },
-    { title: 'Delivery Speed Tier', desc: 'Standard surface vs Express priority flight/highway dispatch.' },
-    { title: 'Protective Packaging', desc: 'Multi-layer bubble wrap, 5-ply cartons, and waterproof wrapping.' },
-    { title: 'Special Fragile Handling', desc: 'Dedicated cushioning and top-load placement for delicate goods.' }
-  ];
-
-  const NINE_STEPS = [
-    { step: '01', title: 'Enter Pickup Location', desc: `Provide your exact pickup address in ${originCity} along with active pincode.` },
-    { step: '02', title: 'Enter Delivery Location', desc: `Specify receiver destination address in ${destinationCity} and contact number.` },
-    { step: '03', title: 'Provide Parcel Details', desc: 'Enter parcel category, approximate weight, dimensions, and box quantity.' },
-    { step: '04', title: 'Select Required Service', desc: 'Choose between Standard, Express, Document, or Bulk Transportation.' },
-    { step: '05', title: 'Confirm the Booking', desc: 'Review transparent quotation and confirm pickup schedule with zero hassle.' },
-    { step: '06', title: 'Doorstep Parcel Pickup', desc: `Executive collects parcel directly from your home, office, or warehouse in ${originCity}.` },
-    { step: '07', title: 'Shipment Processing', desc: 'Parcel is verified, securely packed with 5-ply cartons, and barcode-labeled.' },
-    { step: '08', title: `Transportation to ${destinationCity}`, desc: 'Dispatched through scheduled express highway logistics corridor.' },
-    { step: '09', title: 'Delivery Confirmation', desc: 'Delivered to destination with digital OTP and instant status update.' }
-  ];
-
-  const WHY_CHOOSE_POINTS = [
-    `Dedicated ${originCity} to ${destinationCity} Intercity Parcel Service`,
-    'Standard and Express Parcel Delivery Options',
-    'Door-to-Door Delivery Where Access Permits',
-    `Rapid Parcel Pickup Across ${originCity}`,
-    `Guaranteed Doorstep Delivery in ${destinationCity}`,
-    'Professional & Safe Parcel Handling Process',
-    'Comprehensive Packaging & Cushioning Support',
-    'Heavy-Duty 5-Ply Carton Box Packing',
-    'Tamper-Proof Barcode Labeling & Package Identification',
-    'Specialized Commercial & Business Parcel Solutions',
-    'Bulk Parcel & Part-Load Truck Transportation',
-    'Real-time Milestone Tracking & SMS/WhatsApp Updates',
-    '100% Transparent Upfront Pricing (No Hidden Surcharges)',
-    'Dedicated Customer Support Throughout the Shipment'
+  const PARCEL_PRICING_TABLE = [
+    { route: `${city} → Chennai`, dist: '500 km', doc: '₹220', small: '₹470', medium: '₹950', heavy: '₹1,800', time: '1 – 2 Days' },
+    { route: `${city} → Bengaluru`, dist: '360 km', doc: '₹190', small: '₹400', medium: '₹820', heavy: '₹1,580', time: '1 – 2 Days' },
+    { route: `${city} → Hyderabad`, dist: '920 km', doc: '₹340', small: '₹680', medium: '₹1,350', heavy: '₹2,550', time: '2 – 3 Days' },
+    { route: `${city} → Kochi / Madurai`, dist: '200 km', doc: '₹160', small: '₹320', medium: '₹670', heavy: '₹1,300', time: '1 Day' },
+    { route: `${city} → Mumbai`, dist: '1,280 km', doc: '₹420', small: '₹860', medium: '₹1,690', heavy: '₹3,180', time: '2 – 3 Days' },
+    { route: `${city} → Pune`, dist: '1,150 km', doc: '₹390', small: '₹790', medium: '₹1,570', heavy: '₹2,960', time: '2 – 3 Days' },
+    { route: `${city} → Delhi NCR`, dist: '2,400 km', doc: '₹680', small: '₹1,420', medium: '₹2,760', heavy: '₹5,150', time: '3 – 5 Days' },
+    { route: `${city} → Ahmedabad`, dist: '1,750 km', doc: '₹540', small: '₹1,090', medium: '₹2,140', heavy: '₹4,010', time: '3 – 4 Days' },
+    { route: `${city} → Kolkata`, dist: '2,150 km', doc: '₹630', small: '₹1,290', medium: '₹2,520', heavy: '₹4,710', time: '3 – 5 Days' }
   ];
 
   const FAQS = [
     {
-      q: `What is the ${originCity} to ${destinationCity} Parcel Service?`,
-      a: `It is a dedicated intercity parcel transportation service provided by Packer Solutions for sending eligible documents, personal packages, business parcels, and commercial shipments from ${originCity} to ${destinationCity} with doorstep pickup and verified delivery.`
+      q: `How does Packer Solutions guarantee safe and intact parcel delivery in ${city}?`,
+      a: 'We implement a strict multi-layer packaging protocol utilizing 5-ply corrugated boxes, high-density bubble cushioning, edge protectors, and tamper-evident barcode labels. Each consignment is digitally scanned at every dispatch terminal and transferred on scheduled express logistics corridors with zero unauthorized handling.'
     },
     {
-      q: `Can I send a parcel from ${originCity} to ${destinationCity}?`,
-      a: `Yes. Packer Solutions provides reliable parcel transportation from ${originCity} to ${destinationCity} and all major Tamil Nadu and pan-India destinations for eligible household, personal, and commercial shipments.`
+      q: `Do you provide doorstep parcel pickup across all residential and business areas in ${city}?`,
+      a: `Yes. Our logistics captains collect parcels directly from homes, apartments, corporate offices, retail stores, manufacturing units, and e-commerce warehouses throughout ${city} at your scheduled pickup time.`
     },
     {
-      q: 'Do you provide door-to-door parcel delivery?',
-      a: 'Yes, door-to-door pickup and delivery are provided where the pickup and delivery locations support vehicle and delivery access.'
+      q: 'What is the difference between Standard Parcel Delivery and Express Priority Courier?',
+      a: 'Standard Parcel Delivery is our cost-efficient scheduled surface highway transit ideal for personal belongings, routine commercial boxes, and luggage. Express Priority Courier utilizes dedicated green express corridors and air cargo for urgent business documents, medical parcels, and time-critical samples with expedited next-day delivery.'
     },
     {
-      q: `Do you provide parcel pickup in ${originCity}?`,
-      a: `Yes. Parcel pickup can be arranged from eligible homes, offices, shops, warehouses, and business locations across ${originCity}.`
+      q: 'How are delicate, fragile, or electronic items packed and transported?',
+      a: 'Fragile goods (laptops, monitors, glassware, crockery, handicrafts) undergo 3-stage custom cushioning: primary anti-static or bubble wrapping, secondary foam corner blocking, and placement inside heavy-duty 5-ply outer carton boxes with high-visibility "FRAGILE / HANDLE WITH CARE" labels and top-load transport protocol.'
     },
     {
-      q: `Do you provide parcel delivery in ${destinationCity}?`,
-      a: `Yes. Parcels can be delivered directly to eligible residential, office, commercial, and business addresses in ${destinationCity}.`
+      q: 'What documents are required to send a parcel from one state to another?',
+      a: 'For personal goods: Sender and receiver Government Photo ID (Aadhaar / Driving License / PAN) and an itemized content declaration. For commercial shipments: GST Invoice, E-Way Bill (for consignments with value exceeding ₹50,000), and Company Delivery Challan.'
     },
     {
-      q: `Can I send a business parcel from ${originCity} to ${destinationCity}?`,
-      a: `Yes. Businesses can use our service for sending commercial documents, product samples, spare parts, customer orders, retail packages, inter-branch shipments, and inventory.`
+      q: 'How is volumetric weight calculated for lightweight large boxes?',
+      a: 'In accordance with national freight standards, if volumetric weight exceeds actual gross weight, charges are calculated based on volumetric dimensions: (Length × Width × Height in cm) / 5000. Our pickup pilot uses certified digital scales and measuring tapes to give you a 100% transparent reading.'
     },
     {
-      q: 'Do you provide Express Parcel Service?',
-      a: 'Yes. Express parcel transportation can be arranged for time-sensitive documents and priority shipments based on the available transportation and flight/express highway schedule.'
+      q: 'Can I send bulk cargo, commercial inventory, or multiple carton boxes?',
+      a: 'Yes. We cater to bulk consignments ranging from 50 kg to 5,000+ kg through dedicated part-load (LTL) and full mini-truck arrangements (Tata Ace, Bolero Maxi Truck) offering discounted bulk volume rates for businesses, traders, and D2C brands.'
     },
     {
-      q: 'Can I send fragile items?',
-      a: 'Fragile items (such as electronics, glassware, artwork, and decorative pieces) are accepted subject to pre-shipment assessment and mandatory multi-layer protective packaging.'
+      q: 'How do I track the live status and location of my parcel?',
+      a: 'Upon pickup, you receive a unique Barcode Tracking Number. Real-time milestone updates (Pickup confirmed, Hub sorted, In-transit highway checkpoint, Destination arrival, Out for delivery) are sent automatically via SMS, WhatsApp, and our live online tracking portal.'
     },
     {
-      q: 'Do you provide parcel packaging support?',
-      a: 'Yes. Packaging support is provided using 5-ply carton boxes, bubble wrap, foam sheets, stretch film, fragile stickers, and waterproof wrapping based on the parcel specifications.'
+      q: 'Is transit insurance available for valuable parcels and commercial goods?',
+      a: 'Yes, comprehensive transit insurance is available covering accidental risks, fire, and collision during highway transit. We issue a formal Certificate of Insurance (COI) based on your declared invoice / replacement value before dispatch.'
     },
     {
-      q: `How are ${originCity} to ${destinationCity} parcel charges calculated?`,
-      a: 'Charges are calculated transparently based on actual weight, volumetric weight (L × W × H / 5000), dimensions, number of packages, service speed (Standard vs Express), pickup/delivery location, and packaging requirements.'
-    },
-    {
-      q: 'Can I send multiple or bulk parcels?',
-      a: 'Yes. Bulk parcel transportation and dedicated part-load vehicle options are available for customers and businesses with multiple packages or volume freight.'
-    },
-    {
-      q: 'Can I track my parcel status?',
-      a: 'Yes. You receive booking confirmation, pickup alerts, transit milestone notifications, and digital delivery confirmation via SMS and WhatsApp.'
+      q: 'What items are restricted or prohibited from parcel transportation?',
+      a: 'In compliance with Indian highway transit and safety laws, we do NOT transport inflammable liquids, compressed gas cylinders, contraband, unauthorized firearms/ammunition, live animals, perishable foods without dry ice, hazardous chemicals, or currency/bullion.'
     }
   ];
 
   const RELATED_SERVICES = [
-    { title: `House Shifting Services in ${originCity}`, id: 'household-shifting' },
-    { title: `Packing and Unpacking Services in ${originCity}`, id: 'packing-unpacking' },
-    { title: `Loading and Unloading Services in ${originCity}`, id: 'loading-unloading' },
-    { title: `Vehicle Transportation Services in ${originCity}`, id: 'vehicle-transportation' },
-    { title: `Truck Booking Services in ${originCity}`, id: 'domestic-relocation' },
-    { title: `Warehousing & Storage Services in ${originCity}`, id: 'warehousing-storage' }
+    { title: `House Shifting Services in ${city}`, id: 'household-shifting' },
+    { title: `Packing & Unpacking Services in ${city}`, id: 'packing-unpacking' },
+    { title: `Loading & Unloading Services in ${city}`, id: 'loading-unloading' },
+    { title: `Vehicle Transportation Services in ${city}`, id: 'vehicle-transportation' },
+    { title: `Truck Booking Services in ${city}`, id: 'domestic-relocation' },
+    { title: `Warehousing & Storage in ${city}`, id: 'warehousing-storage' }
   ];
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-12" id="parcel-courier-details-view">
       
       {/* =========================================================================
-          1. HERO SUMMARY & SERVICE AREA BANNER
+          1. HERO / GET QUOTE OVERVIEW
          ========================================================================= */}
-      <section id="parcel-hero-overview" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
-        <div className="space-y-2.5">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 px-3 py-1 rounded-full text-xs font-bold font-mono">
-              ⚡ PROFESSIONAL PARCEL & COURIER LOGISTICS
-            </span>
-            <span className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full text-xs font-bold font-mono flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5" />
-              <span>Service Area: {originCity} → {destinationCity}</span>
-            </span>
+      <section id="section-hero-quote" className="bg-gradient-to-br from-slate-900 via-[#001261] to-slate-950 text-white rounded-3xl p-6 sm:p-8 border border-blue-500/20 shadow-xl relative overflow-hidden space-y-5">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="space-y-3 relative z-10">
+          <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-400/30 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider">
+            <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+            <span>1. Hero / Get Quote • {city}</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
-            {originCity} to {destinationCity} Parcel Service – Fast &amp; Secure Parcel Delivery by Packer Solutions
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+            Professional Parcel &amp; Courier Transportation Services in {city} – Express &amp; Secure Delivery
           </h2>
+
+          <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-2xl font-normal">
+            Dispatch documents, personal boxes, retail products, e-commerce orders, and commercial bulk cargo anywhere across India with Packer Solutions&apos; certified parcel network in {city}. Featuring scheduled highway corridors, tamper-evident barcode tracking, heavy-duty 5-ply cartons, and doorstep pickup.
+          </p>
+
+          <p className="text-xs text-slate-300 leading-relaxed max-w-2xl font-normal">
+            Whether sending an urgent contract to Chennai, a festive luggage box to Bengaluru, or a 200 kg commercial batch to Mumbai or Delhi, our logistics fleet guarantees zero misplacement, verified OTP delivery, and 100% transparent flat pricing.
+          </p>
+
+          <div className="pt-2 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={onOpenEnquiry}
+              id="parcel-hero-quote-btn"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer group"
+            >
+              <span>Get Free Parcel Quote</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+
+            <button
+              type="button"
+              onClick={onOpenEnquiry}
+              id="parcel-hero-pickup-btn"
+              className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl border border-white/15 transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <Package className="w-4 h-4 text-blue-400" />
+              <span>Book Doorstep Parcel Pickup</span>
+            </button>
+          </div>
         </div>
-
-        <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
-          Packer Solutions provides professional <strong>{originCity} to {destinationCity} Parcel Services</strong> for individuals, businesses, offices, retailers, e-commerce sellers, and commercial customers. Our parcel transportation service is designed for documents, personal belongings, small packages, business parcels, commercial goods, and other eligible shipments.
-        </p>
-
-        <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-normal">
-          Whether you need to send a parcel from your home, office, shop, warehouse, or business location in <strong>{originCity}</strong> to an address in <strong>{destinationCity}</strong>, Packer Solutions provides a systematic process covering parcel booking, pickup, verification, packaging, secure handling, transportation, delivery updates, and final delivery confirmation.
-        </p>
       </section>
 
       {/* =========================================================================
-          2. PROFESSIONAL PARCEL DELIVERY SERVICE INCLUSIONS (12 CARDS)
+          2. PROFESSIONAL PARCEL & COURIER SERVICES
          ========================================================================= */}
-      <section id="parcel-service-inclusions" className="space-y-6">
+      <section id="section-professional-services" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            COMPREHENSIVE LOGISTICS COVERAGE
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Package className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>2. Professional Parcel &amp; Courier Services</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Professional {originCity} to {destinationCity} Parcel Delivery
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            End-to-End Parcel, Document &amp; Commercial Cargo Solutions in {city}
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Sending packages across cities shouldn’t involve endless counter queues, fragile mishandling, or unexpected delivery delays. Packer Solutions provides planned, tracked, and protective parcel logistics engineered for complete reliability.
+          </p>
+        </div>
+
+        {/* 6 Service Pillars */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+              <Home className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Doorstep Pickup in {city}</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Convenient, on-schedule collection directly from your home, office, shop, or factory with certified digital weighing scales.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+              <Truck className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Standard Surface Parcel Transport</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Cost-effective scheduled highway transit connecting {city} to over 100+ tier-1, tier-2, and industrial hubs across India.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+              <Zap className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Express Priority Courier Dispatch</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Expedited handling and priority flight/express corridor routing for time-sensitive corporate shipments, tenders, and emergency parts.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
+              <FileText className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Confidential Document &amp; Envelope Security</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Tamper-evident waterproof security pouches for legal agreements, property deeds, financial certificates, and corporate records.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold">
+              <Layers className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Fragile &amp; Electronics Multi-Layer Packing</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Shock-absorbing bubble wrap, 5-ply export-grade boxes, foam corner guards, and top-load segregation for sensitive glassware &amp; tech gadgets.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
+            <div className="w-9 h-9 rounded-xl bg-rose-50 dark:bg-rose-950/60 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold">
+              <Boxes className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Commercial Bulk Cargo &amp; Part Load (LTL)</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Discounted volume rates for 50 kg to 5,000 kg consignments, merchant stock transfers, retail stock replenishment, and trader freight.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          3. WHY CHOOSE PACKER SOLUTIONS (FOR PARCEL & COURIER)
+         ========================================================================= */}
+      <section id="section-why-choose" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Award className="w-3.5 h-3.5 text-blue-600" />
+            <span>3. Why Choose Packer Solutions?</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            The Packer Solutions Benchmark for Parcel Safety &amp; Speed
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Designed for customers who need reliable intercity transportation for small, medium-sized, and bulk shipments.
+            Engineered packaging protocols, digital barcode custody tracking, and guaranteed zero hidden surcharges.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {SERVICE_INCLUSIONS.map((item, idx) => {
-            const IconComp = item.icon;
-            return (
-              <div 
-                key={idx} 
-                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 shadow-xs hover:border-slate-300 dark:hover:border-slate-700 transition-all flex flex-col justify-between space-y-3"
-              >
-                <div className="space-y-2.5">
-                  <div className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400 flex items-center justify-center font-bold">
-                    <IconComp className="w-5 h-5" />
-                  </div>
-                  <h4 className="font-semibold text-sm text-slate-900 dark:text-white">
-                    {item.title}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950 text-[#001261] dark:text-blue-400 flex items-center justify-center font-bold">
+              <Barcode className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Zero Misplacement Barcode Tracking</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Every parcel receives a unique tamper-evident barcode. Scanned at every transit hub to guarantee zero lost or misplaced boxes.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+              <ShieldCheck className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Heavy-Duty 5-Ply Packaging</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              We exclusively use virgin-kraft 5-ply corrugated cartons and multi-layer bubble wrap that resist crushing, moisture, and road vibrations.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
+              <Navigation className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Doorstep Pickup &amp; Direct Handover</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              No need to visit crowded parcel booking counters. We collect from your doorstep in {city} and hand over safely to recipient hands.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+              <Clock className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Real-Time SMS &amp; WhatsApp Updates</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Receive automatic notifications at each milestone: Pickup completed, highway hub departure, destination arrival, and out-for-delivery.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold">
+              <Lock className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">100% Transit Insurance &amp; Security</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Comprehensive transit insurance coverage for valuable shipments with verified electronic proof of delivery (E-POD) and OTP confirmation.
+            </p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
+            <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold">
+              <DollarSign className="w-5 h-5" />
+            </div>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Transparent Starting Rates with Zero Surprises</h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Upfront, weight-based rates with clear volumetric calculation, zero fuel surcharge surprises, and clear digital GST invoicing.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          4. HOW PARCEL DELIVERY WORKS (9 STAGES)
+         ========================================================================= */}
+      <section id="section-how-it-works" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Clock className="w-3.5 h-3.5 text-blue-600" />
+            <span>4. How Parcel Delivery Works</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Step-by-Step Parcel Relocation Workflow (9 Stages)
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            A precision 9-stage logistics workflow ensuring maximum package security, tracking accuracy, and timely handover.
+          </p>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {[
+              { num: 1, title: 'Instant Quote & Pickup Scheduling', desc: `Enter pickup address in ${city}, destination pincode, approximate weight, and package type.` },
+              { num: 2, title: 'Doorstep Pickup by Logistics Captain', desc: 'Our trained pickup pilot arrives at your home or office with digital weighing scales and measuring tape.' },
+              { num: 3, title: 'Weight & Dimension Verification', desc: 'Gross physical weight and volumetric dimensions are recorded transparently with an instant digital receipt.' },
+              { num: 4, title: 'Barcode Tagging & Label Printing', desc: 'Tamper-proof barcode stickers and handling instructions are affixed securely to all parcel surfaces.' },
+              { num: 5, title: '5-Ply Packaging & Multi-Layer Sealing', desc: 'Packages undergo reinforced tape sealing, bubble film wrap, and waterproof outer stretch wrapping.' },
+              { num: 6, title: 'Automated Hub Sorting & Staging', desc: `Parcel arrives at the ${city} central logistics terminal and is sorted into dedicated destination routes.` },
+              { num: 7, title: 'Express Highway Transit with Live GPS', desc: 'Transferred via sealed container trucks with real-time GPS tracking and transit milestone updates.' },
+              { num: 8, title: 'Destination Terminal Offloading', desc: 'Parcel arrives at the destination regional hub, undergoes barcode scan, and is assigned to a delivery van.' },
+              { num: 9, title: 'Doorstep Handover & OTP Delivery', desc: 'Delivered directly into recipient hands with secure OTP verification and digital signature sign-off.' }
+            ].map((step) => (
+              <div key={step.num} className="flex items-start gap-3 p-3 bg-slate-50/80 dark:bg-slate-950/60 rounded-2xl border border-slate-100 dark:border-slate-800">
+                <div className="w-8 h-8 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-xs">
+                  {step.num}
+                </div>
+                <div className="space-y-0.5 min-w-0">
+                  <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white leading-tight">
+                    {step.title}
                   </h4>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-                    {item.desc}
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
+                    {step.desc}
                   </p>
                 </div>
-                <div className="pt-2 border-t border-slate-100 dark:border-slate-800/60 flex items-center gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400">
-                  <CheckCircle className="w-3.5 h-3.5" />
-                  <span>Available on-demand</span>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div className="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/60 rounded-2xl p-4 text-xs text-amber-900 dark:text-amber-200 flex items-start gap-2.5">
-          <HelpCircle className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
-          <span>
-            <strong>Service Note:</strong> Final service availability and transit time depend on parcel size, weight, destination accessibility, transportation route schedule, and carrier availability.
-          </span>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          3. WHAT CAN YOU SEND FROM COIMBATORE TO MADURAI? (3 CATEGORY CARDS)
-         ========================================================================= */}
-      <section id="what-can-you-send" className="space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            PERMITTED SHIPMENT CATEGORIES
-          </span>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            What Can You Send from {originCity} to {destinationCity}?
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Packer Solutions can arrange safe and compliant transportation for various eligible parcel types.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          {WHAT_YOU_CAN_SEND.map((cat, idx) => {
-            const IconComp = cat.icon;
-            return (
-              <div 
-                key={idx}
-                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 shadow-xs space-y-4"
-              >
-                <div className="space-y-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center font-bold">
-                    <IconComp className="w-5 h-5 text-orange-500" />
-                  </div>
-
-                  <div>
-                    <h4 className="font-bold text-base text-slate-900 dark:text-white">
-                      {cat.title}
-                    </h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 font-normal">
-                      {cat.subtitle}
-                    </p>
-                  </div>
-
-                  <ul className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-                    {cat.items.map((item, itemIdx) => (
-                      <li key={itemIdx} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 font-normal">
-                        <Check className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          4. PARCEL SERVICE OPTIONS (TABLE 1)
-         ========================================================================= */}
-      <section id="parcel-service-options-table" className="space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            SERVICE CATEGORY TIERS
-          </span>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            {originCity} to {destinationCity} Parcel Service Options
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Compare recommended weight tiers and suitability for your consignment.
-          </p>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
-                <tr>
-                  <th className="px-5 py-3.5">Service Option</th>
-                  <th className="px-5 py-3.5">Recommended Weight</th>
-                  <th className="px-5 py-3.5">Suitable For</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
-                {SERVICE_OPTIONS_TABLE.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="px-5 py-4 font-semibold text-slate-900 dark:text-white flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-orange-500" />
-                      <span>{row.service}</span>
-                      <span className="text-[10px] font-bold px-2 py-0.5 bg-orange-100 dark:bg-orange-950 text-orange-700 dark:text-orange-300 rounded-md">
-                        {row.tag}
-                      </span>
-                    </td>
-                    <td className="px-5 py-4 font-mono font-medium text-slate-900 dark:text-slate-100">
-                      {row.weight}
-                    </td>
-                    <td className="px-5 py-4 font-normal text-slate-600 dark:text-slate-300">
-                      {row.suitableFor}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <p className="text-xs text-slate-500 dark:text-slate-400 italic">
-          * Final service availability depends on parcel type, size, weight, packaging, route, and transportation requirements.
-        </p>
-      </section>
-
-      {/* =========================================================================
-          5. DOOR-TO-DOOR PARCEL DELIVERY & PICKUP COVERAGE
-         ========================================================================= */}
-      <section id="door-to-door-coverage" className="space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            LOCALITY & HUB NETWORK
-          </span>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Door-to-Door Parcel Delivery from {originCity} to {destinationCity}
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Packer Solutions provides Door-to-Door Parcel Delivery where pickup and delivery access permits.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          {/* Pickup in Origin */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-950 text-orange-600 dark:text-orange-400 flex items-center justify-center font-bold">
-                <Home className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
-                  Pickup in {originCity}
-                </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Collected from any declared address</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-              {['Homes & Residences', 'Corporate Offices', 'Retail Shops', 'Warehouses', 'Business Premises', 'Commercial Establishments'].map((loc, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 font-normal">
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                  <span>{loc}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Delivery in Destination */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-                <MapPin className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
-                  Delivery in {destinationCity}
-                </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Delivered directly to receiver doorstep</p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-              {['Residential Homes', 'Office Addresses', 'Market Shops', 'Business Locations', 'Commercial Addresses', 'Institutional Hubs'].map((loc, idx) => (
-                <div key={idx} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 font-normal">
-                  <CheckCircle className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                  <span>{loc}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl border border-slate-100 dark:border-slate-800">
-          Our dedicated operations team coordinates the entire consignment lifecycle starting from doorstep pickup verification in {originCity} through final recipient delivery handover in {destinationCity}.
-        </p>
-      </section>
-
-      {/* =========================================================================
-          6. 9-STEP DELIVERY & PICKUP PROCESS
-         ========================================================================= */}
-      <section id="parcel-nine-steps" className="space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            STEP-BY-STEP WORKFLOW
-          </span>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            9-Step {originCity} to {destinationCity} Parcel Delivery Process
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            A seamless, transparent, and structured workflow from booking to destination confirmation.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {NINE_STEPS.map((step, idx) => (
-            <div 
-              key={idx}
-              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 shadow-xs space-y-2.5 relative overflow-hidden"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 px-2.5 py-1 rounded-lg">
-                  Step {step.step}
-                </span>
-              </div>
-
-              <h4 className="font-semibold text-sm text-slate-900 dark:text-white pt-1">
-                {step.title}
-              </h4>
-
-              <p className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-relaxed">
-                {step.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          7. PARCEL PACKAGING SERVICES & MATERIALS
-         ========================================================================= */}
-      <section id="parcel-packaging-materials" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            PROTECTIVE PACKAGING
-          </span>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Parcel Packaging Services &amp; Protective Materials
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
-            Proper packaging protects parcels during handling and transit. Packer Solutions provides tailored packaging support based on parcel type, dimensions, weight, and fragility.
-          </p>
-        </div>
-
-        <div className="space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
-            Available Packaging Materials
-          </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2.5">
-            {PACKING_MATERIALS.map((mat, idx) => (
-              <div 
-                key={idx}
-                className="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
-              >
-                <Check className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-                <span>{mat}</span>
               </div>
             ))}
           </div>
         </div>
-
-        <div className="p-4 bg-orange-50/60 dark:bg-orange-950/30 rounded-2xl border border-orange-200 dark:border-orange-900/50 space-y-2">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-orange-900 dark:text-orange-200 flex items-center gap-1.5">
-            <Shield className="w-4 h-4 text-orange-600" />
-            <span>Fragile Parcel Packing Recommendations</span>
-          </h4>
-          <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed">
-            Additional multi-layer protective cushioning is recommended for: <strong>Glass items, Electronics, Decorative pieces, Artwork, Sensitive equipment,</strong> and delicate items. Packaging requirements are determined based on individual shipment assessments.
-          </p>
-        </div>
       </section>
 
       {/* =========================================================================
-          8. WEIGHT & DIMENSION ASSESSMENT & PRICING FACTORS
+          5. INDUSTRIAL PACKAGING & TAMPER-PROOF MATERIALS
          ========================================================================= */}
-      <section id="pricing-factors" className="space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            PRICING CRITERIA
-          </span>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Factors Affecting {originCity} to {destinationCity} Parcel Delivery Charges
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
-            Parcel charges depend on physical weight, volumetric characteristics, and service speed preferences.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {PRICING_FACTORS.map((factor, idx) => (
-            <div 
-              key={idx}
-              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-4.5 shadow-xs space-y-1.5"
-            >
-              <h4 className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-white">
-                {factor.title}
-              </h4>
-              <p className="text-[11px] text-slate-500 dark:text-slate-400 font-normal leading-relaxed">
-                {factor.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-
-        <div className="bg-slate-900 text-white rounded-2xl p-5 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="space-y-1 text-center sm:text-left">
-            <h4 className="text-sm font-bold">Need an Accurate Custom Quotation?</h4>
-            <p className="text-xs text-slate-300 font-normal">
-              Provide your parcel weight, dimensions, pickup locality, and box count for an instant flat estimate.
-            </p>
+      <section id="section-packaging-materials" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Layers className="w-3.5 h-3.5 text-blue-600" />
+            <span>5. Industrial Packaging &amp; Protective Gear</span>
           </div>
-          <button
-            type="button"
-            onClick={onOpenEnquiry}
-            className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow-md transition-all shrink-0 cursor-pointer"
-          >
-            Calculate Quotation
-          </button>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Industrial-Grade Packing Materials &amp; Tamper-Evident Security
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            Every parcel is cushioned and sealed using certified industrial packaging materials designed to resist highway shocks, dust, and moisture.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 text-center space-y-1.5 shadow-xs">
+            <div className="text-2xl">📦</div>
+            <h4 className="font-bold text-xs text-slate-900 dark:text-white">5-Ply Kraft Cartons</h4>
+            <p className="text-[10px] text-slate-400 leading-tight">Crush-resistant heavy-duty corrugated boxes for general and heavy cargo</p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 text-center space-y-1.5 shadow-xs">
+            <div className="text-2xl">🫧</div>
+            <h4 className="font-bold text-xs text-slate-900 dark:text-white">High-Density Bubble Film</h4>
+            <p className="text-[10px] text-slate-400 leading-tight">Dual-layer shock cushioning for glassware, laptops &amp; delicate electronics</p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 text-center space-y-1.5 shadow-xs">
+            <div className="text-2xl">✉️</div>
+            <h4 className="font-bold text-xs text-slate-900 dark:text-white">Security Seal Pouches</h4>
+            <p className="text-[10px] text-slate-400 leading-tight">Tamper-evident waterproof polybags for confidential agreements &amp; papers</p>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 text-center space-y-1.5 shadow-xs">
+            <div className="text-2xl">🛡️</div>
+            <h4 className="font-bold text-xs text-slate-900 dark:text-white">Waterproof Cling Film</h4>
+            <p className="text-[10px] text-slate-400 leading-tight">Industrial stretch wrap to prevent moisture entry, scuffs &amp; box tearing</p>
+          </div>
         </div>
       </section>
 
       {/* =========================================================================
-          9. BULK PARCEL TRANSPORTATION & WEIGHT TIERS
+          6. INTERACTIVE PARCEL COST & TRANSIT ESTIMATOR
          ========================================================================= */}
-      <section id="bulk-parcel-tiers" className="space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            BULK & VOLUME CARGO
-          </span>
+      <section id="section-parcel-estimator" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Scale className="w-3.5 h-3.5 text-blue-600" />
+            <span>6. Interactive Parcel Fare Estimator</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Bulk Parcel Transportation from {originCity} to {destinationCity}
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Calculate Your Parcel Delivery Fare in Real Time
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
-            For customers and commercial enterprises sending multiple packages or higher volumes.
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Select your shipment size, highway distance from {city}, and delivery speed to view an instant transparent estimate.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-6">
+          {/* Step 1: Weight & Tier Selection */}
+          <div className="space-y-2.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <Package className="w-4 h-4 text-blue-600" />
+              <span>1. Select Shipment Size &amp; Weight Category</span>
+            </label>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+              {[
+                { id: 'document', label: 'Document', desc: 'Up to 1 kg', icon: '📄' },
+                { id: 'small-box', label: 'Small Box', desc: '1 – 5 kg', icon: '📦' },
+                { id: 'medium-box', label: 'Medium Parcel', desc: '5 – 20 kg', icon: '🧳' },
+                { id: 'heavy-box', label: 'Heavy Carton', desc: '20 – 50 kg', icon: '📦' },
+                { id: 'bulk-50', label: 'Bulk Cargo', desc: '50 – 100 kg', icon: '🏭' },
+                { id: 'freight-100', label: 'Part-Load Truck', desc: '100 kg+', icon: '🚛' }
+              ].map((tier) => {
+                const isSelected = calcParcelTier === tier.id;
+                return (
+                  <button
+                    key={tier.id}
+                    type="button"
+                    onClick={() => setCalcParcelTier(tier.id as any)}
+                    className={`p-3 rounded-2xl border text-center transition-all cursor-pointer flex flex-col items-center justify-center gap-1 ${
+                      isSelected
+                        ? 'bg-blue-50/90 dark:bg-blue-950/80 border-[#001261] dark:border-blue-400 shadow-xs'
+                        : 'bg-slate-50/70 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800 hover:border-slate-300'
+                    }`}
+                  >
+                    <span className="text-xl">{tier.icon}</span>
+                    <span className={`text-xs font-bold leading-tight ${isSelected ? 'text-[#001261] dark:text-blue-300' : 'text-slate-800 dark:text-slate-200'}`}>
+                      {tier.label}
+                    </span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-normal">
+                      {tier.desc}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Step 2: Delivery Speed Option */}
+          <div className="space-y-2.5">
+            <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <Zap className="w-4 h-4 text-blue-600" />
+              <span>2. Delivery Speed &amp; Priority Mode</span>
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setCalcDeliverySpeed('standard')}
+                className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+                  calcDeliverySpeed === 'standard'
+                    ? 'bg-blue-50/90 dark:bg-blue-950/80 border-[#001261] dark:border-blue-400'
+                    : 'bg-slate-50/70 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800'
+                }`}
+              >
+                <div>
+                  <div className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                    <Truck className="w-4 h-4 text-blue-600" />
+                    <span>Standard Surface Transit (Most Economical)</span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-normal">
+                    Scheduled highway container logistics corridor. Perfect for personal boxes &amp; routine stock.
+                  </p>
+                </div>
+                <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ml-2 border-blue-600">
+                  {calcDeliverySpeed === 'standard' && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setCalcDeliverySpeed('express')}
+                className={`p-4 rounded-2xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+                  calcDeliverySpeed === 'express'
+                    ? 'bg-blue-50/90 dark:bg-blue-950/80 border-[#001261] dark:border-blue-400'
+                    : 'bg-slate-50/70 dark:bg-slate-800/40 border-slate-200 dark:border-slate-800'
+                }`}
+              >
+                <div>
+                  <div className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-2">
+                    <Zap className="w-4 h-4 text-amber-500" />
+                    <span>Express Priority Transit (Fastest Delivery)</span>
+                  </div>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 font-normal">
+                    Priority airport cargo &amp; express overnight green corridors for urgent papers &amp; samples.
+                  </p>
+                </div>
+                <div className="w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ml-2 border-blue-600">
+                  {calcDeliverySpeed === 'express' && <div className="w-2.5 h-2.5 rounded-full bg-blue-600" />}
+                </div>
+              </button>
+            </div>
+          </div>
+
+          {/* Step 3: Distance Slider */}
+          <div className="space-y-2 bg-slate-50/80 dark:bg-slate-950/60 p-4 rounded-2xl border border-slate-100 dark:border-slate-800">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                <Navigation className="w-4 h-4 text-blue-600" />
+                <span>3. Highway Distance from {city}</span>
+              </label>
+              <span className="text-xs sm:text-sm font-mono font-black text-[#001261] dark:text-blue-400 bg-white dark:bg-slate-800 px-3 py-1 rounded-lg border border-slate-200 dark:border-slate-700">
+                {calcDistance} km
+              </span>
+            </div>
+            <input
+              type="range"
+              min="50"
+              max="2500"
+              step="25"
+              value={calcDistance}
+              onChange={(e) => setCalcDistance(parseInt(e.target.value))}
+              className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600"
+            />
+            <div className="flex justify-between text-[10px] text-slate-400 font-mono">
+              <span>Intra-State (50 km)</span>
+              <span>Regional (500 km)</span>
+              <span>Interstate (1,200 km)</span>
+              <span>Pan-India (2,500 km)</span>
+            </div>
+          </div>
+
+          {/* Calculation Result Summary Box */}
+          <div className="bg-gradient-to-r from-blue-900 to-[#001261] text-white p-5 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
+            <div className="space-y-1 text-center sm:text-left">
+              <div className="text-[11px] font-bold text-blue-300 uppercase tracking-wider">
+                Estimated Parcel Delivery Fare
+              </div>
+              <div className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-baseline gap-2 justify-center sm:justify-start">
+                <span>₹{calculateParcelPrice(calcParcelTier, calcDistance, calcDeliverySpeed).toLocaleString('en-IN')}*</span>
+                <span className="text-xs text-blue-200 font-normal">All-inclusive starting fare</span>
+              </div>
+              <div className="text-xs text-slate-300 flex flex-wrap items-center gap-3 justify-center sm:justify-start pt-1 font-medium">
+                <span className="flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Est. Time: <strong>{getEstimatedTransit(calcDistance, calcDeliverySpeed)}</strong></span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Doorstep Pickup &amp; Barcode Included</span>
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={onOpenEnquiry}
+              className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-lg transition-all flex items-center gap-2 shrink-0 cursor-pointer"
+            >
+              <span>Book This Parcel Rate</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          7. PRICING BREAKDOWN & ROUTE RATES TABLE
+         ========================================================================= */}
+      <section id="section-pricing-matrix" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <DollarSign className="w-3.5 h-3.5 text-blue-600" />
+            <span>7. Transparent Route Pricing Matrix</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Popular Intercity Parcel Delivery Rates from {city}
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Standard starting rates for key intercity corridors. All rates include doorstep collection and verified barcode scanning.
+          </p>
+        </div>
+
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
+              <thead className="bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
                 <tr>
-                  <th className="px-5 py-3.5">Shipment Size Tier</th>
-                  <th className="px-5 py-3.5">Recommended Service</th>
-                  <th className="px-5 py-3.5">Typical Load Description</th>
+                  <th className="px-4 py-3.5">Intercity Route</th>
+                  <th className="px-4 py-3.5">Distance</th>
+                  <th className="px-4 py-3.5">Document (&lt;1kg)</th>
+                  <th className="px-4 py-3.5">Small Box (1-5kg)</th>
+                  <th className="px-4 py-3.5">Medium (5-20kg)</th>
+                  <th className="px-4 py-3.5">Heavy (20-50kg)</th>
+                  <th className="px-4 py-3.5">Transit Time</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
-                {BULK_TIERS_TABLE.map((row, idx) => (
-                  <tr key={idx} className="hover:bg-slate-50/60 dark:hover:bg-slate-800/40">
-                    <td className="px-5 py-3.5 font-mono font-bold text-orange-600 dark:text-orange-400">
-                      {row.tier}
-                    </td>
-                    <td className="px-5 py-3.5 font-semibold text-slate-900 dark:text-white">
-                      {row.service}
-                    </td>
-                    <td className="px-5 py-3.5 font-normal text-slate-600 dark:text-slate-300">
-                      {row.desc}
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80 text-slate-700 dark:text-slate-300 font-medium">
+                {PARCEL_PRICING_TABLE.map((row, idx) => (
+                  <tr key={idx} className="hover:bg-slate-50/70 dark:hover:bg-slate-800/40 transition-colors">
+                    <td className="px-4 py-3 font-bold text-slate-900 dark:text-white">{row.route}</td>
+                    <td className="px-4 py-3 font-mono text-slate-500 text-xs">{row.dist}</td>
+                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{row.doc}</td>
+                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{row.small}</td>
+                    <td className="px-4 py-3 text-[#001261] dark:text-blue-400 font-bold">{row.medium}</td>
+                    <td className="px-4 py-3 text-slate-700 dark:text-slate-300">{row.heavy}</td>
+                    <td className="px-4 py-3">
+                      <span className="inline-block bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 px-2 py-0.5 rounded text-[11px] font-bold">
+                        {row.time}
+                      </span>
                     </td>
                   </tr>
                 ))}
@@ -694,146 +894,353 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
             </table>
           </div>
         </div>
-
-        <p className="text-xs text-slate-500 dark:text-slate-400">
-          * For consignments exceeding 100 kg, <strong>Truck Booking</strong> (Tata Ace / Pickup) or <strong>Part Load Transportation</strong> is often more cost-effective than standard parcel parceling.
-        </p>
       </section>
 
       {/* =========================================================================
-          10. PARCEL DOCUMENTATION & LABELING
+          8. WHAT YOU CAN SEND (PERMITTED SHIPMENT CATEGORIES)
          ========================================================================= */}
-      <section id="documentation-labeling" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            DISPATCH INFORMATION
-          </span>
+      <section id="section-shipment-categories" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Boxes className="w-3.5 h-3.5 text-blue-600" />
+            <span>8. Permitted Shipment Categories</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Parcel Documentation &amp; Barcode Identification
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            What You Can Send from {city} Across India
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
-            Accurate shipment details and barcode labeling ensure seamless verification and eliminate misplacement risks.
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Packer Solutions manages compliant and safe transportation across personal, corporate, and commercial sectors.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-slate-50 dark:bg-slate-800/60 p-4.5 rounded-2xl space-y-2 border border-slate-100 dark:border-slate-700/60">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
-              <Home className="w-4 h-4 text-orange-500" />
-              <span>Sender Information</span>
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold shrink-0">
+                <Home className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white">Personal &amp; Household Boxes</h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">For individuals &amp; families</p>
+              </div>
             </div>
-            <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1 font-normal">
-              <li>• Sender Full Name</li>
-              <li>• Verified Mobile Number</li>
-              <li>• Detailed Pickup Address</li>
-              <li>• Origin City &amp; Pincode</li>
+            <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 font-medium pt-1">
+              {['Apparel, Clothes & Suitcase Luggage', 'Books, Study Materials & Academic Kits', 'Home Decor, Linen & Kitchen Utensils', 'Personal Small Electronics & Laptops', 'Festive Gift Hampers & Packages'].map((item, idx) => (
+                <li key={idx} className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div className="bg-slate-50 dark:bg-slate-800/60 p-4.5 rounded-2xl space-y-2 border border-slate-100 dark:border-slate-700/60">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
-              <MapPin className="w-4 h-4 text-blue-500" />
-              <span>Receiver Information</span>
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold shrink-0">
+                <Briefcase className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white">Business &amp; Commercial Cargo</h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">For offices &amp; manufacturers</p>
+              </div>
             </div>
-            <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1 font-normal">
-              <li>• Recipient Full Name</li>
-              <li>• Active Contact Mobile Number</li>
-              <li>• Exact Delivery Destination Address</li>
-              <li>• Destination City &amp; Pincode</li>
+            <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 font-medium pt-1">
+              {['Legal Documents, Tenders & Contracts', 'Commercial Product Samples & Catalogs', 'Industrial Machinery Spares & Hardware', 'Office IT Equipment & Monitors', 'Factory Raw Materials & Part Lots'].map((item, idx) => (
+                <li key={idx} className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </div>
 
-          <div className="bg-slate-50 dark:bg-slate-800/60 p-4.5 rounded-2xl space-y-2 border border-slate-100 dark:border-slate-700/60">
-            <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
-              <Barcode className="w-4 h-4 text-emerald-500" />
-              <span>Consignment Label Details</span>
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold shrink-0">
+                <ShoppingBag className="w-5 h-5" />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white">E-commerce &amp; Retail Orders</h4>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">For D2C brands &amp; traders</p>
+              </div>
             </div>
-            <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1 font-normal">
-              <li>• Unique Barcode Reference ID</li>
-              <li>• Individual Box Numbering (e.g., 1/3, 2/3)</li>
-              <li>• Gross Weight &amp; Dimension Tags</li>
-              <li>• Special Handling &amp; Fragile Symbols</li>
+            <ul className="text-xs text-slate-600 dark:text-slate-300 space-y-1.5 font-medium pt-1">
+              {['D2C Brand Packaged Dispatches', 'Online Marketplace Merchant Shipments', 'Retail Stock Replenishment Boxes', 'Customer Return & Exchange Logistics', 'Bulk Distribution & Trader Freight'].map((item, idx) => (
+                <li key={idx} className="flex items-center gap-2">
+                  <Check className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          11. WHY CHOOSE PACKER SOLUTIONS (14 BULLET VERIFIED CHECKLIST)
+          9. PARCEL SERVICE MODELS (4 OPTIONS)
          ========================================================================= */}
-      <section id="why-choose-parcel" className="space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            VERIFIED ADVANTAGES
-          </span>
+      <section id="section-service-models" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Layers className="w-3.5 h-3.5 text-blue-600" />
+            <span>9. Parcel Service Models</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Why Choose Packer Solutions for {originCity} to {destinationCity} Parcel Service?
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Tailored Delivery Packages for Every Requirement
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
-            Trusted by thousands of individual shippers, retail brands, and commercial businesses.
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Choose the exact delivery speed, carrier configuration, and security level that fits your shipment.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {WHY_CHOOSE_POINTS.map((pt, idx) => (
-            <div 
-              key={idx}
-              className="bg-white dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 p-3.5 shadow-xs flex items-center gap-3"
-            >
-              <div className="w-6 h-6 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                <Check className="w-3.5 h-3.5" />
-              </div>
-              <span className="text-xs font-semibold text-slate-800 dark:text-slate-200">
-                {pt}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2 hover:border-blue-500 transition-all">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black uppercase text-[#001261] dark:text-blue-400 bg-blue-50 dark:bg-blue-950/80 px-2.5 py-0.5 rounded-md">
+                Option 1
+              </span>
+              <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded">
+                Most Popular
               </span>
             </div>
-          ))}
+            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+              Standard Parcel Service (Surface)
+            </h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Economical highway container shipping for personal suitcases, study boxes, and general goods with verified tracking and doorstep collection.
+            </p>
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-2">
+              <Check className="w-3.5 h-3.5 text-blue-600" />
+              <span>Doorstep Pickup + Barcode Tracking + Transit Cover</span>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2 hover:border-blue-500 transition-all">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black uppercase text-amber-600 bg-amber-50 dark:bg-amber-950/80 px-2.5 py-0.5 rounded-md">
+                Option 2
+              </span>
+              <span className="text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded">
+                Fastest Speed
+              </span>
+            </div>
+            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+              Express Priority Courier (Air / Green Corridor)
+            </h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Expedited transit for urgent time-sensitive shipments, medical consignments, and critical business samples with guaranteed next-day delivery.
+            </p>
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-2">
+              <Check className="w-3.5 h-3.5 text-amber-600" />
+              <span>Priority Routing + Direct Flight / Overnight Express</span>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2 hover:border-blue-500 transition-all">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black uppercase text-purple-600 bg-purple-50 dark:bg-purple-950/80 px-2.5 py-0.5 rounded-md">
+                Option 3
+              </span>
+              <span className="text-[10px] font-bold text-purple-600 bg-purple-50 dark:bg-purple-950/60 px-2 py-0.5 rounded">
+                High Security
+              </span>
+            </div>
+            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+              Confidential Document &amp; Envelope Delivery
+            </h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              Dedicated tamper-proof polybags and sealed delivery for legal deeds, corporate paperwork, passports, certificates, and tenders.
+            </p>
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-2">
+              <Check className="w-3.5 h-3.5 text-purple-600" />
+              <span>Tamper-Evident Seal + Encrypted Chain of Custody</span>
+            </div>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2 hover:border-blue-500 transition-all">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-black uppercase text-teal-600 bg-teal-50 dark:bg-teal-950/80 px-2.5 py-0.5 rounded-md">
+                Option 4
+              </span>
+              <span className="text-[10px] font-bold text-teal-600 bg-teal-50 dark:bg-teal-950/60 px-2 py-0.5 rounded">
+                Commercial Volume
+              </span>
+            </div>
+            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">
+              Bulk Cargo &amp; Part-Load Truck (LTL)
+            </h4>
+            <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+              High-volume rates for shipments above 50 kg to 5,000 kg with dedicated pallet handling, forklift loading, and wholesale dispatch.
+            </p>
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] font-semibold text-slate-600 dark:text-slate-300 flex items-center gap-2">
+              <Check className="w-3.5 h-3.5 text-teal-600" />
+              <span>Discounted Per-Kg Rates + Scheduled Truck Freight</span>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* =========================================================================
-          12. FREQUENTLY ASKED QUESTIONS (12 ACCORDION ITEMS)
+          10. SAFETY, BARCODE TRACKING & SECURITY PROTOCOLS
          ========================================================================= */}
-      <section id="parcel-faqs" className="space-y-6">
-        <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            HELP &amp; CLARIFICATIONS
-          </span>
+      <section id="section-security-protocols" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+            <span>10. Security &amp; Barcode Tracking</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
-            Frequently Asked Questions – {originCity} to {destinationCity} Parcel Service
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Tamper-Proof Handling &amp; Multi-Point Transit Verification
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
-            Everything you need to know about parcel booking, rates, packaging, pickup, and delivery.
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Every step of your consignment’s journey is recorded on our digital logistics management system.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
+              <Home className="w-4 h-4 text-blue-600" />
+              <span>Sender Documentation</span>
+            </div>
+            <ul className="text-xs text-slate-500 dark:text-slate-400 space-y-1 font-normal">
+              <li>• Sender Name &amp; Verified Mobile</li>
+              <li>• Complete Pickup Address in {city}</li>
+              <li>• Government ID Verification</li>
+              <li>• Itemized Content Declaration</li>
+            </ul>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
+              <MapPin className="w-4 h-4 text-emerald-600" />
+              <span>Receiver Details &amp; E-POD</span>
+            </div>
+            <ul className="text-xs text-slate-500 dark:text-slate-400 space-y-1 font-normal">
+              <li>• Recipient Name &amp; Active Phone</li>
+              <li>• Exact Destination Street &amp; Pincode</li>
+              <li>• Secure OTP Handover Protocol</li>
+              <li>• Instant Digital Proof of Delivery</li>
+            </ul>
+          </div>
+
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2">
+            <div className="flex items-center gap-2 text-xs font-bold text-slate-900 dark:text-white">
+              <Barcode className="w-4 h-4 text-purple-600" />
+              <span>Consignment Label Data</span>
+            </div>
+            <ul className="text-xs text-slate-500 dark:text-slate-400 space-y-1 font-normal">
+              <li>• Unique Barcode Reference ID</li>
+              <li>• Multi-Piece Box Numbering (e.g. 1/3, 2/3)</li>
+              <li>• Certified Gross &amp; Volumetric Weight</li>
+              <li>• Fragile &amp; Top-Load Handling Signs</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          11. LOCAL PARCEL PICKUP & DELIVERY HUBS IN SELECTED CITY
+         ========================================================================= */}
+      <section id="section-local-hubs" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <MapPin className="w-3.5 h-3.5 text-blue-600" />
+            <span>11. Local Hubs &amp; Neighborhood Coverage</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Doorstep Parcel Pickup &amp; Delivery Across All Localities in {city}
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Our daily pickup vans and logistics captains service every residential sector, commercial district, and industrial belt in {city}.
+          </p>
+        </div>
+
+        {/* Local Areas Grid */}
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+            {parcelAreas.map((area, idx) => (
+              <div 
+                key={idx}
+                className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-700 dark:text-slate-300 font-medium"
+              >
+                <CheckCircle className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+                <span className="truncate">{area}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Quick City Switcher */}
+          <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-2">
+            <div className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Switch Hub Coverage to Another Major City:
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {POPULAR_PARCEL_CITIES.map((c) => (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => onSelectCity && onSelectCity(c)}
+                  className={`text-xs px-3 py-1.5 rounded-xl border transition-all cursor-pointer font-medium ${
+                    city === c
+                      ? 'bg-[#001261] text-white border-[#001261] shadow-xs'
+                      : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:border-blue-400'
+                  }`}
+                >
+                  {c}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          12. FREQUENTLY ASKED QUESTIONS (ACCORDION)
+         ========================================================================= */}
+      <section id="section-faqs" className="space-y-6">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
+            <span>12. Frequently Asked Questions</span>
+          </div>
+          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
+            Everything You Need to Know About Parcel Transportation
+          </h3>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Answers to common questions regarding pickup booking, packaging, insurance, prohibited items, and transit timelines.
           </p>
         </div>
 
         <div className="space-y-3">
           {FAQS.map((faq, idx) => {
-            const isOpen = openFaq === idx;
+            const isOpen = expandedFaq === idx;
             return (
               <div 
                 key={idx}
-                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs transition-all"
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs transition-all"
               >
                 <button
                   type="button"
-                  onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full px-5 py-4 text-left font-semibold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center justify-between gap-3 cursor-pointer hover:text-orange-600 dark:hover:text-orange-400"
+                  onClick={() => setExpandedFaq(isOpen ? null : idx)}
+                  className="w-full p-4 sm:p-5 text-left font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center justify-between gap-3 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400"
                 >
                   <span className="flex items-center gap-2.5">
-                    <HelpCircle className="w-4 h-4 text-orange-500 shrink-0" />
+                    <span className="w-6 h-6 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 text-xs flex items-center justify-center shrink-0">
+                      Q
+                    </span>
                     <span>{faq.q}</span>
                   </span>
-                  <span className="text-orange-500 font-mono font-bold text-base shrink-0">
-                    {isOpen ? '−' : '+'}
-                  </span>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform shrink-0 ${isOpen ? 'rotate-180 text-blue-600' : ''}`} />
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 pb-4.5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/40 dark:bg-slate-800/20">
+                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed border-t border-slate-100 dark:border-slate-800/80 bg-slate-50/40 dark:bg-slate-950/30">
                     {faq.a}
                   </div>
                 )}
@@ -844,47 +1251,19 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
       </section>
 
       {/* =========================================================================
-          13. RECOMMENDED INTERNAL LINKS (CORRIDORS & SERVICES)
+          13. 24/7 HELPLINE & FAST BOOKING CALLOUT
          ========================================================================= */}
-      <section id="recommended-internal-links" className="bg-slate-50 dark:bg-slate-800/40 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 space-y-4">
-        <div className="space-y-1">
-          <h4 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
-            Explore Related Services in {originCity}
-          </h4>
-          <p className="text-xs text-slate-500 dark:text-slate-400 font-normal">
-            Quick access to comprehensive packing, loading, vehicle transport, and warehousing solutions.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
-          {RELATED_SERVICES.map((link, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => onSelectService && onSelectService(link.id)}
-              className="bg-white dark:bg-slate-900 hover:bg-orange-500 hover:text-white border border-slate-200 dark:border-slate-700/80 p-3 rounded-xl text-left text-xs font-semibold text-slate-700 dark:text-slate-200 transition-all flex items-center justify-between group cursor-pointer"
-            >
-              <span className="truncate">{link.title}</span>
-              <ArrowRight className="w-3.5 h-3.5 text-orange-500 group-hover:text-white shrink-0 ml-2" />
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* =========================================================================
-          14. FINAL BOOKING CTA CARD
-         ========================================================================= */}
-      <section id="parcel-final-cta" className="bg-gradient-to-br from-slate-900 via-[#001261] to-slate-950 rounded-3xl border border-blue-500/30 p-8 text-white space-y-6 shadow-2xl relative overflow-hidden">
+      <section id="section-final-cta" className="bg-gradient-to-br from-slate-900 via-[#001261] to-slate-950 rounded-3xl border border-blue-500/30 p-6 sm:p-8 text-white space-y-6 shadow-2xl relative overflow-hidden">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 text-center md:text-left">
             <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300 bg-blue-500/20 px-3 py-1 rounded-full border border-blue-400/30">
-              ⚡ GET YOUR PARCEL ESTIMATE
+              ⚡ INSTANT PARCEL DISPATCH ASSISTANCE
             </span>
             <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-              Ready to Send a Parcel from {originCity} to {destinationCity}?
+              Ready to Dispatch Your Parcel from {city}?
             </h3>
             <p className="text-xs sm:text-sm text-slate-200 max-w-xl leading-relaxed font-normal">
-              Book doorstep pickup, 5-ply protective packaging, and real-time live GPS tracking with Packer Solutions. Instant transparent quotations with zero hidden fees.
+              Book doorstep pickup, 5-ply protective packaging, and real-time live GPS tracking with Packer Solutions. Instant transparent quotations with zero hidden surcharges.
             </p>
           </div>
 
@@ -921,6 +1300,34 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
             <Clock className="w-4 h-4 text-amber-400 shrink-0" />
             <span>Operating Hours: <strong>Mon - Sun (8 AM - 10 PM)</strong></span>
           </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          14. RECOMMENDED INTERNAL SERVICES
+         ========================================================================= */}
+      <section id="section-related-services" className="bg-slate-50 dark:bg-slate-900/60 rounded-3xl border border-slate-200 dark:border-slate-800 p-6 sm:p-8 space-y-4">
+        <div className="space-y-1">
+          <h4 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+            Explore Related Logistics Services in {city}
+          </h4>
+          <p className="text-xs text-slate-500 dark:text-slate-400 font-normal">
+            Quick access to comprehensive house shifting, vehicle transport, packing, and warehousing solutions.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-2">
+          {RELATED_SERVICES.map((link, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => onSelectService && onSelectService(link.id)}
+              className="bg-white dark:bg-slate-900 hover:bg-orange-500 hover:text-white border border-slate-200 dark:border-slate-700/80 p-3 rounded-xl text-left text-xs font-semibold text-slate-700 dark:text-slate-200 transition-all flex items-center justify-between group cursor-pointer"
+            >
+              <span className="truncate">{link.title}</span>
+              <ArrowRight className="w-3.5 h-3.5 text-orange-500 group-hover:text-white shrink-0 ml-2" />
+            </button>
+          ))}
         </div>
       </section>
 

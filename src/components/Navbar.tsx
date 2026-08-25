@@ -16,6 +16,7 @@ interface NavbarProps {
   selectedCity?: string;
   onOpenCityModal?: () => void;
   onOpenLoginModal?: () => void;
+  onOpenPartnerModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -25,7 +26,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigate,
   selectedCity,
   onOpenCityModal,
-  onOpenLoginModal
+  onOpenLoginModal,
+  onOpenPartnerModal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -72,7 +74,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {selectedCity && onOpenCityModal && (
             <button
               onClick={onOpenCityModal}
-              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-500/20 hover:bg-orange-500/30 text-amber-300 border border-orange-500/30 text-[11px] font-bold cursor-pointer transition-colors"
+              className="hidden items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-500/20 hover:bg-orange-500/30 text-amber-300 border border-orange-500/30 text-[11px] font-bold cursor-pointer transition-colors"
               title="Click to select or detect your location"
             >
               <LucideIcon name="MapPin" className="w-3 h-3 text-orange-400" />
@@ -103,126 +105,50 @@ export const Navbar: React.FC<NavbarProps> = ({
         
         </div>
 
-        {/* Desktop Links - styled exactly as requested with Corporate and Delivery Partner links */}
-        <div className="hidden lg:flex items-center gap-8">
+        {/* Desktop Links: Home, For Business, and Driving Partner */}
+        <div className="hidden lg:flex items-center gap-2">
           <button
             id="nav-link-home"
             onClick={() => onNavigate('home')}
-            className={`text-sm font-semibold transition-colors cursor-pointer ${
+            className={`text-sm font-bold tracking-tight transition-colors cursor-pointer px-3 py-2 rounded-xl ${
               currentPage === 'home'
-                ? 'text-brand-blue dark:text-orange-400 font-bold'
-                : 'text-slate-600 hover:text-brand-blue dark:text-slate-300 dark:hover:text-orange-400'
+                ? 'text-orange-600 dark:text-orange-400 bg-orange-50/80 dark:bg-orange-500/10'
+                : 'text-slate-700 hover:text-orange-500 dark:text-slate-200 dark:hover:text-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
             }`}
           >
-            Home
-          </button>
-
-          {/* Services Dropdown */}
-          <div className="relative">
-            <button
-              id="nav-dropdown-services-trigger"
-              onClick={() => setDropdownOpen(!dropdownOpen)}
-              onMouseEnter={() => setDropdownOpen(true)}
-              className={`text-sm font-semibold transition-colors flex items-center gap-1 cursor-pointer ${
-                currentPage === 'service'
-                  ? 'text-brand-blue dark:text-orange-400 font-bold'
-                  : 'text-slate-600 hover:text-brand-blue dark:text-slate-300 dark:hover:text-orange-400'
-              }`}
-            >
-              Services
-              <span className={`transform transition-transform duration-200 block text-xs ${dropdownOpen ? 'rotate-180' : ''}`}>▼</span>
-            </button>
-
-            {dropdownOpen && (
-              <div 
-                id="nav-dropdown-menu"
-                onMouseLeave={() => setDropdownOpen(false)}
-                className="absolute top-full left-0 mt-2 w-80 bg-white dark:bg-[#111a33] border border-slate-100 dark:border-slate-800 shadow-xl rounded-2xl p-4 grid grid-cols-1 gap-1"
-              >
-                <div className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-2 pb-2 border-b border-slate-100 dark:border-slate-800 mb-2">
-                  Our Logistics Portfolios
-                </div>
-                {services.map((svc) => (
-                  <button
-                    key={svc.id}
-                    id={`dropdown-item-${svc.id}`}
-                    onClick={() => handleServiceClick(svc.id)}
-                    className={`w-full text-left px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-2.5 transition-colors ${
-                      activeServiceId === svc.id && currentPage === 'service'
-                        ? 'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold'
-                        : 'text-slate-600 hover:bg-slate-50 hover:text-slate-950 dark:text-slate-300 dark:hover:bg-slate-800/40 dark:hover:text-white'
-                    }`}
-                  >
-                    <div className={`p-1.5 rounded-lg shrink-0 ${
-                      activeServiceId === svc.id && currentPage === 'service'
-                        ? 'bg-orange-100 dark:bg-orange-500/20 text-orange-600'
-                        : 'bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
-                    }`}>
-                      <LucideIcon name={svc.iconName} className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="block font-bold">{svc.name}</span>
-                      <span className="block text-[10px] text-slate-400 dark:text-slate-500 font-normal truncate max-w-[200px]">
-                        {svc.tagline}
-                      </span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>     
-
-          <button
-            id="nav-link-locations"
-            onClick={() => onNavigate('locations')}
-            className={`text-sm font-semibold transition-colors cursor-pointer ${
-              currentPage === 'locations'
-                ? 'text-brand-orange dark:text-orange-400 font-bold'
-                : 'text-slate-600 hover:text-brand-blue dark:text-slate-300 dark:hover:text-orange-400'
-            }`}
-          >
-            Locations
+            <span>Home</span>
           </button>
 
           <button
-            id="nav-link-how-it-works"
-            onClick={() => onNavigate('how-it-works')}
-            className={`text-sm font-semibold transition-colors cursor-pointer ${
-              currentPage === 'how-it-works'
-                ? 'text-brand-orange dark:text-orange-400 font-bold'
-                : 'text-slate-600 hover:text-brand-blue dark:text-slate-300 dark:hover:text-orange-400'
+            id="nav-link-for-business"
+            onClick={() => onNavigate('service', 'office-relocation')}
+            className={`text-sm font-bold tracking-tight transition-colors cursor-pointer px-3 py-2 rounded-xl ${
+              currentPage === 'service' && activeServiceId === 'office-relocation'
+                ? 'text-orange-600 dark:text-orange-400 bg-orange-50/80 dark:bg-orange-500/10'
+                : 'text-slate-700 hover:text-orange-500 dark:text-slate-200 dark:hover:text-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
             }`}
           >
-            How It Works
+            <span>For Business</span>
           </button>
 
           <button
-            id="nav-link-about"
-            onClick={() => onNavigate('about')}
-            className={`text-sm font-semibold transition-colors cursor-pointer ${
-              currentPage === 'about'
-                ? 'text-brand-orange dark:text-orange-400 font-bold'
-                : 'text-slate-600 hover:text-brand-blue dark:text-slate-300 dark:hover:text-orange-400'
-            }`}
+            id="nav-link-driving-partner"
+            onClick={() => {
+              if (onOpenPartnerModal) {
+                onOpenPartnerModal();
+              } else {
+                const modal = document.getElementById('delivery-partner-modal');
+                if (modal) modal.style.display = 'flex';
+              }
+            }}
+            className="text-sm font-bold tracking-tight text-slate-700 hover:text-orange-500 dark:text-slate-200 dark:hover:text-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/40 px-3 py-2 rounded-xl transition-colors cursor-pointer"
           >
-            About Us
-          </button>
-
-          <button
-            id="nav-link-contact-us"
-            onClick={() => onNavigate('contact')}
-            className={`text-sm font-semibold transition-colors cursor-pointer ${
-              currentPage === 'contact'
-                ? 'text-brand-orange dark:text-orange-400 font-bold'
-                : 'text-slate-600 hover:text-brand-blue dark:text-slate-300 dark:hover:text-orange-400'
-            }`}
-          >
-            Contact Us
+            <span>Driving Partner</span>
           </button>
         </div>
 
         {/* Action button */}
-        <div className="hidden lg:flex items-center gap-4">
+        <div className="hidden lg:flex items-center gap-3">
           {/* Global Dark Mode Toggle */}
           <button
             id="btn-dark-mode-toggle"
@@ -259,15 +185,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <LucideIcon name="Smartphone" className="w-4 h-4 text-orange-500" />
             <span>Login / OTP</span>
-          </button>
-
-          <button
-            id="btn-nav-calc-price"
-            onClick={onOpenLoginModal}
-            className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs px-5 h-11 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
-          >
-            <span>Calculate Shifting Price</span>
-            <LucideIcon name="ArrowRight" className="w-4 h-4" />
           </button>
         </div>
 
@@ -317,6 +234,34 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div id="mobile-navigation-drawer" className="lg:hidden border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#070d19] p-5 space-y-4 shadow-inner">
+          <div className="grid grid-cols-2 gap-2 pb-3 border-b border-slate-100 dark:border-slate-800/80">
+            <button
+              onClick={() => {
+                onNavigate('service', 'office-relocation');
+                setMobileMenuOpen(false);
+              }}
+              className="flex items-center justify-center gap-1.5 p-3 rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold text-xs border border-orange-200 dark:border-orange-500/20"
+            >
+              <LucideIcon name="Briefcase" className="w-3.5 h-3.5" />
+              <span>For Business</span>
+            </button>
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                if (onOpenPartnerModal) {
+                  onOpenPartnerModal();
+                } else {
+                  const modal = document.getElementById('delivery-partner-modal');
+                  if (modal) modal.style.display = 'flex';
+                }
+              }}
+              className="flex items-center justify-center gap-1.5 p-3 rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold text-xs border border-orange-200 dark:border-orange-500/20"
+            >
+              <LucideIcon name="Truck" className="w-3.5 h-3.5" />
+              <span>Driving Partner</span>
+            </button>
+          </div>
+
           <div className="space-y-2">
             <button
               onClick={() => {

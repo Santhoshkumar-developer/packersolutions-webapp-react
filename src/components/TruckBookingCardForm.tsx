@@ -91,10 +91,10 @@ export const TruckBookingCardForm: React.FC<TruckBookingCardFormProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-xl overflow-visible relative p-3.5 sm:p-4.5 space-y-2.5 sm:space-y-3 text-left transition-all max-w-md mx-auto lg:max-w-none">
+    <div className="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-xl overflow-visible relative p-3.5 sm:p-4.5 space-y-2.5 sm:space-y-3 text-left transition-all w-full max-w-lg sm:max-w-xl mx-auto lg:max-w-none">
       
       {/* Top Accent Bar */}
-      <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#001261] via-[#0321a1] to-blue-600 rounded-t-2xl sm:rounded-t-3xl" />
+      <div className="absolute top-0 left-6 right-6 sm:left-8 sm:right-8 h-1 bg-gradient-to-r from-[#001261] via-[#0321a1] to-blue-600 rounded-b-full" />
 
       {/* Header */}
       <div className="flex items-center justify-between pt-0.5">

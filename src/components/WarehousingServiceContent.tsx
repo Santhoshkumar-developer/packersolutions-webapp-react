@@ -25,7 +25,12 @@ import {
   RefreshCw,
   FileCheck,
   Users,
-  PackageCheck
+  PackageCheck,
+  ArrowRight,
+  ClipboardCheck,
+  Phone,
+  MessageSquare,
+  HelpCircle
 } from 'lucide-react';
 import { ServiceItem } from '../types';
 
@@ -256,77 +261,106 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
   ];
 
   return (
-    <div className="space-y-12 text-left">
+    <div id="warehousing-details-view" className="space-y-12 text-left">
       
       {/* =========================================================================
           1. HERO SUMMARY & LOCATION BANNER
          ========================================================================= */}
-      <section id="warehousing-hero-overview" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-5">
-        <div className="space-y-2">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="bg-orange-500/10 text-orange-600 dark:text-orange-400 border border-orange-500/20 px-3 py-1 rounded-full text-xs font-bold font-mono">
-              WAREHOUSE & STORAGE SOLUTIONS
-            </span>
-            <span className="bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full text-xs font-bold font-mono flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5" />
-              <span>Service Location: {city}</span>
-            </span>
+      <section id="warehousing-hero-overview" className="bg-gradient-to-br from-slate-900 via-[#001261] to-slate-950 text-white rounded-3xl p-6 sm:p-8 border border-blue-500/20 shadow-xl relative overflow-hidden space-y-5">
+        <div className="absolute top-0 right-0 -mt-10 -mr-10 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="space-y-3 relative z-10">
+          <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-400/30 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider">
+            <Warehouse className="w-3.5 h-3.5 text-blue-400" />
+            <span>1. Warehouse &amp; Storage Solutions • {city}</span>
           </div>
 
-          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
-            Warehouse Storage Services in {city} – Secure &amp; Affordable Storage Solutions
-          </h2>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
+                Warehouse Storage Services in {city} – Secure &amp; Affordable Storage Solutions
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-2xl font-normal mt-2">
+                Looking for reliable <strong>Warehouse Storage Services in {city}</strong>? Packer Solutions provides secure, pest-controlled, and professionally managed warehousing and storage solutions for households, businesses, corporate customers, retailers, and logistics companies.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 self-start md:self-auto bg-white/10 text-white px-4 py-2.5 rounded-2xl border border-white/15 shadow-xs text-xs font-bold shrink-0">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" />
+              <span>24/7 CCTV &amp; Pest-Controlled</span>
+            </div>
+          </div>
+
+          <p className="text-xs text-slate-300 leading-relaxed max-w-2xl font-normal">
+            We offer flexible short-term and long-term storage for household goods, furniture, office equipment, commercial inventory, machinery, cartons, and other goods. Our services can also be seamlessly combined with packing, loading, transportation, inventory management, and return delivery for a complete turnkey storage solution.
+          </p>
+
+          <p className="text-xs text-slate-300 leading-relaxed max-w-2xl font-normal">
+            Whether you are moving to a new home, waiting for property possession, renovating your house, relocating overseas, shifting your office, or managing excess business inventory, Packer Solutions provides a customized storage solution tailored to your exact requirements.
+          </p>
+
+          <div className="pt-2 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={onOpenEnquiry}
+              id="warehouse-hero-quote-btn"
+              className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer group"
+            >
+              <span>Get Free Storage Quote</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </button>
+
+            <button
+              type="button"
+              onClick={onOpenEnquiry}
+              id="warehouse-hero-survey-btn"
+              className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl border border-white/15 transition-all flex items-center gap-2 cursor-pointer"
+            >
+              <Calculator className="w-4 h-4 text-blue-400" />
+              <span>Calculate Storage Space</span>
+            </button>
+          </div>
         </div>
-
-        <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
-          Looking for reliable <strong>Warehouse Storage Services in {city}</strong>? Packer Solutions provides secure, pest-controlled, and professionally managed warehousing and storage solutions for households, businesses, corporate customers, retailers, and logistics companies.
-        </p>
-
-        <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-normal">
-          We offer flexible short-term and long-term storage for household goods, furniture, office equipment, commercial inventory, machinery, cartons, and other goods. Our services can also be seamlessly combined with packing, loading, transportation, inventory management, and return delivery for a complete turnkey storage solution.
-        </p>
-
-        <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-normal">
-          Whether you are moving to a new home, waiting for property possession, renovating your house, relocating overseas, shifting your office, or managing excess business inventory, Packer Solutions provides a customized storage solution tailored to your exact requirements.
-        </p>
       </section>
 
       {/* =========================================================================
           2. HOUSEHOLD STORAGE SERVICES
          ========================================================================= */}
-      <section id="household-storage" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+      <section id="household-storage" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            RESIDENTIAL STORAGE
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Home className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>2. Residential Household Storage</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Household Storage Services in {city}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Suitable for customers who need additional space to safely store household belongings for a few weeks, months, or longer.
           </p>
         </div>
 
-        <div className="space-y-3">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
-            Suitable For:
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 shadow-xs space-y-4">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-[#001261] dark:text-blue-400" />
+            <span>Suitable For:</span>
           </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
             {HOUSEHOLD_SUITABLE_FOR.map((item, idx) => (
               <div 
                 key={idx}
-                className="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
+                className="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
               >
-                <CheckCircle2 className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#001261] dark:text-blue-400 shrink-0" />
                 <span>{item}</span>
               </div>
             ))}
           </div>
-        </div>
 
-        <div className="bg-blue-50/60 dark:bg-blue-950/30 rounded-2xl border border-blue-100 dark:border-blue-900/40 p-4 text-xs text-slate-700 dark:text-slate-300 leading-relaxed">
-          Before storage, our team can conduct a <strong>storage assessment</strong>, calculate the approximate <strong>CFT (Cubic Feet)</strong> requirement, prepare an inventory, label the items, and allocate suitable warehouse space.
+          <div className="bg-blue-50/70 dark:bg-blue-950/40 rounded-2xl border border-blue-200/80 dark:border-blue-800/80 p-4 text-xs text-slate-700 dark:text-slate-300 leading-relaxed mt-3">
+            Before storage, our team can conduct a <strong>storage assessment</strong>, calculate the approximate <strong>CFT (Cubic Feet)</strong> requirement, prepare an inventory, label the items, and allocate suitable warehouse space.
+          </div>
         </div>
       </section>
 
@@ -335,35 +369,37 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="furniture-storage" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            FURNITURE & APPLIANCES
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Boxes className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>3. Furniture &amp; Appliances Storage</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Furniture Storage Services in {city}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Need a safe place to store furniture during relocation or renovation? Packer Solutions provides secure furniture storage for residential and commercial customers.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 shadow-sm space-y-4">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-slate-200">
-            Items We Store &amp; Protect:
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 shadow-xs space-y-4">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 flex items-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-[#001261] dark:text-blue-400" />
+            <span>Items We Store &amp; Protect:</span>
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {FURNITURE_ITEMS.map((item, idx) => (
               <div 
                 key={idx}
-                className="bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700/50 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1.5"
+                className="bg-slate-50 dark:bg-slate-800/70 border border-slate-100 dark:border-slate-800 rounded-xl p-3 text-center flex flex-col items-center justify-center gap-1.5 hover:border-blue-400 transition-colors"
               >
-                <Boxes className="w-4 h-4 text-orange-500" />
+                <Boxes className="w-4 h-4 text-[#001261] dark:text-blue-400" />
                 <span className="text-xs font-medium text-slate-800 dark:text-slate-200">{item}</span>
               </div>
             ))}
           </div>
 
-          <p className="text-xs text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-100 dark:border-slate-800 font-normal leading-relaxed">
+          <p className="text-xs text-slate-500 dark:text-slate-400 pt-3 border-t border-slate-100 dark:border-slate-800 font-normal leading-relaxed">
             * Furniture can be professionally packed and protected with high-grade stretch film, corrugated sheets, and bubble wrap before storage to minimize exposure to dust, handling, and transportation-related damage.
           </p>
         </div>
@@ -374,26 +410,27 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="corporate-storage" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            ENTERPRISE & COMMERCIAL
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Building2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>4. Enterprise &amp; Commercial Warehousing</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Corporate Warehouse Storage in {city}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Designed for businesses that require organized storage and systematic inventory handling.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
           {CORPORATE_SOLUTIONS.map((sol, idx) => (
             <div 
               key={idx}
-              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-4.5 shadow-xs space-y-1.5"
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-1.5 hover:border-blue-400 transition-colors"
             >
               <h4 className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-orange-500 shrink-0" />
+                <Building2 className="w-4 h-4 text-[#001261] dark:text-blue-400 shrink-0" />
                 <span>{sol.title}</span>
               </h4>
               <p className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-relaxed">
@@ -403,7 +440,7 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
           ))}
         </div>
 
-        <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-1">
+        <div className="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-200/80 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300 space-y-1">
           <p>
             <strong>Inventory Management Workflow:</strong> Goods received at the warehouse are documented, labelled, allocated to designated storage areas, and recorded using inventory management procedures.
           </p>
@@ -418,37 +455,38 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="commercial-warehouse" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            B2B & RETAIL WAREHOUSING
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <ShoppingBag className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>5. B2B &amp; Retail Warehousing</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Commercial Warehouse Storage in {city}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Customized storage plans according to storage volume, type of goods, handling requirements, and storage duration.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 shadow-xs space-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-3">
             <h4 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
-              <Users className="w-4 h-4 text-orange-500" />
+              <Users className="w-4 h-4 text-[#001261] dark:text-blue-400" />
               <span>Suitable For:</span>
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
               {COMMERCIAL_WHO_CAN_USE.map((item, idx) => (
                 <div key={idx} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 font-normal">
-                  <Check className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-[#001261] dark:text-blue-400 shrink-0" />
                   <span>{item}</span>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-6 shadow-xs space-y-3">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 shadow-xs space-y-3">
             <h4 className="font-bold text-sm text-slate-900 dark:text-white flex items-center gap-2">
-              <ShoppingBag className="w-4 h-4 text-orange-500" />
+              <ShoppingBag className="w-4 h-4 text-[#001261] dark:text-blue-400" />
               <span>When Businesses Need Storage:</span>
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
@@ -466,35 +504,38 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
       {/* =========================================================================
           6. LOGISTICS STORAGE SERVICES
          ========================================================================= */}
-      <section id="logistics-storage" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-5">
+      <section id="logistics-storage" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            INTEGRATED TRANSPORTATION & STAGING
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Truck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>6. Integrated Transportation &amp; Staging</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Logistics Storage Services in {city}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Packer Solutions provides Logistics Storage Services for businesses requiring both storage and transportation support.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-          {LOGISTICS_STORAGE_POINTS.map((pt, idx) => (
-            <div 
-              key={idx}
-              className="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-700/60 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
-            >
-              <Truck className="w-3.5 h-3.5 text-orange-500 shrink-0" />
-              <span>{pt}</span>
-            </div>
-          ))}
-        </div>
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 shadow-xs space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+            {LOGISTICS_STORAGE_POINTS.map((pt, idx) => (
+              <div 
+                key={idx}
+                className="bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"
+              >
+                <Truck className="w-3.5 h-3.5 text-[#001261] dark:text-blue-400 shrink-0" />
+                <span>{pt}</span>
+              </div>
+            ))}
+          </div>
 
-        <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed pt-2 border-t border-slate-100 dark:border-slate-800">
-          Businesses can combine warehouse storage with transportation services for efficient movement of goods from the pickup location to the warehouse and from the warehouse to the final destination.
-        </p>
+          <p className="text-xs text-slate-600 dark:text-slate-300 font-normal leading-relaxed pt-3 border-t border-slate-100 dark:border-slate-800">
+            Businesses can combine warehouse storage with transportation services for efficient movement of goods from the pickup location to the warehouse and from the warehouse to the final destination.
+          </p>
+        </div>
       </section>
 
       {/* =========================================================================
@@ -502,26 +543,27 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="warehouse-handling-process" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            STRUCTURED HANDLING WORKFLOW
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Layers className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>7. Structured Handling Workflow</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Professional 12-Step Warehouse Handling Process
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             We follow a structured process to improve inventory visibility and simplify storage management.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
           {TWELVE_STEPS.map((step, idx) => (
             <div 
               key={idx}
-              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 shadow-xs space-y-2.5 relative overflow-hidden"
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5 relative overflow-hidden hover:border-blue-400 transition-colors"
             >
               <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/60 px-2.5 py-1 rounded-lg">
+                <span className="text-xs font-mono font-bold text-[#001261] dark:text-blue-300 bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800/80 px-2.5 py-1 rounded-lg">
                   Step {step.step}
                 </span>
               </div>
@@ -543,10 +585,10 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="relocation-and-maintenance" className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* End-to-End Relocation Support */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-7 shadow-sm space-y-4 flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 shadow-xs space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="space-y-1">
-              <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400">
+              <span className="text-xs font-semibold uppercase tracking-wider text-[#001261] dark:text-blue-400">
                 END-TO-END SUPPORT
               </span>
               <h4 className="font-bold text-base text-slate-900 dark:text-white">
@@ -574,7 +616,7 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
         </div>
 
         {/* 45-Day Periodic Maintenance */}
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-7 shadow-sm space-y-4 flex flex-col justify-between">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 shadow-xs space-y-4 flex flex-col justify-between">
           <div className="space-y-3">
             <div className="space-y-1">
               <span className="text-xs font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400">
@@ -599,7 +641,7 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
             </ul>
           </div>
 
-          <div className="bg-blue-50/60 dark:bg-blue-950/30 rounded-xl p-3 text-[11px] text-blue-950 dark:text-blue-300 font-medium">
+          <div className="bg-blue-50/70 dark:bg-blue-950/40 rounded-xl p-3 text-[11px] text-blue-950 dark:text-blue-300 font-medium border border-blue-200/60 dark:border-blue-800/60">
             A 45-day periodic maintenance option can be considered for customers requiring additional care for long-term household or commercial storage.
           </div>
         </div>
@@ -610,22 +652,23 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="household-rate-chart" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            TRANSPARENT TARIFF
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Calculator className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>9. Transparent Household Tariff</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Household Storage Rate Chart in {city}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Household Storage Rate: <strong>₹18 per CFT per month</strong>. Final pricing may vary based on storage requirements, handling, transportation, and packing.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
+              <thead className="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
                 <tr>
                   <th className="px-5 py-3.5">Storage Volume</th>
                   <th className="px-5 py-3.5">Monthly Storage Rate</th>
@@ -638,7 +681,7 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
                     <td className="px-5 py-4 font-mono font-medium text-slate-900 dark:text-slate-100">
                       {row.volume}
                     </td>
-                    <td className="px-5 py-4 font-bold text-orange-600 dark:text-orange-400 font-mono">
+                    <td className="px-5 py-4 font-bold text-[#001261] dark:text-blue-400 font-mono">
                       {row.rate}
                     </td>
                     <td className="px-5 py-4 font-normal text-slate-600 dark:text-slate-300">
@@ -661,19 +704,20 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="duration-plans" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            FLEXIBLE TENURE
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>10. Flexible Storage Tenure</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Short-Term &amp; Long-Term Storage Plans
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Select the storage duration that matches your transition schedule. Customers requiring annual storage can request long-term discounts.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
               <thead className="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
@@ -692,7 +736,7 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
                     <td className="px-5 py-3.5 font-normal text-slate-600 dark:text-slate-300">
                       {plan.suitableFor}
                     </td>
-                    <td className="px-5 py-3.5 font-mono font-medium text-orange-600 dark:text-orange-400">
+                    <td className="px-5 py-3.5 font-mono font-medium text-[#001261] dark:text-blue-400">
                       {plan.pricing}
                     </td>
                   </tr>
@@ -708,19 +752,20 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="corporate-rates-table" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            ENTERPRISE COMMERCIAL TARIFF
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Building2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>11. Enterprise Commercial Tariff</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Corporate Warehouse Handling Charges in {city}
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Corporate pricing may vary depending on inventory volume, storage duration, handling requirements, and service scope.
           </p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-xs">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs">
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs sm:text-sm">
               <thead className="bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-800">
@@ -739,7 +784,7 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
                     <td className="px-5 py-3.5 font-normal text-slate-600 dark:text-slate-300">
                       {row.service}
                     </td>
-                    <td className="px-5 py-3.5 font-mono font-bold text-orange-600 dark:text-orange-400">
+                    <td className="px-5 py-3.5 font-mono font-bold text-[#001261] dark:text-blue-400">
                       {row.charge}
                     </td>
                   </tr>
@@ -753,30 +798,33 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
       {/* =========================================================================
           12. WHY CHOOSE PACKER SOLUTIONS (14 POINTS)
          ========================================================================= */}
-      <section id="why-choose-warehouse" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+      <section id="why-choose-warehouse" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            VERIFIED ADVANTAGES
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>12. Verified Storage Advantages</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Why Choose Packer Solutions for Warehouse Storage?
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Trusted by homeowners, corporates, and logistics managers across {city}.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {WHY_CHOOSE_POINTS.map((pt, idx) => (
-            <div 
-              key={idx}
-              className="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300 font-medium"
-            >
-              <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-              <span>{pt}</span>
-            </div>
-          ))}
+        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {WHY_CHOOSE_POINTS.map((pt, idx) => (
+              <div 
+                key={idx}
+                className="flex items-start gap-2.5 text-xs text-slate-700 dark:text-slate-300 font-medium"
+              >
+                <CheckCircle className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                <span>{pt}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -785,23 +833,24 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
          ========================================================================= */}
       <section id="who-can-use" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            TARGET CLIENTS
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Users className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>13. Target Clients &amp; Use Cases</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Who Can Use Our Warehouse Storage Services?
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Tailored storage solutions designed for personal, residential, and corporate stakeholders.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
           {TARGET_AUDIENCE.map((item, idx) => (
             <div 
               key={idx}
-              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 shadow-xs space-y-1.5"
+              className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-1.5 hover:border-blue-400 transition-colors"
             >
               <h4 className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-white">
                 {item.title}
@@ -817,52 +866,102 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
       {/* =========================================================================
           14. FREQUENTLY ASKED QUESTIONS (8 ACCORDIONS)
          ========================================================================= */}
-      <section id="warehouse-faqs" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
+      <section id="warehouse-faqs" className="space-y-6">
         <div className="space-y-1.5">
-          <span className="text-xs font-semibold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
-            CLEAR ANSWERS
-          </span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <HelpCircle className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>14. Storage FAQs</span>
+          </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-orange-500 rounded-full" />
+            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
             Frequently Asked Questions
           </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Everything you need to know about warehouse storage, calculation, packing, and retrieval in {city}.
           </p>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {FAQS.map((faq, idx) => {
             const isOpen = openFaq === idx;
             return (
               <div 
                 key={idx} 
-                className="border border-slate-100 dark:border-slate-800 rounded-2xl overflow-hidden bg-slate-50/50 dark:bg-slate-800/30 transition-all"
+                className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-xs"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-100/50 dark:hover:bg-slate-800/60 transition-colors"
+                  className="w-full text-left p-4 sm:p-5 flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors font-bold text-xs sm:text-sm text-slate-900 dark:text-white"
                 >
-                  <span className="font-semibold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-2">
-                    <span className="text-orange-500 font-mono text-xs">{idx + 1}.</span>
+                  <span className="flex items-center gap-2">
+                    <span className="text-[#001261] dark:text-blue-400 font-mono text-xs">{idx + 1}.</span>
                     <span>{faq.q}</span>
                   </span>
-                  {isOpen ? (
-                    <ChevronUp className="w-4 h-4 text-orange-500 shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                  )}
+                  <span className="text-[#001261] dark:text-blue-400 shrink-0 font-bold">{isOpen ? '−' : '+'}</span>
                 </button>
 
                 {isOpen && (
-                  <div className="p-4 sm:p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-normal leading-relaxed border-t border-slate-100 dark:border-slate-800/50">
+                  <div className="p-4 sm:p-5 pt-0 text-xs sm:text-sm text-slate-600 dark:text-slate-300 font-normal leading-relaxed border-t border-slate-100 dark:border-slate-800">
                     {faq.a}
                   </div>
                 )}
               </div>
             );
           })}
+        </div>
+      </section>
+
+      {/* =========================================================================
+          15. FINAL CTA & HELPLINE CALLOUT
+         ========================================================================= */}
+      <section id="section-warehouse-final-cta" className="bg-gradient-to-br from-slate-900 via-[#001261] to-slate-950 rounded-[2.5rem] border border-blue-500/30 p-8 text-white space-y-6 shadow-2xl relative overflow-hidden">
+        <div className="flex flex-col items-start gap-6 relative z-10">
+          <div className="space-y-2 text-left w-full">
+            <span className="inline-block text-[10px] font-extrabold uppercase tracking-widest text-blue-300 bg-blue-500/20 px-3 py-1 rounded-full border border-blue-400/30">
+              ⚡ 15. Fast Booking &amp; Storage Staging
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+              Need Secure Storage in {city}?
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-200 w-full leading-relaxed">
+              Store your household furniture or commercial inventory with complete peace of mind. Get a free digital volume assessment and transparent monthly quotation with flexible duration terms.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <button
+              type="button"
+              onClick={onOpenEnquiry}
+              className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Get Your Free Storage Quote</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            <a
+              href="tel:+919876543210"
+              className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-5 py-3.5 rounded-2xl border border-white/15 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <Phone className="w-4 h-4 text-blue-300" />
+              <span>Call Storage Helpline</span>
+            </a>
+          </div>
+        </div>
+
+        <div className="pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-300 relative z-10">
+          <div className="flex items-center gap-2.5">
+            <Phone className="w-4 h-4 text-blue-400 shrink-0" />
+            <span>24/7 Helpline: <strong>+91 98765 43210</strong></span>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <MessageSquare className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>WhatsApp Assessment: <strong>Instant Reply</strong></span>
+          </div>
+          <div className="flex items-center gap-2.5">
+            <Clock className="w-4 h-4 text-amber-400 shrink-0" />
+            <span>Facility Access: <strong>Mon - Sun (8 AM - 8 PM)</strong></span>
+          </div>
         </div>
       </section>
 

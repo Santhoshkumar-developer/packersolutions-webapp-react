@@ -19,82 +19,6 @@ interface DirectoryTab {
 
 const directoryData: DirectoryTab[] = [
   {
-    id: 'packers-movers',
-    label: 'Packers & Movers',
-    cityColumns: [
-      {
-        cityTitle: 'Packers and Movers in Bangalore',
-        cityName: 'Bangalore',
-        areas: [
-          'Packers and Movers in Koramangala',
-          'Packers and Movers in Marathahalli',
-          'Packers and Movers in HSR Layout',
-          'Packers and Movers in Whitefield',
-          'Packers and Movers in Indiranagar',
-          'Packers and Movers in Bellandur',
-          'Packers and Movers in Electronic City',
-          'Packers and Movers in Sarjapur Road',
-        ],
-      },
-      {
-        cityTitle: 'Packers and Movers in Mumbai',
-        cityName: 'Mumbai',
-        areas: [
-          'Packers and Movers in Andheri West',
-          'Packers and Movers in Andheri East',
-          'Packers and Movers in Malad West',
-          'Packers and Movers in Navi Mumbai',
-          'Packers and Movers in Powai',
-          'Packers and Movers in Thane West',
-          'Packers and Movers in Mira Road East',
-          'Packers and Movers in Borivali',
-        ],
-      },
-      {
-        cityTitle: 'Packers and Movers in Chennai',
-        cityName: 'Chennai',
-        areas: [
-          'Packers and Movers in Velachery',
-          'Packers and Movers in Thiruvanmiyur',
-          'Packers and Movers in Madipakkam',
-          'Packers and Movers in Thoraipakkam',
-          'Packers and Movers in Sholinganallur',
-          'Packers and Movers in Medavakkam',
-          'Packers and Movers in Mylapore',
-          'Packers and Movers in Anna Nagar',
-        ],
-      },
-      {
-        cityTitle: 'Packers and Movers in Pune',
-        cityName: 'Pune',
-        areas: [
-          'Packers and Movers in Wakad',
-          'Packers and Movers in Kharadi',
-          'Packers and Movers in Baner',
-          'Packers and Movers in Hadapsar',
-          'Packers and Movers in Aundh',
-          'Packers and Movers in Kothrud',
-          'Packers and Movers in Pimple Saudagar',
-          'Packers and Movers in Viman Nagar',
-        ],
-      },
-      {
-        cityTitle: 'Packers and Movers in Coimbatore',
-        cityName: 'Coimbatore',
-        areas: [
-          'Packers and Movers in Peelamedu',
-          'Packers and Movers in Saravanampatti',
-          'Packers and Movers in RS Puram',
-          'Packers and Movers in Gandhipuram',
-          'Packers and Movers in Vadavalli',
-          'Packers and Movers in Singanallur',
-          'Packers and Movers in Thudiyalur',
-          'Packers and Movers in Saibaba Colony',
-        ],
-      },
-    ],
-  },
-  {
     id: 'house-shifting',
     label: 'House Shifting',
     cityColumns: [
@@ -481,7 +405,7 @@ interface CityAreaDirectoryProps {
 }
 
 export const CityAreaDirectory: React.FC<CityAreaDirectoryProps> = ({ onSelectArea }) => {
-  const [activeTabId, setActiveTabId] = useState<string>('packers-movers');
+  const [activeTabId, setActiveTabId] = useState<string>(directoryData[0]?.id || 'house-shifting');
 
   const activeTabData = directoryData.find((tab) => tab.id === activeTabId) || directoryData[0];
 

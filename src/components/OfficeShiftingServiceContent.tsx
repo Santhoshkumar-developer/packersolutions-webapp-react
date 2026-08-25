@@ -1,219 +1,84 @@
 import React, { useState } from 'react';
 import { 
+  Building2, 
   ShieldCheck, 
-  Sparkles, 
-  Truck, 
-  UserCheck, 
-  Smartphone, 
-  QrCode, 
-  Wrench, 
-  Zap, 
-  Maximize2, 
-  Star, 
-  Gift, 
-  CheckCircle, 
-  HelpCircle, 
   MapPin, 
-  Map, 
+  Clock, 
+  CheckCircle, 
   Layers, 
-  ArrowRight,
-  Clock,
-  Navigation,
+  Boxes, 
+  Truck,
+  Sparkles,
   Check,
-  Boxes,
-  Weight,
-  ChevronDown,
-  ChevronUp,
-  Package,
-  Shield,
-  Headphones,
+  Calendar,
   Calculator,
-  Phone,
-  MessageSquare,
-  ThumbsUp,
+  FileCheck,
   Users,
+  Server,
+  Monitor,
+  FileText,
+  Wrench,
+  Zap,
+  Phone,
+  ArrowRight,
+  ClipboardCheck,
+  Warehouse,
+  Briefcase,
+  HelpCircle,
+  QrCode,
+  Smartphone,
+  Navigation,
   Award,
   DollarSign,
-  Building2,
-  Server,
-  Briefcase,
+  MessageSquare,
+  Package,
+  Shield,
   Table,
-  FileText,
-  Home,
-  Tv,
-  Sofa,
-  Car,
-  Bike,
-  ClipboardCheck,
-  Search,
-  FileCheck,
-  Warehouse,
-  Calendar,
-  Sparkle
+  HardDrive
 } from 'lucide-react';
 import { ServiceItem } from '../types';
-import { OFFICE_AREA_OPTIONS } from './OfficeShiftingCardForm';
-import { ParcelCourierServiceContent } from './ParcelCourierServiceContent';
-import { WarehousingServiceContent } from './WarehousingServiceContent';
-import { TruckBookingServiceContent } from './TruckBookingServiceContent';
-import { OfficeShiftingServiceContent } from './OfficeShiftingServiceContent';
-import { VehicleTransportationServiceContent } from './VehicleTransportationServiceContent';
-import { PackingUnpackingServiceContent } from './PackingUnpackingServiceContent';
-import { LoadingUnloadingServiceContent } from './LoadingUnloadingServiceContent';
-import parcelVectorImg from '../assets/images/service_parcel_vector_1785319730384.jpg';
-import packersVectorImg from '../assets/images/service_packers_vector_1785319746387.jpg';
-import packingUnpackingVectorImg from '../assets/images/vector_packing_unpacking_1785946345528.jpg';
-import loadingUnloadingVectorImg from '../assets/images/vector_loading_unloading_1785946360593.jpg';
-import vehicleTransportVectorImg from '../assets/images/vector_vehicle_transport_1785946372441.jpg';
-import warehousingStorageVectorImg from '../assets/images/vector_warehousing_storage_1785946384931.jpg';
 
-const OTHER_SERVICES_MENU = [
-  {
-    id: 'household-shifting',
-    name: 'House Shifting',
-    image: packersVectorImg,
-    badge: 'Up to 30% Off'
-  },
-  {
-    id: 'parcel-courier',
-    name: 'Parcel & Courier',
-    image: parcelVectorImg,
-    badge: 'Express Pickup'
-  },
-  {
-    id: 'packing-unpacking',
-    name: 'Packing Service',
-    image: packingUnpackingVectorImg,
-    badge: '5-Ply Box'
-  },
-  {
-    id: 'loading-unloading',
-    name: 'Loading Service',
-    image: loadingUnloadingVectorImg,
-    badge: 'Safe Handling'
-  },
-  {
-    id: 'vehicle-transportation',
-    name: 'Vehicle Transport',
-    image: vehicleTransportVectorImg,
-    badge: 'Enclosed Trailer'
-  },
-  {
-    id: 'warehousing-storage',
-    name: 'Storage Solutions',
-    image: warehousingStorageVectorImg,
-    badge: 'CCTV Vault'
-  }
-];
-
-interface ServicePorterContentProps {
+interface OfficeShiftingServiceContentProps {
   selectedCity: string;
   activeService: ServiceItem;
-  onSelectCity: (city: string) => void;
-  onSelectService: (serviceId: string) => void;
-  onOpenEnquiry: () => void;
+  onSelectCity?: (city: string) => void;
+  onSelectService?: (serviceId: string) => void;
+  onOpenEnquiry?: () => void;
   onOpenLoginModal?: () => void;
 }
 
-// Service Areas Helper based on selected city
-const getServiceAreas = (city: string): string[] => {
+// Commercial Service Areas Helper based on selected city
+const getCommercialServiceAreas = (city: string): string[] => {
   const areas: Record<string, string[]> = {
-    'Coimbatore': ['Gandhipuram', 'Peelamedu', 'RS Puram', 'Singanallur', 'Ukkadam', 'Saravanampatti', 'Thudiyalur', 'Kurichi', 'Kovaipudur', 'Vadavalli', 'Ganapathy', 'Ramanathapuram', 'Sulur', 'Kinathukadavu', 'Podanur'],
-    'Ahmedabad': ['Chandkheda', 'Satellite', 'Bopal', 'Ghatlodia', 'Navrangpura', 'Paldi', 'Vastrapur', 'Naranpura', 'Gota', 'Thaltej', 'C.G. Road', 'Ranip', 'Maninagar', 'Vejalpur', 'Science City Road'],
-    'Bangalore': ['Indiranagar', 'Whitefield', 'Koramangala', 'HSR Layout', 'Electronic City', 'Jayanagar', 'Marathahalli', 'Bellandur', 'JP Nagar', 'Rajajinagar', 'Malleshwaram', 'BTM Layout', 'Sarjapur Road', 'Yelahanka', 'Hebbal'],
-    'Mumbai': ['Andheri West', 'Bandra West', 'Powai', 'Borivali West', 'Goregaon East', 'Mulund West', 'Thane West', 'Vashi Navi Mumbai', 'Kharghar', 'Chembur', 'Lower Parel', 'Malad West', 'Colaba', 'Dadar East', 'Kalyan'],
-    'Delhi': ['Dwarka', 'Saket', 'Vasant Kunj', 'Karol Bagh', 'Rajouri Garden', 'Connaught Place', 'Rohini', 'Janakpuri', 'Lajpat Nagar', 'South Ext', 'Greater Kailash', 'Preet Vihar', 'Pitampura', 'Mayur Vihar', 'Patparganj'],
-    'Hyderabad': ['Gachibowli', 'Kondapur', 'Madhapur', 'Kukatpally', 'Jubilee Hills', 'Banjara Hills', 'Begumpet', 'Secunderabad', 'Ameerpet', 'Miyapur', 'Nizampet', 'LB Nagar', 'Uppal', 'Hitech City', 'Manikonda'],
-    'Pune': ['Wakad', 'Koregaon Park', 'Kothrud', 'Hadapsar', 'Hinjewadi', 'Baner', 'Viman Nagar', 'Kharadi', 'Kalyani Nagar', 'Pimple Saudagar', 'Aundh', 'Katraj', 'Sinhagad Road', 'Chinchwad', 'Nigdi'],
-    'Chennai': ['Adyar', 'Velachery', 'Anna Nagar', 'Nungambakkam', 'T Nagar', 'Mylapore', 'Tambaram', 'Omr Karapakkam', 'Guindy', 'Thiruvanmiyur', 'Porur', 'Mogappair', 'Perambur', 'Medavakkam', 'Sholinganallur'],
-    'Surat': ['Adajan', 'Vesu', 'Pal', 'Katargam', 'Varachha', 'Piplod', 'New City Light', 'Althan', 'Rander', 'Amroli'],
-    'Kolkata': ['Salt Lake', 'Rajarhat', 'New Town', 'Garia', 'Behala', 'Tollygunge', 'Jadavpur', 'Howrah', 'Dum Dum', 'Kasba'],
+    'Coimbatore': ['Avinashi Road', 'Tidel Park & Peelamedu', 'Gandhipuram CBD', 'Saravanampatti IT Corridor', 'RS Puram Commercial', 'Singanallur Industrial Zone', 'SIDCO Kurichi', 'Thudiyalur', 'Ganapathy', 'Ramanathapuram', 'Sulur Logistics Park', 'Madukkarai Industrial Belt'],
+    'Bangalore': ['Whitefield EPIP Zone', 'Electronic City Phase 1 & 2', 'Outer Ring Road (ORR)', 'Koramangala CBD', 'Indiranagar Tech Hub', 'Manyata Tech Park', 'HSR Layout Sector 1-7', 'Bagmane Tech Park', 'Bannerghatta Road', 'Peenya Industrial Area', 'MG Road Commercial', 'Hebbal Business Park'],
+    'Chennai': ['OMR IT Corridor', 'Guindy Industrial Estate', 'Ambattur Industrial Estate', 'Tidel Park Tharamani', 'Mount Road CBD', 'Nungambakkam High Road', 'Porur Tech Park', 'DLF Cybercity', 'Perungudi', 'Sholinganallur Junction', 'Anna Nagar Commercial', 'Siruseri SIPCOT'],
+    'Mumbai': ['Bandra Kurla Complex (BKC)', 'Lower Parel Commercial Hub', 'Andheri East MIDC', 'Nariman Point Financial District', 'Powai Hiranandani Tech Park', 'Mindspace Malad', 'Goregaon Nesco IT Park', 'Navi Mumbai Vashi Infotech', 'Airoli Mindspace', 'Thane Wagle Estate', 'Kanjurmarg Business Hub', 'Worli Corporate Enclave'],
+    'Hyderabad': ['Hitec City', 'Gachibowli Financial District', 'Madhapur Tech Zone', 'Kondapur Commercial Hub', 'Jubilee Hills Checkpost', 'Banjara Hills Road No 1-12', 'Begumpet Airport Plaza', 'Sanathnagar Industrial Area', 'Kukatpally Y-Junction', 'Mindspace Madhapur', 'Kokapet SEZ', 'Nanakramguda Tech Park'],
+    'Pune': ['Hinjewadi IT Park Phase 1-3', 'Magarpatta Cybercity', 'Kharadi EON Free Zone', 'Viman Nagar Corporate Park', 'Kalyani Nagar Business Bay', 'Senapati Bapat Road', 'Bhosari MIDC', 'Chakan Industrial Zone', 'Baner High Street', 'Pimpri Commercial Belt', 'Hadapsar Industrial Estate', 'Yerwada Commerzone'],
+    'Delhi': ['Connaught Place CBD', 'Nehru Place IT Hub', 'Bhikaji Cama Place', 'Okhla Industrial Area Phase 1-3', 'Saket District Centre', 'Jasola Business District', 'Barakhamba Road', 'Rajendra Place', 'Aerocity Hospitality District', 'Netaji Subhash Place', 'Patparganj Industrial Area', 'Mayapuri Industrial Area'],
+    'Ahmedabad': ['SG Highway Corporate Hub', 'Prahlad Nagar Commercial Belt', 'GIFT City Gandhinagar', 'C.G. Road CBD', 'Ashram Road Financial Enclave', 'Sanand Industrial Estate', 'Vatva GIDC', 'Changodar Logistics Park', 'Sindhu Bhavan Road', 'Science City Road', 'Naroda Industrial Zone', 'Makarba Tech Zone'],
+    'Kolkata': ['Sector V Salt Lake IT Hub', 'Rajarhat New Town Financial Eco-hub', 'Dalhousie BBD Bagh CBD', 'Park Street Commercial', 'Camac Street Business Belt', 'Taratala Industrial Area', 'Kasba Industrial Estate', 'Chinar Park Tech Zone', 'Howrah Commercial Hub', 'Strand Road Logistics Hub'],
+    'Kochi': ['Infopark Kakkanad Phase 1-2', 'SmartCity Kochi', 'MG Road Commercial', 'Kaloor Business Hub', 'Willingdon Island Port Area', 'Edapally Toll Junction', 'Kalamassery Industrial Belt', 'Marine Drive Financial Street', 'Vyttila Mobility Hub', 'Aluva Industrial Corridor']
   };
 
-  return areas[city] || ['Central Market', 'Industrial Hub', 'Ring Road Junction', 'Textile Park', 'IT Expressway', 'Suburbs Sector 1', 'Main Logistics Zone', 'Metro Phase II'];
+  return areas[city] || [
+    'Central Business District (CBD)',
+    'IT / Software Tech Park',
+    'Industrial & Manufacturing Estate',
+    'Special Economic Zone (SEZ)',
+    'Logistics & Warehousing Hub',
+    'Commercial Shopping Complex',
+    'Financial District',
+    'Expressway Business Corridor'
+  ];
 };
 
-const OTHER_CITIES = [
-  'Coimbatore', 'Bangalore', 'Chennai', 'Mumbai', 'Delhi', 'Hyderabad', 'Pune', 'Ahmedabad', 'Kolkata', 'Surat'
+const POPULAR_OFFICE_CITIES = [
+  'Coimbatore', 'Bangalore', 'Chennai', 'Mumbai', 'Hyderabad', 'Pune', 'Delhi', 'Ahmedabad', 'Kolkata', 'Kochi'
 ];
 
-interface FleetVehicle {
-  id: string;
-  name: string;
-  capacity: string;
-  baseFare: number;
-  ratePerKm: number;
-  dimensions: string;
-  idealFor: string;
-  popularTag?: string;
-  iconType: string;
-}
-
-const TRUCK_FLEET: FleetVehicle[] = [
-  {
-    id: 'bike-2w',
-    name: '2 Wheeler / Bike Delivery',
-    capacity: 'Up to 20 kg',
-    baseFare: 30,
-    ratePerKm: 8,
-    dimensions: 'Compact Parcel / Messenger Bag',
-    idealFor: 'Urgent documents, small parcels, keys, food boxes, electronics',
-    iconType: 'bike'
-  },
-  {
-    id: 'tempo-3w',
-    name: '3 Wheeler Tempo',
-    capacity: 'Up to 500 kg',
-    baseFare: 150,
-    ratePerKm: 14,
-    dimensions: '5.5 ft x 4.5 ft x 5.0 ft',
-    idealFor: 'Small furniture, TV, fridge, 2-3 boxes, single room items',
-    iconType: 'tempo'
-  },
-  {
-    id: 'tata-ace',
-    name: 'Tata Ace (Chhota Hathi)',
-    capacity: 'Up to 750 kg',
-    baseFare: 180,
-    ratePerKm: 18,
-    dimensions: '7.0 ft x 4.8 ft x 4.8 ft',
-    idealFor: '1 BHK household items, commercial stock, textile rolls, hardware',
-    popularTag: 'Most Popular Choice',
-    iconType: 'truck'
-  },
-  {
-    id: 'pickup-8ft',
-    name: '8ft Pickup / Bolero',
-    capacity: 'Up to 1,250 kg',
-    baseFare: 240,
-    ratePerKm: 22,
-    dimensions: '8.0 ft x 4.8 ft x 4.8 ft',
-    idealFor: '1-2 BHK relocation, timber, industrial equipment, heavy goods',
-    iconType: 'truck'
-  },
-  {
-    id: 'eicher-14ft',
-    name: '14ft Eicher Truck',
-    capacity: 'Up to 3,500 kg',
-    baseFare: 650,
-    ratePerKm: 32,
-    dimensions: '14.0 ft x 6.0 ft x 6.5 ft',
-    idealFor: '2-3 BHK household items, bulk commercial loads, factory cargo',
-    iconType: 'heavy'
-  },
-  {
-    id: 'container-32ft',
-    name: '19ft / 32ft Closed Container',
-    capacity: 'Up to 7,000 - 15,000 kg',
-    baseFare: 1800,
-    ratePerKm: 48,
-    dimensions: 'Weather-proof closed heavy container',
-    idealFor: 'Pan-India intercity freight, heavy manufacturing, villa shifting',
-    iconType: 'heavy'
-  }
-];
-
-export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
+export const OfficeShiftingServiceContent: React.FC<OfficeShiftingServiceContentProps> = ({
   selectedCity,
   activeService,
   onSelectCity,
@@ -221,115 +86,12 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
   onOpenEnquiry,
   onOpenLoginModal
 }) => {
-  const serviceAreas = getServiceAreas(selectedCity);
-  const isTruckBooking = activeService.id === 'domestic-relocation' || activeService.name.toLowerCase().includes('truck');
-  const isOfficeRelocation = activeService.id === 'office-relocation' || activeService.name.toLowerCase().includes('office');
-  const isParcelCourier = activeService.id === 'parcel-courier' || activeService.id === 'parcel-transport' || activeService.name.toLowerCase().includes('parcel') || activeService.name.toLowerCase().includes('courier');
-  const isWarehousing = activeService.id === 'warehousing-storage' || activeService.id === 'warehouse' || activeService.name.toLowerCase().includes('warehouse') || activeService.name.toLowerCase().includes('storage');
-  const isVehicleTransport = activeService.id === 'vehicle-transportation' || activeService.id === 'vehicle-transport' || activeService.name.toLowerCase().includes('vehicle') || activeService.name.toLowerCase().includes('car') || activeService.name.toLowerCase().includes('bike');
-  const isPackingUnpacking = activeService.id === 'packing-unpacking' || activeService.id === 'packing-service' || activeService.name.toLowerCase().includes('packing') || activeService.name.toLowerCase().includes('wooden');
-  const isLoadingUnloading = activeService.id === 'loading-unloading' || activeService.id === 'loading-service' || activeService.name.toLowerCase().includes('loading') || activeService.name.toLowerCase().includes('crane') || activeService.name.toLowerCase().includes('forklift');
-
-  const [selectedFleetId, setSelectedFleetId] = useState<string>('tata-ace');
-  const [selectedTruck, setSelectedTruck] = useState<string>('tata-ace');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
-  const [activeScopeTab, setActiveScopeTab] = useState<'within-city' | 'between-city'>('within-city');
+  const city = selectedCity || 'Coimbatore';
+  const commercialAreas = getCommercialServiceAreas(city);
 
-  if (isLoadingUnloading) {
-    return (
-      <LoadingUnloadingServiceContent
-        selectedCity={selectedCity}
-        activeService={activeService}
-        onSelectCity={onSelectCity}
-        onSelectService={onSelectService}
-        onOpenEnquiry={onOpenEnquiry}
-        onOpenLoginModal={onOpenLoginModal}
-      />
-    );
-  }
-
-  if (isPackingUnpacking) {
-    return (
-      <PackingUnpackingServiceContent
-        selectedCity={selectedCity}
-        activeService={activeService}
-        onSelectCity={onSelectCity}
-        onSelectService={onSelectService}
-        onOpenEnquiry={onOpenEnquiry}
-        onOpenLoginModal={onOpenLoginModal}
-      />
-    );
-  }
-
-  if (isWarehousing) {
-    return (
-      <WarehousingServiceContent
-        selectedCity={selectedCity}
-        activeService={activeService}
-        onSelectCity={onSelectCity}
-        onSelectService={onSelectService}
-        onOpenEnquiry={onOpenEnquiry}
-        onOpenLoginModal={onOpenLoginModal}
-      />
-    );
-  }
-
-  if (isParcelCourier) {
-    return (
-      <ParcelCourierServiceContent
-        selectedCity={selectedCity}
-        activeService={activeService}
-        onSelectCity={onSelectCity}
-        onSelectService={onSelectService}
-        onOpenEnquiry={onOpenEnquiry}
-        onOpenLoginModal={onOpenLoginModal}
-      />
-    );
-  }
-
-  if (isTruckBooking) {
-    return (
-      <TruckBookingServiceContent
-        selectedCity={selectedCity}
-        activeService={activeService}
-        onSelectCity={onSelectCity}
-        onSelectService={onSelectService}
-        onOpenEnquiry={onOpenEnquiry}
-        onOpenLoginModal={onOpenLoginModal}
-      />
-    );
-  }
-
-  if (isOfficeRelocation) {
-    return (
-      <OfficeShiftingServiceContent
-        selectedCity={selectedCity}
-        activeService={activeService}
-        onSelectCity={onSelectCity}
-        onSelectService={onSelectService}
-        onOpenEnquiry={onOpenEnquiry}
-        onOpenLoginModal={onOpenLoginModal}
-      />
-    );
-  }
-
-  if (isVehicleTransport) {
-    return (
-      <VehicleTransportationServiceContent
-        selectedCity={selectedCity}
-        activeService={activeService}
-        onSelectCity={onSelectCity}
-        onSelectService={onSelectService}
-        onOpenEnquiry={onOpenEnquiry}
-        onOpenLoginModal={onOpenLoginModal}
-      />
-    );
-  }
-
-  // 18-Section Structured House Shifting & Relocation Content
   return (
-    <div className="space-y-12">
+    <div className="space-y-12" id="office-shifting-details-view">
       
       {/* =========================================================================
           1. HERO / GET QUOTE OVERVIEW
@@ -340,61 +102,63 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
         <div className="space-y-3 relative z-10">
           <div className="inline-flex items-center gap-2 bg-blue-500/20 text-blue-300 border border-blue-400/30 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5 text-blue-400" />
-            <span>1. Hero / Get Quote • {selectedCity}</span>
+            <span>1. Hero / Get Quote • {city}</span>
           </div>
 
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-            House Shifting Services – Safe, Reliable &amp; Hassle-Free in {selectedCity}
+            Office Shifting Services – Zero Downtime &amp; Secure Relocation in {city}
           </h2>
 
           <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-2xl font-normal">
-            Move your home with confidence with Packer Solutions&apos; professional house shifting services. From packing and loading to transportation, unloading and unpacking, we provide complete home relocation solutions designed to make your move simple and stress-free.
+            Relocate your workspace seamlessly with Packer Solutions&apos; enterprise-grade office shifting services. From server rooms and IT workstations to executive modular furniture, sensitive archives, and conference setups, we provide turnkey corporate relocation solutions engineered for zero business disruption.
           </p>
 
           <p className="text-xs text-slate-300 leading-relaxed max-w-2xl font-normal">
-            Whether you are shifting within {selectedCity} or moving to another city, our trained professionals handle your household belongings with care and provide a transparent moving experience.
+            Whether shifting within commercial hubs of {city} or executing intercity headquarters relocation across India, our certified project managers and technical crews deliver structured, weekend/night transitions with complete asset accountability.
           </p>
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={onOpenEnquiry}
+              id="office-hero-quote-btn"
               className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer group"
             >
-              <span>Get Free Quote</span>
+              <span>Get Free Corporate Quote</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
 
             <button
               type="button"
               onClick={onOpenEnquiry}
+              id="office-hero-survey-btn"
               className="bg-white/10 hover:bg-white/20 text-white font-bold text-xs sm:text-sm px-4 py-3 rounded-xl border border-white/15 transition-all flex items-center gap-2 cursor-pointer"
             >
               <ClipboardCheck className="w-4 h-4 text-blue-400" />
-              <span>Book Free Digital Survey</span>
+              <span>Book Free On-Site / Digital Survey</span>
             </button>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          2. PROFESSIONAL & COMPLETE HOUSE SHIFTING SERVICES
+          2. PROFESSIONAL & COMPLETE OFFICE SHIFTING SERVICES
          ========================================================================= */}
       <section id="section-professional-services" className="space-y-6">
         <div className="space-y-1.5">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
-            <Home className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-            <span>2. Professional House Shifting Services</span>
+            <Building2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+            <span>2. Professional Office Shifting Services</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            End-to-End Household Relocation Solutions
+            End-to-End Corporate &amp; Workspace Relocation
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-            Moving your home requires careful planning, professional packing and reliable transportation. Packer Solutions provides end-to-end house shifting and household relocation services for apartments, villas, independent houses and residential properties.
+            Corporate office relocations demand strategic timeline management, multi-team coordination, and specialized equipment handling. Packer Solutions delivers bespoke shifting for startups, software development centers, corporate headquarters, call centers, and commercial retail establishments in {city}.
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            Our services cover the complete relocation process, including packing, furniture dismantling, loading, transportation, unloading, unpacking and room placement. We customize every move based on your household volume, moving distance, vehicle requirements and selected services.
+            Our comprehensive corporate moving scope covers floor-wise surveys, anti-static IT packing, modular workstation dismantling, server rack decommissioning, secure containerized transport, and designated desk reassembly with cable management.
           </p>
         </div>
 
@@ -402,11 +166,11 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
             <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
-              <Package className="w-5 h-5" />
+              <Server className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Professional Packing</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">IT &amp; Server Room Relocation</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              We pack household belongings using appropriate protective materials to reduce the risk of scratches, breakage and transit damage.
+              Specialized anti-static multi-layer packing and shock-cushioned transit for server racks, switches, UPS, monitors, and networking hardware.
             </p>
           </div>
 
@@ -414,19 +178,19 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <div className="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
               <Wrench className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Furniture Dismantling &amp; Reassembly</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Workstation Dismantling &amp; Setup</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Selected furniture can be dismantled before transportation and reassembled at the destination by trained carpenters.
+              Experienced carpenters systematically dismantle modular cubicles, partitions, executive desks, and conference tables with alphanumeric labeling.
             </p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
             <div className="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
-              <ShieldCheck className="w-5 h-5" />
+              <FileText className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Safe Loading</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Document &amp; Archive Management</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Household items are carefully loaded and secured with cargo belts and protective blankets for safe transportation.
+              Confidential records, legal files, and financial dockets packed in heavy-duty 5-ply cartons with security tamper seals and department barcodes.
             </p>
           </div>
 
@@ -434,9 +198,9 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <div className="w-9 h-9 rounded-xl bg-purple-50 dark:bg-purple-950/60 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
               <Truck className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Door-to-Door Transportation</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Dedicated Container Fleet</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Move belongings from your current home to your new destination through a planned and tracked relocation process.
+              Fleet of weather-proof, sealed container trucks (14ft, 17ft, 20ft, 22ft) with hydraulic tail-lifts for smooth commercial transport.
             </p>
           </div>
 
@@ -444,19 +208,19 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <div className="w-9 h-9 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold">
               <ClipboardCheck className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Unloading</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Floor-Wise Systematic Unloading</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Items are carefully unloaded, brought into your premises, and systematically verified against the itemized packing list.
+              Goods are delivered to designated departments, floors, and rooms in accordance with the pre-approved floor plan layout.
             </p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4.5 shadow-xs space-y-2 hover:border-blue-400 transition-all">
             <div className="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold">
-              <Sofa className="w-5 h-5" />
+              <Building2 className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Unpacking &amp; Room Placement</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Workspace Assembly &amp; Reinstallation</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Assistance with unpacking cartons and placing furniture and belongings in designated rooms for instant living comfort.
+              Complete reassembly of executive desks, chairs, storage racks, cafeteria units, and conference suites ready for immediate business resumption.
             </p>
           </div>
 
@@ -466,9 +230,9 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
                 <Warehouse className="w-5 h-5" />
               </div>
               <div>
-                <h4 className="font-bold text-sm text-slate-900 dark:text-white">Temporary Storage</h4>
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white">Commercial &amp; Archive Warehousing</h4>
                 <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                  Secure CCTV-monitored warehouse storage can be arranged when additional time is required between handover of current and new residential locations.
+                  Fire-compliant, CCTV-secured climate-controlled commercial warehouse vaults available for transitional office assets, surplus furniture, and long-term legal archives.
                 </p>
               </div>
             </div>
@@ -477,7 +241,7 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
       </section>
 
       {/* =========================================================================
-          3. WHY CHOOSE PACKER SOLUTIONS
+          3. WHY CHOOSE PACKER SOLUTIONS (FOR OFFICE SHIFTING)
          ========================================================================= */}
       <section id="section-why-choose" className="space-y-6">
         <div className="space-y-1">
@@ -487,10 +251,10 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            The Packer Solutions Standard of Excellence
+            The Corporate Relocation Standard of Excellence
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Engineered relocation workflows prioritizing safety, transparent pricing, and digital tracking.
+            Engineered enterprise moving workflows prioritizing zero downtime, asset protection, and guaranteed project timelines.
           </p>
         </div>
 
@@ -499,9 +263,9 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950 text-[#001261] dark:text-blue-400 flex items-center justify-center font-bold">
               <Smartphone className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Free Digital Survey</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Free On-Site &amp; Digital Survey</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Understand household volume, vehicle requirements, packing requirements and manpower before the move without surprise costs.
+              Comprehensive inventory assessment, CFT volume calculation, lift access audit, and parking logistics analyzed before sharing transparent quotes.
             </p>
           </div>
 
@@ -509,84 +273,84 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
               <DollarSign className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Transparent Pricing</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Transparent Corporate Pricing</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Quotations are based on volume, distance, vehicle size, manpower and selected services with zero hidden surcharges.
+              Itemized billing with GST invoicing, covering packing materials, manpower, technical carpenters, and transport with zero hidden costs.
             </p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
-              <UserCheck className="w-5 h-5" />
+              <Clock className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Professional Packing</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Zero-Downtime Weekend Relocation</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Trained professionals handle belongings using appropriate packing and multi-layer protection methods for utmost safety.
+              Execute overnight or weekend moving schedules Friday evening through Sunday night so your team resumes work on Monday morning without disruption.
             </p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
-              <FileCheck className="w-5 h-5" />
+              <Zap className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Digital Documentation</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Certified IT &amp; Electrical Handlers</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Packing lists and digital moving documents improve visibility and complete accountability across all shipment items.
+              Trained technical crews trained in anti-static packing, cable color-coding, server rack bracing, and fragile electronic handling protocols.
             </p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950 text-teal-600 dark:text-teal-400 flex items-center justify-center font-bold">
-              <Navigation className="w-5 h-5" />
+              <QrCode className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Real-Time Tracking</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Barcode &amp; Department Tagging</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Receive live shipment and vehicle information during transportation with direct updates from your Move Coordinator.
+              Every workstation, PC, monitor, and carton is indexed with employee IDs and department color tags for instant room matching at destination.
             </p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2.5">
             <div className="w-10 h-10 rounded-xl bg-rose-50 dark:bg-rose-950 text-rose-600 dark:text-rose-400 flex items-center justify-center font-bold">
-              <ShieldCheck className="w-5 h-5" />
+              <Users className="w-5 h-5" />
             </div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Door-to-Door Support</h4>
+            <h4 className="font-bold text-sm text-slate-900 dark:text-white">Dedicated Move Project Manager</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-              Key relocation stages are managed from pickup through final delivery and room placement at your destination home.
+              A single point of contact coordinates manpower, security passes, facility manager clearances, fleet dispatch, and handover checklists.
             </p>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          4. HOW OUR HOUSE SHIFTING SERVICE WORKS (9 STEPS)
+          4. HOW OFFICE SHIFTING WORKS (9 STAGES)
          ========================================================================= */}
       <section id="section-how-it-works" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Clock className="w-3.5 h-3.5 text-blue-600" />
-            <span>4. How House Shifting Works</span>
+            <span>4. How Office Relocation Works</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Step-by-Step Moving Process (9 Stages)
+            Step-by-Step Corporate Moving Process (9 Stages)
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            A transparent 9-step workflow designed to keep your relocation seamless, secure, and on-schedule.
+            A structured 9-stage execution methodology engineered for speed, safety, and business continuity.
           </p>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { num: 1, title: 'Free Digital Survey', desc: 'Evaluate household belongings and estimate volume, packing materials, manpower and vehicle size.' },
-              { num: 2, title: 'Get Your Quotation', desc: 'Prepare a detailed quotation based on the survey and specific requirements.' },
-              { num: 3, title: 'Confirm Your Booking', desc: 'Confirm the booking and moving plan with preferred date and time slot.' },
-              { num: 4, title: 'Professional Packing', desc: 'Pack and label belongings according to type and delicate handling requirements.' },
-              { num: 5, title: 'Safe Loading', desc: 'Carefully load and secure furniture, appliances, cartons and fragile items with straps.' },
-              { num: 6, title: 'Secure Transportation', desc: 'Transport the shipment according to the planned route and verified delivery schedule.' },
-              { num: 7, title: 'Unloading & Verification', desc: 'Unload and cross-check items one-by-one with the itemized packing list.' },
-              { num: 8, title: 'Unpacking & Room Placement', desc: 'Provide selected unpacking and room-placement support for major furniture.' },
-              { num: 9, title: 'Final Handover', desc: 'Complete delivery after customer verification, inspection sign-off, and confirmation.' }
+              { num: 1, title: 'Pre-Move Survey & Audit', desc: 'Assess workspace layout, workstation count, IT infrastructure, lift capacity and building access rules.' },
+              { num: 2, title: 'Floor-Wise Relocation Plan', desc: 'Formulate timeline milestones, department shifts, fleet sizing, and transit insurance dockets.' },
+              { num: 3, title: 'Color-Coded Asset Tagging', desc: 'Issue color tags and digital QR codes matching employee desks, departments and target floor layouts.' },
+              { num: 4, title: 'IT & Electronic Packing', desc: 'Secure laptops, monitors, servers, switches and wiring with specialized anti-static cushioning.' },
+              { num: 5, title: 'Furniture Dismantling', desc: 'Carefully dismantle modular workstations, cubicles, executive cabins and conference setups.' },
+              { num: 6, title: 'Safe Loading & Transport', desc: 'Load items into container trucks using cargo belts, floor blankets and hydraulic lift equipment.' },
+              { num: 7, title: 'Floor-Wise Unloading', desc: 'Unload goods systematically and distribute cartons to designated department bays.' },
+              { num: 8, title: 'Reassembly & Setup', desc: 'Reinstall workstations, adjust desk partitions, position conference suites and clear debris.' },
+              { num: 9, title: 'Final Handover & Audit', desc: 'Conduct department-by-department asset verification and sign-off with facility managers.' }
             ].map((step) => (
               <div key={step.num} className="flex items-start gap-3 p-3 bg-slate-50/80 dark:bg-slate-950/60 rounded-2xl border border-slate-100 dark:border-slate-800">
                 <div className="w-8 h-8 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 shadow-xs">
@@ -607,97 +371,97 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
       </section>
 
       {/* =========================================================================
-          5. PREMIUM MULTI-LAYER PACKING
+          5. SPECIALIZED CORPORATE PACKING
          ========================================================================= */}
       <section id="section-premium-packing" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Package className="w-3.5 h-3.5 text-blue-600" />
-            <span>5. Premium Multi-Layer Packing</span>
+            <span>5. Specialized Corporate Packing</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Premium Packing for Safe House Shifting
+            Multi-Layer Protection for Sensitive Office Assets
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-            Proper packing is one of the most important parts of a successful household relocation. Packer Solutions provides multi-layer packing solutions designed to protect furniture, appliances, fragile items, kitchen goods and other household belongings during handling and transportation.
+            Protecting high-value IT equipment, glass architectural fixtures, executive furniture, and confidential documents requires industry-grade packing materials. Packer Solutions deploys multi-tier packing standards custom-fitted for corporate assets.
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            Depending on the selected service, packing can include bubble wrap, corrugated sheets, moving blankets, stretch film and protective covers. Fragile and valuable items can be separately identified and handled with additional care.
+            Our packing arsenal includes anti-static bubble wrap, 5-ply corrugated cartons, high-density edge guards, stretch film moisture wraps, and heavy-duty padded moving blankets.
           </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 text-center space-y-1.5 shadow-xs">
-            <div className="text-2xl">🫧</div>
-            <h4 className="font-bold text-xs text-slate-900 dark:text-white">Heavy Bubble Wrap</h4>
-            <p className="text-[10px] text-slate-400 leading-tight">Cushions glassware, crockery &amp; electronics</p>
+            <div className="text-2xl">⚡</div>
+            <h4 className="font-bold text-xs text-slate-900 dark:text-white">Anti-Static Bubble Wrap</h4>
+            <p className="text-[10px] text-slate-400 leading-tight">Shields servers, PCBs, microchips &amp; dual monitors</p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 text-center space-y-1.5 shadow-xs">
             <div className="text-2xl">📦</div>
-            <h4 className="font-bold text-xs text-slate-900 dark:text-white">5-Ply Corrugated Sheets</h4>
-            <p className="text-[10px] text-slate-400 leading-tight">Shock resistance for furniture &amp; appliances</p>
+            <h4 className="font-bold text-xs text-slate-900 dark:text-white">5-Ply Archive Cartons</h4>
+            <p className="text-[10px] text-slate-400 leading-tight">High crush resistance for confidential files &amp; records</p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 text-center space-y-1.5 shadow-xs">
             <div className="text-2xl">🛡️</div>
-            <h4 className="font-bold text-xs text-slate-900 dark:text-white">Moving Blankets &amp; Film</h4>
-            <p className="text-[10px] text-slate-400 leading-tight">Scratch prevention &amp; moisture shielding</p>
+            <h4 className="font-bold text-xs text-slate-900 dark:text-white">Edge Guards &amp; Foam</h4>
+            <p className="text-[10px] text-slate-400 leading-tight">Scratch prevention for glass desks &amp; boardroom tables</p>
           </div>
 
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 text-center space-y-1.5 shadow-xs">
             <div className="text-2xl">🏷️</div>
-            <h4 className="font-bold text-xs text-slate-900 dark:text-white">Fragile Tagging</h4>
-            <p className="text-[10px] text-slate-400 leading-tight">Separate handling for antiques &amp; TVs</p>
+            <h4 className="font-bold text-xs text-slate-900 dark:text-white">Department Barcodes</h4>
+            <p className="text-[10px] text-slate-400 leading-tight">Color-coded labels for rapid room &amp; desk allocation</p>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          6. SAFE LOADING & SECURING
+          6. SAFE IT & SERVER HANDLING
          ========================================================================= */}
       <section id="section-safe-loading" className="space-y-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Shield className="w-3.5 h-3.5 text-blue-600" />
-            <span>6. Safe Loading &amp; Securing</span>
+            <span>6. Safe IT &amp; Server Handling</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Safe Loading &amp; Cargo Securing
+            Secure IT Infrastructure &amp; Server Relocation
           </h3>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs flex flex-col md:flex-row items-center gap-6">
           <div className="w-14 h-14 rounded-2xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold shrink-0">
-            <Truck className="w-7 h-7" />
+            <Server className="w-7 h-7" />
           </div>
           <div className="space-y-2 text-left">
             <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-              Household items are carefully loaded and secured for transportation. Our trained moving crews use heavy-duty cargo straps, non-slip floor runners, and shock-absorbing cargo blankets to keep furniture, refrigerators, washing machines, and cartons stationary during highway and city transit.
+              Data center and server relocation requires specialized shock-absorption handling. Our crews follow strict ESD (electrostatic discharge) safety standards, utilizing padded server chassis cradles, rack-mount securing harnesses, and customized foam flight cases for zero transit shock.
             </p>
             <div className="flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Heavy-Duty Cargo Straps</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Anti-Vibration Base Padding</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Weight-Balanced Stacking</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ ESD Anti-Static Wrapping</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Cable Labeling &amp; Bundling</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Shock-Absorbing Transit Base</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          7. REAL-TIME SHIPMENT TRACKING
+          7. REAL-TIME FLEET TRACKING
          ========================================================================= */}
       <section id="section-realtime-tracking" className="space-y-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Navigation className="w-3.5 h-3.5 text-blue-600" />
-            <span>7. Real-Time Shipment Tracking</span>
+            <span>7. Real-Time Fleet Tracking</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Real-Time Shipment &amp; Vehicle Tracking
+            GPS Fleet Telemetry &amp; Move Coordination
           </h3>
         </div>
 
@@ -707,204 +471,204 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
           </div>
           <div className="space-y-2 text-left">
             <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-              Receive shipment and vehicle information during transportation. Stay fully informed at every stage with GPS truck telemetry, automatic milestone updates, driver contact information, and real-time coordination with your dedicated Move Manager.
+              Monitor commercial convoy movements with continuous GPS tracking. Stay in constant communication with your appointed Project Lead, receiving real-time convoy checkpoints, vehicle arrival ETAs, and building loading dock clearance alerts.
             </p>
             <div className="flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Live GPS Updates</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Dedicated Move Coordinator</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Milestone SMS &amp; WhatsApp Alerts</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Live GPS Truck Telemetry</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Dedicated Project Lead</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Dock Clearance Management</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          8. UNPACKING & ROOM PLACEMENT
+          8. WORKSPACE SETUP & FURNITURE ASSEMBLY
          ========================================================================= */}
       <section id="section-unpacking-placement" className="space-y-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
-            <Sofa className="w-3.5 h-3.5 text-blue-600" />
-            <span>8. Unpacking &amp; Room Placement</span>
+            <Wrench className="w-3.5 h-3.5 text-blue-600" />
+            <span>8. Workspace Setup &amp; Reassembly</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Unpacking &amp; Room Placement Support
+            Complete Desk Reassembly &amp; Floor Setup
           </h3>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs flex flex-col md:flex-row items-center gap-6">
           <div className="w-14 h-14 rounded-2xl bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold shrink-0">
-            <Home className="w-7 h-7" />
+            <Building2 className="w-7 h-7" />
           </div>
           <div className="space-y-2 text-left">
             <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-              Assistance with unpacking and placing belongings in designated rooms. Our crew assists with careful unboxing, position placement of heavy beds, sofas, wardrobes, and tables into their designated rooms, and takes away transit packing debris.
+              Turn key delivery ensures zero employee idle time. Our carpentry technicians reassemble modular desks, align office partitions, place executive furniture in designated managerial cabins, setup conference table AV mountings, and clear all discarded packing waste.
             </p>
             <div className="flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Designated Room Positioning</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Bed &amp; Wardrobe Reassembly</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Packing Debris Clearing</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Workstation Reassembly</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Conference Table AV Mounts</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ 100% Debris &amp; Packing Removal</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          9. LOCAL & DOMESTIC SHIFTING OPTIONS (4 OPTIONS)
+          9. COMMERCIAL SHIFTING OPTIONS (4 OPTIONS)
          ========================================================================= */}
       <section id="section-shifting-options" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Layers className="w-3.5 h-3.5 text-blue-600" />
-            <span>9. Local &amp; Domestic Shifting Options</span>
+            <span>9. Office Shifting Models</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Tailored Transport Models
+            Tailored Commercial Relocation Models
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Choose the right transportation tier based on your household volume, urgency, and budget.
+            Select the appropriate relocation tier based on your office scale, seat count, and transition timeline.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* One-Way Transport */}
+          {/* Small Office & Startups */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2 hover:border-blue-500 transition-all">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black uppercase text-[#001261] dark:text-blue-400 bg-blue-50 dark:bg-blue-950/80 px-2.5 py-0.5 rounded-md">
                 Option 1
               </span>
               <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded">
-                Same-Day Dispatch
+                Same-Day Move
               </span>
             </div>
-            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">One-Way Transport (Local Shifting)</h4>
+            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Startup &amp; Small Office Shifting (1–10 Seats)</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Planning to move within the same city? Our local house shifting service helps relocate household belongings safely between residential locations in <strong>{selectedCity}</strong> with professional packing, loading, transportation and unloading.
+              Agile relocation for co-working cabins, small startups, and boutique agency offices in <strong>{city}</strong> using Tata Ace or 8ft Pickups for rapid same-day transition.
             </p>
           </div>
 
-          {/* Outstation Transport */}
+          {/* IT Offices & Development Centers */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2 hover:border-blue-500 transition-all">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black uppercase text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-950/80 px-2.5 py-0.5 rounded-md">
                 Option 2
               </span>
               <span className="text-[10px] font-bold text-blue-600 bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded">
-                Dedicated Container
+                Weekend Zero-Downtime
               </span>
             </div>
-            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Outstation Transport (Intercity Relocation)</h4>
+            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">IT &amp; Tech Park Shifting (10–50 Workstations)</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Dedicated containerized long-distance transport for intercity household moves across state borders with locked weather-sealed trucks and guaranteed delivery timelines.
+              Comprehensive tech moving with server rack de-racking, dual-monitor workstation protection, and dedicated 14ft–17ft closed containers.
             </p>
           </div>
 
-          {/* Share Load */}
+          {/* Corporate Multi-Floor Enterprise */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2 hover:border-blue-500 transition-all">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black uppercase text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/80 px-2.5 py-0.5 rounded-md">
                 Option 3
               </span>
               <span className="text-[10px] font-bold text-amber-600 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded font-mono">
-                100–200 CFT • Up to 7 Days
+                Multi-Floor Project
               </span>
             </div>
-            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Share Load House Shifting</h4>
+            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Corporate Enterprise &amp; BPO Relocation (50–200+ Desks)</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Share Load is a cost-effective option for customers with medium-sized shipments. Your belongings are collected, moved through a warehouse-based consolidation process and transported with other compatible shipments. Covers approximately <strong>100–200 CFT</strong> shipments with an estimated transit time of up to seven days.
+              Phased multi-stage moves with dedicated project managers, multiple 20ft–22ft container convoys, full facility clearance, and employee desktop tagging.
             </p>
           </div>
 
-          {/* Part Load */}
+          {/* Retail Showrooms & Commercial Stores */}
           <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 shadow-xs space-y-2 hover:border-blue-500 transition-all">
             <div className="flex items-center justify-between">
               <span className="text-xs font-black uppercase text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/80 px-2.5 py-0.5 rounded-md">
                 Option 4
               </span>
               <span className="text-[10px] font-bold text-teal-600 bg-teal-50 dark:bg-teal-950/60 px-2 py-0.5 rounded font-mono">
-                Below 100 CFT
+                Store Fixtures
               </span>
             </div>
-            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Part Load House Shifting</h4>
+            <h4 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Commercial Showroom &amp; Retail Relocation</h4>
             <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-              Part Load transportation is suitable for smaller household shipments when a customer does not require an entire vehicle. Covers shipments <strong>below 100 CFT</strong> and is ideal for small household moves, 1 RK loads, or partial items (sofa/fridge/boxes).
+              Specialized shifting for display fixtures, glass counters, inventory stock, POS billing counters, and commercial warehouse administrative units.
             </p>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          10. DOMESTIC HOUSE SHIFTING ACROSS INDIA
+          10. DOMESTIC OFFICE SHIFTING ACROSS INDIA
          ========================================================================= */}
       <section id="section-domestic-shifting" className="space-y-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
-            <Map className="w-3.5 h-3.5 text-blue-600" />
-            <span>10. Domestic House Shifting</span>
+            <MapPin className="w-3.5 h-3.5 text-blue-600" />
+            <span>10. Domestic Office Shifting</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Domestic House Shifting Services Across India
+            Domestic Corporate Relocation Across India
           </h3>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
           <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-            Moving to another city requires planning, documentation and transportation coordination. Packer Solutions provides domestic house shifting services for long-distance residential relocation.
+            Expanding your branch footprint or moving regional headquarters to another tier-1 metro? Packer Solutions manages interstate corporate relocation with dedicated closed container vehicles and inter-branch tracking.
           </p>
           <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed font-normal">
-            The domestic moving process can include digital surveys, packing, packing lists, digital dockets, vehicle allocation, transportation, unloading and delivery confirmation.
+            Every long-distance corporate shipment is backed by comprehensive transit risk insurance, digital consignment notes, E-way bill compliance, and destination facility management coordination.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs font-semibold text-slate-700 dark:text-slate-300">
             <div className="p-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-              <span>Digital Survey</span>
+              <span>Digital Asset Survey</span>
             </div>
             <div className="p-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-              <span>Digital Dockets</span>
+              <span>E-Way Bill Compliance</span>
             </div>
             <div className="p-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-              <span>Vehicle Allocation</span>
+              <span>Dedicated Container</span>
             </div>
             <div className="p-2.5 bg-slate-50 dark:bg-slate-950 rounded-xl border border-slate-100 dark:border-slate-800 flex items-center gap-1.5">
               <Check className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-              <span>Delivery Confirmation</span>
+              <span>Facility Handover</span>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          11. DIGITAL DOCKET MANAGEMENT
+          11. DIGITAL DOCKET & ASSET INVENTORY MANAGEMENT
          ========================================================================= */}
       <section id="section-digital-docket" className="space-y-4">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <QrCode className="w-3.5 h-3.5 text-blue-600" />
-            <span>11. Digital Docket Management</span>
+            <span>11. Digital Docket &amp; Asset Management</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Digital Docket &amp; Documentation
+            Digital Inventory &amp; Asset Tracking
           </h3>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs flex flex-col md:flex-row items-center gap-6">
           <div className="w-14 h-14 rounded-2xl bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold shrink-0">
-            <FileText className="w-7 h-7" />
+            <FileCheck className="w-7 h-7" />
           </div>
           <div className="space-y-2 text-left">
             <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed font-medium">
-              Packing lists and digital moving documents improve visibility and accountability. Every item and carton is digitally cataloged so you can verify goods at source and destination seamlessly via your smartphone docket.
+              Eliminate missing items with our digital corporate inventory manifest. Every carton, monitor, and server is cataloged with barcode identifiers linked to specific department heads, ensuring instant verification during origin dispatch and destination unloading.
             </p>
             <div className="flex flex-wrap gap-2 text-[11px] font-bold text-slate-500 dark:text-slate-400">
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Itemized Packing Lists</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Electronic Consignment Docket</span>
-              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ GST Invoices for Tax/Claims</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Department Asset Registers</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Barcode Scanned Manifests</span>
+              <span className="bg-slate-100 dark:bg-slate-800 px-2.5 py-1 rounded-lg">✓ Compliant GST Corporate Invoicing</span>
             </div>
           </div>
         </div>
@@ -921,10 +685,10 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            House Shifting Charges &amp; Pricing ({selectedCity})
+            Office Shifting Charges &amp; Pricing ({city})
           </h3>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-            House shifting charges depend on several factors rather than one fixed rate. Key factors include moving distance, household volume, number and type of items, vehicle size, packing requirements, manpower, floor/access conditions, furniture dismantling and reassembly, additional services and storage requirements.
+            Commercial relocation pricing depends on total square footage, workstation count, IT infrastructure density, vehicle capacity, elevator access, and technical carpentry requirements. Below is our transparent reference rate matrix for {city}.
           </p>
         </div>
 
@@ -934,41 +698,48 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <table className="w-full text-left border-collapse">
               <thead>
                 <tr className="bg-[#001261] text-white text-[11px] uppercase tracking-wider font-mono">
-                  <th className="p-3.5">House Type</th>
-                  <th className="p-3.5">Packing Charges</th>
-                  <th className="p-3.5">Labor &amp; Handling</th>
-                  <th className="p-3.5">Intracity Total</th>
+                  <th className="p-3.5">Office Scale</th>
+                  <th className="p-3.5">Approx. Area</th>
+                  <th className="p-3.5">Recommended Vehicle</th>
+                  <th className="p-3.5">Intracity Estimate</th>
                   <th className="p-3.5">Intercity Starting</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs sm:text-sm text-slate-900 dark:text-white font-medium">
                 <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">1 RK / 1 BHK</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹1,200 – ₹2,000</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹1,500 – ₹2,200</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹3,500 – ₹5,500</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹8,500 – ₹14,000</td>
+                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">Small Office (1–10 Seats)</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">Up to 500 Sq.ft</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">Tata Ace / Pickup</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹8,999 – ₹12,500</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹18,000 – ₹28,000</td>
                 </tr>
                 <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">2 BHK Flat</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹2,500 – ₹3,800</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹2,800 – ₹4,000</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹6,500 – ₹9,500</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹14,000 – ₹22,000</td>
+                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">Medium IT Office (10–25 Seats)</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">500–1,200 Sq.ft</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">14 Ft / 17 Ft Container</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹18,999 – ₹24,999</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹32,000 – ₹48,000</td>
                 </tr>
                 <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">3 BHK Apartment</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹4,000 – ₹6,000</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹4,500 – ₹6,500</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹10,500 – ₹16,000</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹22,000 – ₹34,000</td>
+                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">Corporate Space (25–50 Seats)</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">1,200–2,500 Sq.ft</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">17 Ft / 20 Ft Container</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹29,999 – ₹39,999</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹52,000 – ₹78,000</td>
                 </tr>
                 <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">4 BHK / Independent Villa</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹6,500 – ₹9,500</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹7,000 – ₹11,000</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹16,500 – ₹26,000</td>
-                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹32,000 – ₹55,000</td>
+                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">Large Enterprise (50–100 Desks)</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">2,500–5,000 Sq.ft</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">20 Ft / 22 Ft Multi-Convoy</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹44,999 – ₹65,000</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">₹85,000 – ₹1,40,000</td>
+                </tr>
+                <tr className="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                  <td className="p-3.5 font-bold text-slate-900 dark:text-white">Enterprise Head Office (100+ Desks)</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">5,000+ Sq.ft</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">Dedicated Fleet Management</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">Custom Audit Plan</td>
+                  <td className="p-3.5 text-slate-800 dark:text-slate-200">Custom Turnkey Quote</td>
                 </tr>
               </tbody>
             </table>
@@ -978,10 +749,10 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
           <div className="bg-blue-50 dark:bg-blue-950/60 p-4 rounded-2xl border border-blue-200/80 dark:border-blue-900/60 flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-left space-y-0.5">
               <span className="font-bold text-xs text-[#001261] dark:text-blue-300 block">
-                Want an accurate house shifting quotation?
+                Planning an upcoming office relocation?
               </span>
               <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                Get a customized estimate based on your exact inventory and floor level.
+                Get an exact quotation tailored to your workstation count and IT inventory.
               </span>
             </div>
             <button
@@ -989,44 +760,44 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
               onClick={onOpenEnquiry}
               className="bg-[#001261] hover:bg-blue-900 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer shadow-xs"
             >
-              Get a Free Digital Survey
+              Request Free Corporate Survey
             </button>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          13. HOUSEHOLD ITEMS WE HANDLE (ITEMS WE MOVE)
+          13. OFFICE ASSETS & EQUIPMENT WE HANDLE
          ========================================================================= */}
       <section id="section-items-we-move" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Boxes className="w-3.5 h-3.5 text-blue-600" />
-            <span>13. Items We Move</span>
+            <span>13. Office Items We Handle</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Household Items We Handle
+            Commercial Inventory &amp; Equipment Handled
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Certified safe packing and secure transport for all residential goods categories.
+            Certified safe packing and zero-scratch relocation for all enterprise workspace goods categories.
           </p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {[
-            { icon: Sofa, name: 'Furniture & Sofas', desc: 'L-shape sofas, recliners, wooden sets' },
-            { icon: Home, name: 'Beds & Wardrobes', desc: 'King/Queen beds, modular wardrobes' },
-            { icon: Table, name: 'Dining Tables', desc: 'Glass-top, solid wood & marble tables' },
-            { icon: Package, name: 'Refrigerators', desc: 'Single/Double door & French door fridges' },
-            { icon: Wrench, name: 'Washing Machines', desc: 'Front & Top load with drum locks' },
-            { icon: Tv, name: 'Televisions & Audio', desc: 'OLED/QLED TVs in specialized foam crates' },
-            { icon: Server, name: 'Electronics & IT', desc: 'Laptops, PCs, routers & sound systems' },
-            { icon: Boxes, name: 'Kitchen Goods', desc: 'Crockery, glassware & pantry cartons' },
-            { icon: ShieldCheck, name: 'Fragile Belongings', desc: 'Mirrors, paintings, artwork & chandeliers' },
-            { icon: FileText, name: 'Documents & Valuables', desc: 'Sealed document pouches & safes' },
-            { icon: Bike, name: 'Bikes & Scooters', desc: 'Two-wheelers in wooden/hydraulic crates' },
-            { icon: Car, name: 'Cars & Commercial', desc: 'Enclosed vehicle carrier transport' }
+            { icon: Building2, name: 'Workstations & Cubicles', desc: 'Modular linear desks, partitions & screens' },
+            { icon: Briefcase, name: 'Executive Cabins', desc: 'MD desks, credenzas & leather chairs' },
+            { icon: Table, name: 'Conference Suites', desc: 'Boardroom tables & presentation furniture' },
+            { icon: Monitor, name: 'Desktops & Monitors', desc: 'Dual-monitor setups with screen foam guards' },
+            { icon: Server, name: 'Servers & IT Racks', desc: 'Data center switches, patch panels & UPS' },
+            { icon: HardDrive, name: 'Printers & Photocopiers', desc: 'Heavy multifunction commercial copiers' },
+            { icon: FileText, name: 'Legal & HR Archives', desc: 'Tamper-sealed document boxes & compactors' },
+            { icon: Boxes, name: 'Cafeteria & Pantry Units', desc: 'Coffee machines, water dispensers & fridges' },
+            { icon: ShieldCheck, name: 'Glass & Acoustic Panels', desc: 'Tempered glass dividers & reception signage' },
+            { icon: Zap, name: 'UPS & Power Inverters', desc: 'Heavy commercial power backup batteries' },
+            { icon: Warehouse, name: 'Storage Cabinets', desc: 'Steel almirahs, pedestals & locker units' },
+            { icon: Truck, name: 'Showroom Fixtures', desc: 'Retail merchandise racks & display gondolas' }
           ].map((item, idx) => {
             const IconC = item.icon;
             return (
@@ -1043,35 +814,35 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
       </section>
 
       {/* =========================================================================
-          14. ADDITIONAL RELOCATION SERVICES
+          14. ADDITIONAL CORPORATE SERVICES
          ========================================================================= */}
       <section id="section-additional-services" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Wrench className="w-3.5 h-3.5 text-blue-600" />
-            <span>14. Additional Services</span>
+            <span>14. Additional Corporate Services</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Additional Relocation Services
+            Value-Added Corporate Solutions
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            One-stop moving convenience with value-added home installation, cleaning, and handyman services.
+            One-stop enterprise convenience with technical handyman, IT cable layout, and post-move facility support.
           </p>
         </div>
 
         <div className="flex flex-wrap gap-2.5">
           {[
-            'Deep Cleaning',
-            'Home Cleaning',
-            'Surface Protection',
-            'AC Dismantling',
-            'AC Installation',
-            'TV Installation',
-            'Furniture Reassembly',
-            'Handyman Services',
-            'Temporary Storage',
-            'Transit Insurance'
+            'Server De-racking & Re-racking',
+            'Data Cable Organization',
+            'Floor-Wise Workstation Setup',
+            'Conference Room AV Setup',
+            'Commercial Deep Cleaning',
+            'Carpet & Floor Surface Guard',
+            'AC Dismantling & Installation',
+            'E-Waste Certified Disposal',
+            'Secure Document Shredding',
+            'Transit Risk Insurance'
           ].map((srv, idx) => (
             <div
               key={idx}
@@ -1085,7 +856,7 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
       </section>
 
       {/* =========================================================================
-          15. POPULAR CITIES (HOUSE SHIFTING BY CITY)
+          15. POPULAR CITIES (OFFICE SHIFTING BY CITY)
          ========================================================================= */}
       <section id="section-popular-cities" className="space-y-6">
         <div className="space-y-1">
@@ -1095,31 +866,28 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            House Shifting Services by City
+            Office Shifting Services by Commercial Hub
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Dedicated branch operations and verified local moving crews across India&apos;s leading cities.
+            Dedicated corporate relocation branches across India&apos;s leading technology and business corridors.
           </p>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 space-y-4 shadow-xs">
           <div className="text-xs font-bold uppercase tracking-wider text-slate-400">
-            Select Your City for Instant Local Dispatch:
+            Select Your Business Location for Corporate Dispatch:
           </div>
           <div className="flex flex-wrap gap-2">
-            {[
-              'Coimbatore', 'Chennai', 'Bengaluru', 'Hyderabad', 'Kochi', 
-              'Mumbai', 'Pune', 'Delhi', 'Ahmedabad', 'Kolkata'
-            ].map((city) => {
-              const isSelected = city.toLowerCase() === selectedCity.toLowerCase() || 
-                (city === 'Bengaluru' && selectedCity.toLowerCase() === 'bangalore');
+            {POPULAR_OFFICE_CITIES.map((c) => {
+              const isSelected = c.toLowerCase() === city.toLowerCase() || 
+                (c === 'Bengaluru' && city.toLowerCase() === 'bangalore');
               return (
                 <button
-                  key={city}
+                  key={c}
                   type="button"
                   onClick={() => {
-                    const normalizedCity = city === 'Bengaluru' ? 'Bangalore' : city;
-                    onSelectCity(normalizedCity);
+                    const normalizedCity = c === 'Bengaluru' ? 'Bangalore' : c;
+                    if (onSelectCity) onSelectCity(normalizedCity);
                     const heading = document.getElementById('service-page-heading');
                     if (heading) heading.scrollIntoView({ behavior: 'smooth' });
                   }}
@@ -1130,7 +898,7 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
                   }`}
                 >
                   <MapPin className="w-3 h-3 text-orange-500 shrink-0" />
-                  <span>{city}</span>
+                  <span>{c}</span>
                 </button>
               );
             })}
@@ -1138,10 +906,10 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
 
           <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
             <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-400">
-              Active Local Localities in {selectedCity}
+              Active Commercial Corridors &amp; IT Clusters in {city}
             </h4>
             <div className="flex flex-wrap gap-1.5">
-              {serviceAreas.slice(0, 8).map((area, idx) => (
+              {commercialAreas.slice(0, 8).map((area, idx) => (
                 <span key={idx} className="bg-slate-50 dark:bg-slate-950 border border-slate-200/60 dark:border-slate-800 text-[10px] text-slate-600 dark:text-slate-300 font-medium px-2.5 py-1 rounded-lg">
                   {area}
                 </span>
@@ -1152,33 +920,33 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
       </section>
 
       {/* =========================================================================
-          16. POPULAR ROUTES (ROUTE SEO PAGES)
+          16. POPULAR INTERCITY BUSINESS ROUTES
          ========================================================================= */}
       <section id="section-popular-routes" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Navigation className="w-3.5 h-3.5 text-blue-600" />
-            <span>16. Popular Routes</span>
+            <span>16. Popular Corporate Routes</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            High-Volume Intercity Shifting Routes
+            High-Volume Intercity Corporate Shifting Routes
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Dedicated regular container shuttles running between major logistics hubs.
+            Dedicated containerized line-hauls between major IT parks and commerce hubs.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {[
-            { origin: 'Coimbatore', dest: 'Bangalore', time: '1–2 Days', fare: '₹9,500' },
-            { origin: 'Coimbatore', dest: 'Chennai', time: '1–2 Days', fare: '₹10,500' },
-            { origin: 'Coimbatore', dest: 'Hyderabad', time: '2–3 Days', fare: '₹13,500' },
-            { origin: 'Coimbatore', dest: 'Mumbai', time: '3–4 Days', fare: '₹16,500' },
-            { origin: selectedCity, dest: 'Bengaluru', time: '1–2 Days', fare: '₹11,000' },
-            { origin: selectedCity, dest: 'Chennai', time: '1–2 Days', fare: '₹10,800' },
-            { origin: selectedCity, dest: 'Hyderabad', time: '2–3 Days', fare: '₹12,200' },
-            { origin: selectedCity, dest: 'Delhi NCR', time: '3–5 Days', fare: '₹18,500' }
+            { origin: 'Coimbatore', dest: 'Chennai IT Hub', time: '1–2 Days', fare: '₹22,000' },
+            { origin: 'Coimbatore', dest: 'Bengaluru ORR', time: '1–2 Days', fare: '₹19,500' },
+            { origin: 'Coimbatore', dest: 'Hyderabad Hitec', time: '2–3 Days', fare: '₹28,500' },
+            { origin: 'Coimbatore', dest: 'Kochi Infopark', time: '1 Day', fare: '₹16,500' },
+            { origin: city, dest: 'Bengaluru Tech SEZ', time: '1–2 Days', fare: '₹24,000' },
+            { origin: city, dest: 'Mumbai BKC', time: '3–4 Days', fare: '₹38,000' },
+            { origin: city, dest: 'Pune Cybercity', time: '2–3 Days', fare: '₹34,000' },
+            { origin: city, dest: 'Delhi NCR Gurugram', time: '3–5 Days', fare: '₹45,000' }
           ].map((r, idx) => (
             <div
               key={idx}
@@ -1212,43 +980,43 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             Frequently Asked Questions
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Clear answers regarding pricing, packing, transit tracking, share loads, and furniture assembly.
+            Clear answers regarding zero-downtime shifting, IT server moves, workstation carpentry, and insurance.
           </p>
         </div>
 
         <div className="space-y-2.5">
           {[
             {
-              q: 'How much does house shifting cost?',
-              a: 'Charges depend on distance, household volume, vehicle size, packing, manpower and additional services.'
+              q: 'How does Packer Solutions guarantee zero business downtime?',
+              a: 'We conduct physical/digital surveys in advance, prepare floor-wise alphanumeric asset tags, and execute moves during weekends (Friday evening to Sunday night) so your teams arrive at fully operational desks on Monday morning.'
             },
             {
-              q: 'Do you provide packing and unpacking?',
-              a: 'Yes. Packing, loading, transportation, unloading and unpacking can be selected based on requirements.'
+              q: 'How do you handle sensitive servers and IT infrastructure?',
+              a: 'Our certified technical crews use anti-static ESD bubble cushioning, specialized server rack cradles, tagged cable organizers, and air-suspension covered container vehicles for zero transit vibration.'
             },
             {
-              q: 'Do you provide furniture dismantling and reassembly?',
-              a: 'Yes, as part of selected relocation services.'
+              q: 'Do you dismantle and reassemble modular workstations and conference tables?',
+              a: 'Yes. Our experienced modular furniture carpenters dismantle workstations, number every component, and precisely reassemble them in your new office matching your approved layout plan.'
             },
             {
-              q: 'Can I track my household shipment?',
-              a: 'Yes. Shipment and vehicle information can be provided during transportation.'
+              q: 'How are commercial office shifting charges estimated?',
+              a: 'Pricing is based on office square footage, workstation count, IT infrastructure density, container vehicle size, manpower requirement, and building access conditions (lifts, floor levels).'
             },
             {
-              q: 'Do you provide domestic house shifting?',
-              a: 'Yes. Domestic relocation services are available for intercity household moves.'
+              q: 'Can we book a free on-site physical survey for our corporate office?',
+              a: 'Yes. A senior Move Consultant will visit your facility to inspect equipment volume, calculate CFT, examine loading docks, and provide an itemized corporate proposal.'
             },
             {
-              q: 'Do you provide temporary storage?',
-              a: 'Storage can be arranged when required.'
+              q: 'Do you provide transit insurance for commercial relocations?',
+              a: 'Yes. We offer comprehensive all-risk transit insurance covering electronic hardware, office furniture, architectural glass, and commercial assets.'
             },
             {
-              q: 'What is Share Load?',
-              a: 'A consolidated transportation option for medium-sized shipments; the supplied definition covers 100–200 CFT with an estimated transit time of up to seven days.'
+              q: 'Can you move office branches between different cities?',
+              a: 'Yes. We manage domestic intercity office relocations nationwide with dedicated locked container trucks, digital dockets, and E-way bill compliance.'
             },
             {
-              q: 'What is Part Load?',
-              a: 'A transportation option for smaller household shipments; the supplied definition covers below 100 CFT.'
+              q: 'Do you offer temporary commercial warehouse storage?',
+              a: 'Yes. Secure, CCTV-monitored, fire-compliant warehouse space is available for short-term and long-term storage of office inventory, surplus desks, and archived documents.'
             }
           ].map((faq, idx) => {
             const isOpen = expandedFaq === idx;
@@ -1283,10 +1051,10 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
               ⚡ 18. Final CTA
             </span>
             <h3 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-              Ready to Move Your Home?
+              Ready to Relocate Your Office with Zero Downtime?
             </h3>
             <p className="text-xs sm:text-sm text-slate-200 w-full leading-relaxed">
-              Make your next move simple with professional house shifting services from Packer Solutions. Get a free digital survey, understand your moving requirements and receive a transparent quotation before confirming your relocation.
+              Partner with Packer Solutions for seamless, organized corporate office relocation. Schedule a free on-site survey, understand your logistics plan, and receive a competitive, transparent quotation tailored to your enterprise.
             </p>
           </div>
 
@@ -1294,9 +1062,10 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <button
               type="button"
               onClick={onOpenEnquiry}
+              id="office-final-cta-btn"
               className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs px-6 py-3.5 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <span>Get Your Free House Shifting Quote</span>
+              <span>Get Your Free Office Relocation Quote</span>
               <ArrowRight className="w-4 h-4" />
             </button>
 
@@ -1305,7 +1074,7 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
               className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white font-bold text-xs px-5 py-3.5 rounded-2xl border border-white/15 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Phone className="w-4 h-4 text-blue-300" />
-              <span>Call Helpline</span>
+              <span>Corporate Desk: +91 98765 43210</span>
             </a>
           </div>
         </div>
@@ -1313,15 +1082,15 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
         <div className="pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-slate-300 relative z-10">
           <div className="flex items-center gap-2.5">
             <Phone className="w-4 h-4 text-blue-400 shrink-0" />
-            <span>24/7 Support: <strong>+91 98765 43210</strong></span>
+            <span>Corporate Support: <strong>+91 98765 43210</strong></span>
           </div>
           <div className="flex items-center gap-2.5">
             <MessageSquare className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>WhatsApp Quote: <strong>Chat Available</strong></span>
+            <span>WhatsApp Corporate: <strong>Instant Chat</strong></span>
           </div>
           <div className="flex items-center gap-2.5">
             <Clock className="w-4 h-4 text-amber-400 shrink-0" />
-            <span>Working Hours: <strong>Mon - Sun (8 AM - 10 PM)</strong></span>
+            <span>Operations: <strong>24/7 Weekend Shifts</strong></span>
           </div>
         </div>
       </section>

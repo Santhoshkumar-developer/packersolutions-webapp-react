@@ -379,6 +379,7 @@ export default function App() {
         selectedCity={selectedCity}
         onOpenCityModal={() => setShowCityModal(true)}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
+        onOpenPartnerModal={() => setShowDeliveryModal(true)}
       />
 
       {/* Interactive Main Body Content */}
@@ -541,7 +542,7 @@ export default function App() {
                       onClick={() => setIsLoginModalOpen(true)}
                       className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-orange-600 via-brand-orange to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap shrink-0 hover:scale-[1.02] active:scale-[0.98]"
                     >
-                      <span>Calculate Shifting Price</span>
+                      <span>Get Estimate</span>
                       <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                     </button>
                   </div>
@@ -940,7 +941,7 @@ export default function App() {
           <div id="service-detailed-page-view">
             
             {/* Service Hero Header with Real Iconic City Background */}
-            <section className="relative bg-slate-950 text-white py-14 sm:py-20 border-b border-slate-800 overflow-hidden min-h-[360px] flex items-center">
+            <section className="relative bg-slate-950 text-white pt-10 sm:pt-14 pb-20 sm:pb-28 lg:py-20 border-b border-slate-800 overflow-hidden min-h-[340px] sm:min-h-[380px] lg:min-h-[360px] flex items-center">
               {/* Real Iconic City Image Background */}
               <div 
                 className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-all duration-700 transform scale-105"
@@ -988,38 +989,12 @@ export default function App() {
             </section>
 
             {/* Detailed Content & Booking Grid */}
-            <section id="booking-section" className="py-12 bg-slate-50 dark:bg-transparent relative">
+            <section id="booking-section" className="py-6 sm:py-10 lg:py-12 bg-slate-50 dark:bg-transparent relative">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
                 
-                {/* Left Side: Rich Porter-Style Service Details Content & Sections */}
-                <div className="lg:col-span-7 space-y-8 text-left">
+                {/* Content Section (Desktop: Left Column, Mobile & Tablet: Below Form) */}
+                <div className="order-2 lg:order-1 lg:col-span-7 space-y-8 text-left mt-4 lg:mt-0">
                   
-                  {/* Service Description Box (Hidden for Truck Booking, Parcel & Courier, and Warehousing to directly present their rich dedicated sections) */}
-                  {!(activeService.id === 'domestic-relocation' || activeService.id === 'truck-booking' || activeService.id === 'parcel-courier' || activeService.id === 'parcel-transport' || activeService.id === 'warehousing-storage' || activeService.name.toLowerCase().includes('truck') || activeService.name.toLowerCase().includes('parcel') || activeService.name.toLowerCase().includes('courier') || activeService.name.toLowerCase().includes('warehouse') || activeService.name.toLowerCase().includes('storage')) && (
-                    <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-5">
-                      <h3 className="text-xl font-bold text-slate-900 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800 pb-3">Service Deep-Dive</h3>
-                      <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed font-medium">
-                        {activeService.detailedDescription}
-                      </p>
-                      
-                      {/* Service Hero Image */}
-                      <div className="w-full h-64 sm:h-72 bg-slate-100 dark:bg-slate-800 rounded-2xl overflow-hidden relative border border-slate-200 dark:border-slate-700 shadow-sm">
-                        <img 
-                          src={activeService.image} 
-                          alt={activeService.name}
-                          referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover"
-                        />
-                        <div className="absolute inset-0 bg-slate-900/10 flex items-center justify-center">
-                          <div className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm px-4 py-2 rounded-xl text-xs font-bold text-slate-950 dark:text-slate-100 flex items-center gap-2 shadow-md">
-                            <LucideIcon name="Layers" className="w-4 h-4 text-orange-500 animate-pulse" />
-                            <span>Packersolution Premium Managed Relocation</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
                   {/* Rich Dynamic Porter Sections */}
                   <ServicePorterContent
                     selectedCity={selectedCity}
@@ -1031,9 +1006,9 @@ export default function App() {
 
                 </div>
 
-                {/* Right Side: Interactive Shifting CTA Card (1/3 overlaps into Hero section) */}
-                <div className="lg:col-span-5 -mt-20 sm:-mt-28 lg:-mt-36 relative z-20">
-                  <div className="sticky top-24">
+                {/* Shifting CTA Card Form (Desktop: Sticky Right Column, Mobile & Tablet: Adjacent Centered on Hero) */}
+                <div className="order-1 lg:order-2 lg:col-span-5 -mt-16 sm:-mt-24 lg:-mt-36 relative z-20 w-full max-w-lg sm:max-w-xl mx-auto lg:max-w-none">
+                  <div className="lg:sticky lg:top-24">
                     {activeService.id === 'domestic-relocation' ? (
                       <TruckBookingCardForm
                         selectedCity={selectedCity}
@@ -1123,36 +1098,6 @@ export default function App() {
 
             {/* Dynamic Service Specific FAQ accordions */}
             <FAQSection serviceSpecificFaqs={activeService.faq} serviceName={activeService.name} />
-
-            {/* Service switcher bottom tray (Supporting high search page relevance) */}
-            <section className="py-16 bg-slate-900 text-white border-t border-slate-800">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h3 className="font-bold text-lg mb-8 text-center text-slate-300">Explore Our Other Logistic Channels</h3>
-                
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                  {SERVICES_DATA.filter(s => s.id !== activeService.id).map(svc => (
-                    <button
-                      key={svc.id}
-                      id={`btn-switch-to-${svc.id}`}
-                      onClick={() => navigateTo('service', svc.id)}
-                      className="bg-slate-950 hover:bg-slate-800 border border-slate-800 p-4 rounded-2xl text-left hover:border-orange-500 transition-all group flex flex-col justify-between h-36 cursor-pointer"
-                    >
-                      <div className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center shrink-0">
-                        <LucideIcon name={svc.iconName} className="w-4 h-4" />
-                      </div>
-                      <div className="mt-4">
-                        <span className="block font-bold text-xs text-slate-200 group-hover:text-orange-400 transition-colors line-clamp-2 leading-tight">
-                          {svc.name}
-                        </span>
-                        <span className="block text-[10px] text-slate-500 font-bold font-mono mt-1">
-                          ₹{svc.basePrice.toLocaleString()}+
-                        </span>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </section>
 
             {/* Mobile & Tablet Floating Sticky Shifting Price CTA Bar */}
             <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200/80 dark:border-slate-800 shadow-[0_-8px_30px_rgba(0,0,0,0.08)] px-4 py-3 sm:px-6 pb-4 sm:pb-5 safe-bottom transition-all duration-300">

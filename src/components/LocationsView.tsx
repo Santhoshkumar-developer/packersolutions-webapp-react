@@ -503,7 +503,7 @@ export const LocationsView: React.FC<LocationsViewProps> = ({
                 {/* Actions */}
                 <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row items-center gap-3">
                   <button
-                    onClick={() => onOpenBooking('household-shifting', currentBranch.cityName)}
+                    onClick={() => onOpenBooking('packers-and-movers', currentBranch.cityName)}
                     className="w-full sm:flex-1 bg-brand-orange hover:bg-orange-600 text-white font-bold text-xs py-3.5 px-5 rounded-2xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
                   >
                     <span>Book Moving Service in {currentBranch.cityName}</span>

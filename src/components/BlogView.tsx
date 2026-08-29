@@ -302,7 +302,7 @@ export const BlogView: React.FC<BlogViewProps> = ({
                       Apply the packing wisdom you just read with Coimbatore & Bangalore's #1 trusted shipping network.
                     </p>
                     <button 
-                      onClick={() => onNavigate('service', 'household-shifting')}
+                      onClick={() => onNavigate('service', 'packers-and-movers')}
                       className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs py-3 rounded-xl shadow-md mt-5 transition-transform hover:scale-[1.02] cursor-pointer"
                     >
                       Calculate Moving Price →

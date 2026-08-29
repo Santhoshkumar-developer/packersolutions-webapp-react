@@ -8,7 +8,7 @@ import { LucideIcon } from './LucideIcon';
 import { ServiceItem } from '../types';
 import logoImg from '../assets/images/packersolution_logo.jpg';
 import { useAddress } from '../context/AddressContext';
-import { User, MapPin, LogOut, ChevronDown } from 'lucide-react';
+import { User, MapPin, LogOut, ChevronDown, HelpCircle, LogIn } from 'lucide-react';
 
 interface NavbarProps {
   currentPage: string;
@@ -123,45 +123,6 @@ export const Navbar: React.FC<NavbarProps> = ({
         
         </div>
 
-        {/* Desktop Links: Home, For Business, and Driving Partner */}
-        <div className="hidden lg:flex items-center gap-2">
-          <button
-            id="nav-link-home"
-            onClick={() => onNavigate('home')}
-            className={`text-sm font-bold tracking-tight transition-colors cursor-pointer px-3 py-2 rounded-xl ${
-              currentPage === 'home'
-                ? 'text-orange-600 dark:text-orange-400 bg-orange-50/80 dark:bg-orange-500/10'
-                : 'text-slate-700 hover:text-orange-500 dark:text-slate-200 dark:hover:text-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
-            }`}
-          >
-            <span>Home</span>
-          </button>
-
-          <button
-            id="nav-link-for-business"
-            onClick={() => onNavigate('service', 'office-relocation')}
-            className={`text-sm font-bold tracking-tight transition-colors cursor-pointer px-3 py-2 rounded-xl ${
-              currentPage === 'service' && activeServiceId === 'office-relocation'
-                ? 'text-orange-600 dark:text-orange-400 bg-orange-50/80 dark:bg-orange-500/10'
-                : 'text-slate-700 hover:text-orange-500 dark:text-slate-200 dark:hover:text-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
-            }`}
-          >
-            <span>For Business</span>
-          </button>
-
-          <button
-            id="nav-link-driving-partner"
-            onClick={() => onNavigate('driving-partner')}
-            className={`text-sm font-bold tracking-tight transition-colors cursor-pointer px-3 py-2 rounded-xl ${
-              currentPage === 'driving-partner'
-                ? 'text-orange-600 dark:text-orange-400 bg-orange-50/80 dark:bg-orange-500/10'
-                : 'text-slate-700 hover:text-orange-500 dark:text-slate-200 dark:hover:text-orange-400 hover:bg-slate-50 dark:hover:bg-slate-800/40'
-            }`}
-          >
-            <span>Driving Partner</span>
-          </button>
-        </div>
-
         {/* Action button */}
         <div className="hidden lg:flex items-center gap-3">
           {/* Global Dark Mode Toggle */}
@@ -179,20 +140,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          <a 
-            id="btn-nav-whatsapp"
-            href="https://wa.me/919876543210" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="bg-emerald-500 hover:bg-emerald-600 text-white w-11 h-11 rounded-xl flex items-center justify-center shadow-md transition-all hover:scale-105 shrink-0"
-            title="Chat on WhatsApp"
-            aria-label="Chat on WhatsApp"
-          >
-            <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347z"/>
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.119.553 4.11 1.524 5.845L0 24l6.316-1.48C7.973 23.472 9.923 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.87 0-3.626-.502-5.143-1.378l-.368-.211-3.753.88.905-3.619-.232-.38C2.477 15.727 1.96 13.921 1.96 12c0-5.535 4.505-10.04 10.04-10.04 5.535 0 10.04 4.505 10.04 10.04C22.04 17.535 17.535 22 12 22z"/>
-            </svg>
-          </a>
           {/* User Account / Login Button */}
           {isLoggedIn ? (
             <div className="relative" ref={accountMenuRef}>
@@ -270,25 +217,36 @@ export const Navbar: React.FC<NavbarProps> = ({
                 id="btn-nav-saved-addresses-guest"
                 type="button"
                 onClick={openSavedAddressesModal}
-                className="hidden xl:flex bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs px-3 h-11 rounded-xl transition-all items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700/80"
-                title="View & manage saved addresses"
+                className="relative bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs w-11 h-11 rounded-xl transition-all flex items-center justify-center cursor-pointer border border-slate-200 dark:border-slate-700/80 shrink-0"
+                title="Saved Addresses"
+                aria-label="Saved Addresses"
               >
-                <MapPin className="w-3.5 h-3.5 text-orange-500" />
-                <span>Addresses</span>
+                <MapPin className="w-4 h-4 text-orange-500" />
                 {savedAddresses.length > 0 && (
-                  <span className="text-[10px] bg-orange-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-black">
+                  <span className="absolute -top-1 -right-1 text-[9px] bg-orange-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-black shadow-sm">
                     {savedAddresses.length}
                   </span>
                 )}
+              </button>
+
+              <button
+                id="btn-nav-help-center"
+                type="button"
+                onClick={() => onNavigate('contact')}
+                className="hidden sm:flex bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-medium text-xs px-4 h-11 rounded-xl transition-all items-center gap-1.5 cursor-pointer shadow-sm hover:shadow-md border border-red-700 shrink-0"
+                title="Help Center & 24x7 Support"
+              >
+                <HelpCircle className="w-4 h-4 text-white" />
+                <span>Help Center</span>
               </button>
               
               <button
                 id="btn-nav-login"
                 onClick={onOpenLoginModal}
-                className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-extrabold text-xs px-4 h-11 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700 shrink-0"
+                className="bg-[#0321a1] hover:bg-[#001980] active:bg-[#001261] text-white font-medium text-xs px-4 h-11 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-sm hover:shadow-md border border-[#021b85] shrink-0"
               >
-                <LucideIcon name="Smartphone" className="w-4 h-4 text-orange-500" />
-                <span>Login / OTP</span>
+                <LogIn className="w-4 h-4 text-white" />
+                <span>Login</span>
               </button>
             </div>
           )}
@@ -310,22 +268,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               <LucideIcon name="Moon" className="w-5 h-5 text-slate-600 dark:text-slate-300" />
             )}
           </button>
-
-          {/* Mobile WhatsApp Button */}
-          <a
-            id="btn-mobile-nav-whatsapp"
-            href="https://wa.me/919876543210"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-emerald-500 hover:bg-emerald-600 text-white w-10 h-10 rounded-xl flex items-center justify-center shadow-sm transition-transform active:scale-95 shrink-0"
-            title="Chat on WhatsApp"
-            aria-label="Chat on WhatsApp"
-          >
-            <svg className="w-5 h-5 fill-current text-white" viewBox="0 0 24 24">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.124-.272-.198-.57-.347z"/>
-              <path d="M12 0C5.373 0 0 5.373 0 12c0 2.119.553 4.11 1.524 5.845L0 24l6.316-1.48C7.973 23.472 9.923 24 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.87 0-3.626-.502-5.143-1.378l-.368-.211-3.753.88.905-3.619-.232-.38C2.477 15.727 1.96 13.921 1.96 12c0-5.535 4.505-10.04 10.04-10.04 5.535 0 10.04 4.505 10.04 10.04C22.04 17.535 17.535 22 12 22z"/>
-            </svg>
-          </a>
           
           <button
             id="btn-toggle-mobile-menu"
@@ -340,29 +282,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div id="mobile-navigation-drawer" className="lg:hidden border-t border-slate-100 dark:border-slate-800/80 bg-white dark:bg-[#070d19] p-5 space-y-4 shadow-inner">
-          <div className="grid grid-cols-2 gap-2 pb-3 border-b border-slate-100 dark:border-slate-800/80">
-            <button
-              onClick={() => {
-                onNavigate('service', 'office-relocation');
-                setMobileMenuOpen(false);
-              }}
-              className="flex items-center justify-center gap-1.5 p-3 rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold text-xs border border-orange-200 dark:border-orange-500/20"
-            >
-              <LucideIcon name="Briefcase" className="w-3.5 h-3.5" />
-              <span>For Business</span>
-            </button>
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onNavigate('driving-partner');
-              }}
-              className="flex items-center justify-center gap-1.5 p-3 rounded-xl bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 font-bold text-xs border border-orange-200 dark:border-orange-500/20"
-            >
-              <LucideIcon name="Truck" className="w-3.5 h-3.5" />
-              <span>Driving Partner</span>
-            </button>
-          </div>
-
           <div className="space-y-2">
             <button
               onClick={() => {
@@ -526,10 +445,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                   setMobileMenuOpen(false);
                   if (onOpenLoginModal) onOpenLoginModal();
                 }}
-                className="w-full h-11 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-extrabold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200 dark:border-slate-700"
+                className="w-full h-11 rounded-xl bg-[#0321a1] hover:bg-[#001980] text-white font-medium text-xs flex items-center justify-center gap-2 transition-colors border border-[#021b85]"
               >
-                <LucideIcon name="Smartphone" className="w-4 h-4 text-orange-500" />
-                <span>Login / Register with OTP</span>
+                <LogIn className="w-4 h-4 text-white" />
+                <span>Login</span>
               </button>
             )}
           </div>
@@ -544,7 +463,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
             <button
               onClick={() => {
-                onNavigate('service', 'household-shifting');
+                onNavigate('service', 'packers-and-movers');
                 setMobileMenuOpen(false);
               }}
               className="bg-orange-500 hover:bg-orange-600 text-white rounded-xl h-12 font-bold text-sm transition-all"

@@ -296,6 +296,44 @@ export const LoadingUnloadingServiceContent: React.FC<LoadingUnloadingServiceCon
       </section>
 
       {/* =========================================================================
+          SEO KEYWORD TARGETING CATEGORIES
+         ========================================================================= */}
+      <section id="section-loading-seo-keywords" className="bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+            Certified Loading, Machinery Rigging &amp; Shifting Categories
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2.5">
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
+            <Factory className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              best machinery loading service company in coimbatore
+            </h2>
+          </div>
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
+            <Truck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              loading and unloading services
+            </h2>
+          </div>
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
+            <Boxes className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              small load movers
+            </h2>
+          </div>
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
+            <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              loading and unloading movers in coimbatore
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
           2. PROFESSIONAL LOADING & UNLOADING SERVICES
          ========================================================================= */}
       <section id="section-professional-services" className="space-y-6">
@@ -304,10 +342,10 @@ export const LoadingUnloadingServiceContent: React.FC<LoadingUnloadingServiceCon
             <Truck className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>2. Professional Loading &amp; Unloading Services</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            End-to-End Industrial, Commercial &amp; Residential Handling in {city}
-          </h3>
+            Loading and Unloading Services – Heavy Machinery Rigging &amp; Small Load Movers in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Improper lifting or unscientific weight balancing can lead to catastrophic cargo damage, floor destruction, and costly industrial downtime. Packer Solutions deploys certified handling procedures customized for factories, warehouses, commercial high-rises, and residential premises across {city}.
           </p>
@@ -1146,10 +1184,10 @@ export const LoadingUnloadingServiceContent: React.FC<LoadingUnloadingServiceCon
             <MapPin className="w-3.5 h-3.5 text-blue-600" />
             <span>14. Loading &amp; Unloading Hubs in {city}</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Fast On-Demand Crew &amp; Equipment Dispatch Across {city}
-          </h3>
+            Loading and Unloading Movers in Coimbatore &amp; Pan-India Industrial Network
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Our specialized rigging crews, forklifts, and mobile cranes are staged near major industrial zones and commercial freight hubs.
           </p>

@@ -319,7 +319,7 @@ const TRUCK_TABS = [
 
 const OTHER_SERVICES_MENU = [
   {
-    id: 'household-shifting',
+    id: 'packers-and-movers',
     name: 'House Shifting',
     image: packersVectorImg,
     badge: 'Up to 30% Off'

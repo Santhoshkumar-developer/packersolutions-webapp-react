@@ -58,7 +58,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({ service, onSuccess }) 
   useEffect(() => {
     let cost = service.basePrice;
 
-    if (service.id === 'household-shifting') {
+    if (service.id === 'packers-and-movers' || service.id === 'household-shifting') {
       const scope = details['shiftingScope'];
       const isIntercity = scope === 'Between City (Intercity / Outstation)';
 

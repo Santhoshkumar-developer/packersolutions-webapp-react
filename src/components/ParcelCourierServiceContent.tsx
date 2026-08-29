@@ -350,8 +350,8 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
   ];
 
   const RELATED_SERVICES = [
-    { title: `House Shifting Services in ${city}`, id: 'household-shifting' },
-    { title: `Packing & Unpacking Services in ${city}`, id: 'packing-unpacking' },
+    { title: `House Shifting Services in ${city}`, id: 'packers-and-movers' },
+    { title: `Packing Service in ${city}`, id: 'packing-unpacking' },
     { title: `Loading & Unloading Services in ${city}`, id: 'loading-unloading' },
     { title: `Vehicle Transportation Services in ${city}`, id: 'vehicle-transportation' },
     { title: `Truck Booking Services in ${city}`, id: 'domestic-relocation' },

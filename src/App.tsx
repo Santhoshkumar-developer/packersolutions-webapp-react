@@ -78,7 +78,6 @@ import { ContactView } from './components/ContactView';
 import { CityAreaDirectory } from './components/CityAreaDirectory';
 import { LocationPromptModal } from './components/LocationPromptModal';
 import { AddonServicesView } from './components/AddonServicesView';
-import { DrivingPartnerView } from './components/DrivingPartnerView';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -101,11 +100,11 @@ export default function App() {
   };
 
   const [currentPage, setCurrentPage] = useState<string>('home');
-  const [activeServiceId, setActiveServiceId] = useState<string>('household-shifting');
+  const [activeServiceId, setActiveServiceId] = useState<string>('packers-and-movers');
   const [selectedAddonCategory, setSelectedAddonCategory] = useState<string | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [latestTicketId, setLatestTicketId] = useState('');
-  const [quickSearchService, setQuickSearchService] = useState('household-shifting');
+  const [quickSearchService, setQuickSearchService] = useState('packers-and-movers');
   const [activeUpperSlide, setActiveUpperSlide] = useState(0);
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
   const [selectedCity, setSelectedCity] = useState('Bangalore');
@@ -197,7 +196,10 @@ export default function App() {
     const handleHashChange = () => {
       const hash = window.location.hash;
       if (hash.startsWith('#service/')) {
-        const serviceId = hash.replace('#service/', '');
+        let serviceId = hash.replace('#service/', '');
+        if (serviceId === 'household-shifting') {
+          serviceId = 'packers-and-movers';
+        }
         const exists = SERVICES_DATA.some(s => s.id === serviceId);
         if (exists) {
           setCurrentPage('service');
@@ -268,7 +270,7 @@ export default function App() {
         return;
       }
       setCurrentPage('home');
-      setActiveServiceId('household-shifting');
+      setActiveServiceId('packers-and-movers');
       setSelectedBlogSlug(null);
       window.scrollTo(0, 0);
     };
@@ -283,7 +285,8 @@ export default function App() {
 
   const navigateTo = (page: string, serviceId?: string) => {
     if (page === 'service' && serviceId) {
-      window.location.hash = `#service/${serviceId}`;
+      const normalizedServiceId = serviceId === 'household-shifting' ? 'packers-and-movers' : serviceId;
+      window.location.hash = `#service/${normalizedServiceId}`;
     } else if (page === 'blog') {
       window.location.hash = serviceId ? `#blog/${serviceId}` : '#blog';
     } else if (page === 'addons') {
@@ -405,18 +408,21 @@ export default function App() {
                 {/* Hero Header Title */}
                 <div className="text-center mb-8">
                   <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-slate-900 dark:text-white tracking-tight font-sans leading-tight">
-                    Get Instant Packers &amp; Movers Quotes
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#001261] via-[#0321a1] to-[#ff6200] dark:from-blue-400 dark:via-orange-400 dark:to-amber-300">
+                      Packersolutions
+                    </span>{' '}
+                    Your Trusted Delivery Partner
                   </h1>
-                  <p className="text-sm sm:text-base font-normal sm:font-medium text-slate-600 dark:text-slate-400 mt-2.5 max-w-2xl mx-auto">
-                    Trusted by 10 Lakh+ Happy Shifting Customers across 500+ Indian Cities
-                  </p>
+                  <h2 className="text-sm sm:text-base font-normal sm:font-medium text-slate-600 dark:text-slate-400 mt-2.5 max-w-3xl mx-auto leading-relaxed">
+                    Reliable and hassle-free moving and delivery solutions for homes and businesses. From packing and shifting to parcel delivery and vehicle transportation, we ensure your belongings reach their destination safely, securely, and on time.
+                  </h2>
                 </div>
 
                 {/* 8 Services in a Single Horizontal Row */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4 mb-10">
                   {[
                     {
-                      id: 'household-shifting',
+                      id: 'packers-and-movers',
                       name: 'Home Shifting',
                       image: packersVectorImg,
                       badge: 'Up to 30% Off'
@@ -561,7 +567,7 @@ export default function App() {
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-400">
                     <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center sm:justify-start">
                       <button 
-                        onClick={() => navigateTo('service', 'household-shifting')}
+                        onClick={() => navigateTo('service', 'packers-and-movers')}
                         className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
                       >
                         <span>Local House Move</span>
@@ -905,7 +911,7 @@ export default function App() {
           <AboutUs 
             onNavigate={navigateTo} 
             onOpenBooking={() => {
-              navigateTo('service', 'household-shifting');
+              navigateTo('service', 'packers-and-movers');
               setTimeout(() => {
                 document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
               }, 150);
@@ -938,15 +944,6 @@ export default function App() {
           <ContactView 
             onNavigate={navigateTo}
             selectedCity={selectedCity}
-          />
-        ) : currentPage === 'driving-partner' ? (
-          /* ==================== B2B DELIVERY PARTNER RECRUITMENT LANDING PAGE ==================== */
-          <DrivingPartnerView 
-            onNavigate={navigateTo}
-            onOpenRegisterModal={() => setShowDeliveryModal(true)}
-            onRegisterSuccess={(partnerData) => {
-              setLatestTicketId(partnerData.ticketId);
-            }}
           />
         ) : ['cancellation-refund', 'terms-conditions', 'shipment-policy', 'privacy-policy'].includes(currentPage) ? (
           /* ==================== POLICY PAGES VIEW ==================== */
@@ -984,7 +981,11 @@ export default function App() {
                   </div>
 
                   <h1 id="service-page-heading" className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white mt-1 drop-shadow-md">
-                    {activeService.name.replace(/\s*\([^)]*\)/g, '')} in {selectedCity}
+                    {activeService.id === 'packers-and-movers' || activeService.id === 'household-shifting' 
+                      ? 'Packers and Movers' 
+                      : activeService.id === 'loading-unloading'
+                      ? 'Loading Services'
+                      : activeService.name.replace(/\s*\([^)]*\)/g, '')} in {selectedCity}
                   </h1>
 
                   <p className="text-slate-200 text-xs sm:text-sm md:text-base leading-relaxed font-medium drop-shadow-xs max-w-2xl">
@@ -1412,18 +1413,6 @@ export default function App() {
           </div>
         </div>
       )}
-
-      {/* Persistent WhatsApp Widget */}
-      <a 
-        id="btn-floating-whatsapp"
-        href="https://wa.me/919876543210"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-20 right-5 z-40 bg-green-500 hover:bg-green-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 md:hidden"
-        title="WhatsApp Support Chat"
-      >
-        <span className="text-xl">💬</span>
-      </a>
 
       {/* Back to Top Button */}
       <AnimatePresence>

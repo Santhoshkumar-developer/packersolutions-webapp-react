@@ -380,7 +380,7 @@ export const BrandedCoverageMap: React.FC<BrandedCoverageMapProps> = ({
 
           <div className="space-y-3 pt-4 border-t border-slate-800">
             <button
-              onClick={() => onOpenBooking('household-shifting', selectedNode.name)}
+              onClick={() => onOpenBooking('packers-and-movers', selectedNode.name)}
               className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-xs py-3.5 px-4 rounded-2xl shadow-lg transition-all cursor-pointer flex items-center justify-center gap-2 group"
             >
               <span>Book Shifting in {selectedNode.name}</span>

@@ -25,7 +25,7 @@ export const LocationInputSelector: React.FC<LocationInputSelectorProps> = ({
   onChange,
   placeholder,
   type = 'pickup',
-  serviceId = 'household-shifting',
+  serviceId = 'packers-and-movers',
   cityContext = 'Bangalore',
   className = '',
   inputClassName = '',

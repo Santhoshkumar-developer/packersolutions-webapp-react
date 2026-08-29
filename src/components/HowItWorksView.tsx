@@ -154,7 +154,7 @@ export const HowItWorksView: React.FC<HowItWorksViewProps> = ({ onNavigate, onOp
 
           <div className="pt-4 flex flex-wrap justify-center gap-4">
             <button 
-              onClick={() => onOpenBooking('household-shifting', 'Bangalore')}
+              onClick={() => onOpenBooking('packers-and-movers', 'Bangalore')}
               className="bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold px-6 py-3 rounded-xl transition-all shadow-lg hover:shadow-orange-500/20 cursor-pointer flex items-center gap-2"
             >
               Start Shifting Flow <ArrowRight className="w-4 h-4" />
@@ -323,7 +323,7 @@ export const HowItWorksView: React.FC<HowItWorksViewProps> = ({ onNavigate, onOp
                 <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">Book household shifting now and locks this transparent flow.</p>
               </div>
               <button 
-                onClick={() => onOpenBooking('household-shifting', 'Bangalore')}
+                onClick={() => onOpenBooking('packers-and-movers', 'Bangalore')}
                 className="bg-slate-900 dark:bg-orange-500 hover:bg-slate-800 dark:hover:bg-orange-600 text-white font-semibold text-xs px-5 py-3 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shadow-sm"
               >
                 Instant Digitized Estimation <ChevronRight className="w-3.5 h-3.5 text-orange-400 dark:text-white" />

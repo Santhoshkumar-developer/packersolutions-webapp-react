@@ -4,9 +4,12 @@
  */
 
 import React, { useState } from 'react';
+import { Instagram, Facebook, Youtube, Linkedin } from 'lucide-react';
 import { LucideIcon } from './LucideIcon';
 import { ServiceItem } from '../types';
 import logoImg from '../assets/images/packersolution_logo.jpg';
+import playstoreBadge from '../assets/images/android_playstore.png';
+import appleStoreBadge from '../assets/images/apple_playstore.png';
 
 interface FooterProps {
   services: ServiceItem[];
@@ -168,12 +171,35 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
           <p className="text-xs text-slate-400 leading-relaxed">
             Packersolution is a premium logistics and relocation company specializing in end-to-end safe moving solutions across India. Inspired by modern smart protection, we bring absolute transparency and premium materials to your doorstep.
           </p>
-          <div className="pt-2">
-            <h6 className="text-[10px] font-bold uppercase text-slate-500 tracking-widest mb-3">Compliance & Accreditations</h6>
-            <div className="flex gap-2 text-[10px] text-slate-400 font-semibold font-mono">
-              <span className="bg-slate-800 px-2.5 py-1 rounded border border-slate-700/50">IBA APPROVED</span>
-              <span className="bg-slate-800 px-2.5 py-1 rounded border border-slate-700/50">GSTIN REGISTERED</span>
-            </div>
+          <div className="pt-2 flex flex-wrap items-center gap-3.5">
+            <a
+              href="https://play.google.com/store"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+              title="Download on Google Play"
+            >
+              <img
+                src={playstoreBadge}
+                alt="Get it on Google Play"
+                className="w-36 sm:w-40 h-auto object-contain transition-opacity hover:opacity-95"
+                referrerPolicy="no-referrer"
+              />
+            </a>
+            <a
+              href="https://www.apple.com/app-store/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+              title="Download on the App Store"
+            >
+              <img
+                src={appleStoreBadge}
+                alt="Download on the App Store"
+                className="w-36 sm:w-40 h-auto object-contain transition-opacity hover:opacity-95"
+                referrerPolicy="no-referrer"
+              />
+            </a>
           </div>
         </div>
 
@@ -194,113 +220,6 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
               </li>
             ))}
           </ul>
-
-          <div className="mt-8 pt-6 border-t border-slate-800/80">
-            <h5 className="font-bold text-slate-100 text-xs uppercase tracking-widest mb-4">Explore &amp; Company Menus</h5>
-            <ul className="space-y-3 text-xs text-slate-400">
-              <li>
-                <button
-                  onClick={() => onNavigate('home')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer font-semibold text-slate-100"
-                >
-                  <span className="text-orange-500">›</span>
-                  Home
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('about')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer font-semibold text-slate-100"
-                >
-                  <span className="text-orange-500">›</span>
-                  About Us
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('locations')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer font-semibold text-slate-100"
-                >
-                  <span className="text-orange-500">›</span>
-                  Our Shifting Locations
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('how-it-works')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer font-semibold text-slate-100"
-                >
-                  <span className="text-orange-500">›</span>
-                  How It Works Blueprint
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('contact')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer font-semibold text-slate-100"
-                >
-                  <span className="text-orange-500">›</span>
-                  Contact Support Desk
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('service', 'office-relocation')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span className="text-orange-500">›</span>
-                  For Business (Enterprise Solutions)
-                </button>
-              </li>
-              <li>
-                <button
-                  id="footer-link-driving-partner"
-                  onClick={() => onNavigate('driving-partner')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span className="text-orange-500">›</span>
-                  Driver &amp; Vehicle Partners
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => onNavigate('blog')}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span className="text-orange-500">›</span>
-                  Moving Tips &amp; Blog
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onNavigate('home');
-                    setTimeout(() => {
-                      document.getElementById('happy-customers')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 150);
-                  }}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span className="text-orange-500">›</span>
-                  Customer Reviews
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
-                    onNavigate('home');
-                    setTimeout(() => {
-                      document.getElementById('home-faqs-section')?.scrollIntoView({ behavior: 'smooth' });
-                    }, 150);
-                  }}
-                  className="hover:text-orange-400 text-left transition-colors flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span className="text-orange-500">›</span>
-                  Frequently Asked Questions (FAQs)
-                </button>
-              </li>
-            </ul>
-          </div>
         </div>
 
         {/* Column 3: Contact coordinates */}
@@ -375,11 +294,47 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
           {/* Social icons */}
           <div className="pt-2">
             <h6 className="text-[10px] font-bold uppercase text-slate-500 tracking-widest mb-3">Connect With Us</h6>
-            <div className="flex gap-3.5 text-xs">
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors font-bold">Facebook</a>
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors font-bold">Twitter</a>
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors font-bold">Instagram</a>
-              <a href="#" className="hover:text-orange-500 text-slate-400 transition-colors font-bold">LinkedIn</a>
+            <div className="flex items-center gap-2.5">
+              <a
+                href="https://www.instagram.com/packer_solutions?igsi=Y2lsbjY3NW85OHJw"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow Packersolution on Instagram"
+                title="Instagram"
+                className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-gradient-to-tr hover:from-amber-500 hover:via-pink-500 hover:to-purple-600 text-slate-400 hover:text-white flex items-center justify-center transition-all border border-slate-700/50 hover:border-transparent hover:scale-105 shadow-sm"
+              >
+                <Instagram className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.facebook.com/share/1b8Bm4A2ab/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Follow Packersolution on Facebook"
+                title="Facebook"
+                className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-[#1877F2] text-slate-400 hover:text-white flex items-center justify-center transition-all border border-slate-700/50 hover:border-transparent hover:scale-105 shadow-sm"
+              >
+                <Facebook className="w-4 h-4" />
+              </a>
+              <a
+                href="https://youtube.com/@packersolution?si=3lsuEtkX-AZ0FQYo"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Subscribe to Packersolution on YouTube"
+                title="YouTube"
+                className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-[#FF0000] text-slate-400 hover:text-white flex items-center justify-center transition-all border border-slate-700/50 hover:border-transparent hover:scale-105 shadow-sm"
+              >
+                <Youtube className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/packersolution/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Connect with Packersolution on LinkedIn"
+                title="LinkedIn"
+                className="w-9 h-9 rounded-xl bg-slate-800 hover:bg-[#0A66C2] text-slate-400 hover:text-white flex items-center justify-center transition-all border border-slate-700/50 hover:border-transparent hover:scale-105 shadow-sm"
+              >
+                <Linkedin className="w-4 h-4" />
+              </a>
             </div>
           </div>
         </div>
@@ -401,13 +356,6 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
             <button onClick={() => onNavigate('how-it-works')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">How It Works</button>
             <span>•</span>
             <button onClick={() => onNavigate('contact')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">Contact Us</button>
-            <span>•</span>
-            <button onClick={() => onNavigate('service', 'office-relocation')} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">For Business</button>
-            <span>•</span>
-            <button onClick={() => {
-              const modal = document.getElementById('delivery-partner-modal');
-              if (modal) modal.style.display = 'flex';
-            }} className="hover:text-slate-400 transition-colors cursor-pointer text-left font-semibold">Driver &amp; Vehicle Partners</button>
             <span>•</span>
             <button onClick={() => onNavigate('blog')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Moving Tips (Blog)</button>
             <span>•</span>

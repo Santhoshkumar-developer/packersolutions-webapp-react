@@ -8,7 +8,7 @@ import householdShiftingImg from '../assets/images/household_shifting_packers_17
 
 export const SERVICES_DATA: ServiceItem[] = [
   {
-    id: 'household-shifting',
+    id: 'packers-and-movers',
     name: 'Household Shifting',
     tagline: 'Fast & Safe Relocation',
     shortDescription: 'Reliable and affordable household relocation for apartments, villas, and independent houses — whether moving locally within your city or intercity nationwide with multi-layer protective packing.',
@@ -37,14 +37,14 @@ export const SERVICES_DATA: ServiceItem[] = [
       { question: 'Do you disassemble and reassemble furniture like beds and wardrobes?', answer: 'Yes, our trained carpenters disassemble and reassemble standard furniture such as wooden beds, dining tables, and modular wardrobes at both source and destination.' }
     ],
     seo: {
-      title: 'Household Shifting Services - Within City & Between City | Packersolution',
-      description: 'Book professional household shifting services for local within city moves or intercity relocation across India. Safe multi-layer packing, container trucks, and carpenter assistance.',
-      keywords: ['household shifting', 'local home moving', 'intercity packers and movers', 'within city house shifting', 'between city packers movers', 'packers and movers near me'],
-      canonicalUrl: 'https://packersolution.com/services/household-shifting',
+      title: 'Professional Packers and Movers & House Shifting Services | Packersolution',
+      description: 'Book professional packers and movers & household shifting services for local within city moves or intercity relocation across India. Safe multi-layer packing, container trucks, and carpenter assistance.',
+      keywords: ['packers and movers', 'household shifting', 'local home moving', 'intercity packers and movers', 'within city house shifting', 'best packers and movers', 'packers and movers near me'],
+      canonicalUrl: 'https://packersolution.com/#service/packers-and-movers',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        'name': 'Household Shifting (Within / Between City)',
+        'name': 'Packers and Movers & Household Shifting',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'Packersolution',
@@ -202,12 +202,12 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'office-relocation',
-    name: 'Office & Corporate Relocation',
+    name: 'Office Shifting Services',
     tagline: 'Zero-downtime, safe and planned IT & office space relocation',
     shortDescription: 'Professional workspace transition handling server racks, IT networks, premium executive furniture, and office files with minimal operational disruption.',
     detailedDescription: 'Corporate relocation requires meticulous timeline coordination and structural precision to eliminate operational downtime. Packersolution provides specialized commercial moving solutions tailored to your organization. Our teams are highly trained to handle delicate IT infrastructure, server racks, network equipment, modular workstations, secure documents, and glass cabins. We work during weekends, overnight shifts, or holidays to ensure your business remains functional. With asset tagging, barcode tracking, and expert project managers, we guarantee a structured transition that gets your company back to work immediately.',
     iconName: 'Building',
-    image: 'https://www.w3schools.com/tools/tool_placeholder_img.php?type=png&text=Office+Corporate+Relocation',
+    image: 'https://www.w3schools.com/tools/tool_placeholder_img.php?type=png&text=Office+Shifting+Services',
     benefits: [
       'Tailored timeline planning including overnight or weekend shifting',
       'Advanced anti-static wrapping for computers, servers, and sensitive electronics',
@@ -236,7 +236,7 @@ export const SERVICES_DATA: ServiceItem[] = [
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        'name': 'Office & Corporate Relocation',
+        'name': 'Office Shifting Services',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'Packersolution',
@@ -396,12 +396,12 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'packing-unpacking',
-    name: 'Packing & Unpacking Services',
+    name: 'Packing Service',
     tagline: 'Expert packing using industry-standard durable materials',
     shortDescription: 'Avoid physical stress. Hire our specialized crew to pack your entire household items securely, or unpack them neatly into shelves.',
     detailedDescription: 'The foundation of any successful move lies in the quality of packing. At Packersolution, we offer dedicated Packing and Unpacking services as standalone options or add-ons. Our packing specialists are trained in the science of item protection. We use specific box styles, including wardrobe boxes that let you hang your suits, heavy-duty double-wall cartons for heavy kitchen books, bubble wrap for exquisite dinner sets, and stretch film to shield sofas from ambient dust. Once delivered, our unpacking specialists unbox, wipe, organize, and sort your items, placing them into your cupboards, wardrobes, and kitchen counters so your new house feels like home instantly.',
     iconName: 'Package',
-    image: 'https://www.w3schools.com/tools/tool_placeholder_img.php?type=png&text=Packing+Unpacking+Services',
+    image: 'https://www.w3schools.com/tools/tool_placeholder_img.php?type=png&text=Packing+Service',
     benefits: [
       'Trained packing experts with specialized knowledge of fragile items',
       'Premium industrial-grade materials: five-ply carton boxes, foam sheets, bubble wraps',
@@ -423,14 +423,14 @@ export const SERVICES_DATA: ServiceItem[] = [
       { question: 'Do you take back the empty carton boxes after unpacking?', answer: 'Yes, if you choose our full unpacking service, our team will pack, clean up, and remove all empty boxes and packing waste from your home, keeping it clutter-free.' }
     ],
     seo: {
-      title: 'Professional Packing & Unpacking | Packersolution Material Experts',
-      description: 'Ensure safety with expert packing and unpacking services from Packersolution. We utilize heavy-duty 5-ply cartons, bubble wrap, and wardrobe boxes for maximum item safety.',
-      keywords: ['packing services', 'unpacking service', 'professional home packers', 'bubble wrapping service', 'box packing movers'],
+      title: 'Professional Packing Service | Packersolution Material Experts',
+      description: 'Ensure safety with expert packing services from Packersolution. We utilize heavy-duty 5-ply cartons, bubble wrap, and wardrobe boxes for maximum item safety.',
+      keywords: ['packing service', 'packing and moving companies', 'wooden box packing company', 'professional packing service', 'best packing company in coimbatore', 'packing services', 'professional home packers', 'bubble wrapping service', 'box packing movers'],
       canonicalUrl: 'https://packersolution.com/services/packing-unpacking',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        'name': 'Packing & Unpacking Services',
+        'name': 'Packing Service',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'Packersolution',
@@ -505,7 +505,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     seo: {
       title: 'Movers for Loading & Unloading | Packersolution Heavy Lifters',
       description: 'Hire trained, physically fit loaders from Packersolution. We utilize specialized appliance dollies, loading ramps, and lifting belts to handle heavy furniture with ease.',
-      keywords: ['loading services', 'unloading movers', 'heavy furniture lifting', 'hire movers only', 'truck loading packers'],
+      keywords: ['best machinery loading service company in coimbatore', 'loading and unloading services', 'small load movers', 'loading and unloading movers in coimbatore', 'loading services', 'unloading movers', 'heavy furniture lifting', 'hire movers only', 'truck loading packers'],
       canonicalUrl: 'https://packersolution.com/services/loading-unloading',
       structuredData: {
         '@context': 'https://schema.org',
@@ -762,7 +762,7 @@ export const TESTIMONIALS_DATA = [
     location: 'Hyderabad',
     rating: 5,
     comment: 'Corporate shifting is a nightmare, but Packersolution finished shifting our 40-seater office over a single Sunday! No downtime for our developers. All server racks and workstations were color-tagged and placed perfectly.',
-    service: 'Office & Corporate Relocation'
+    service: 'Office Shifting Services'
   },
   {
     id: 't4',

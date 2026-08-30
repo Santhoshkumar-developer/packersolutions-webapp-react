@@ -208,63 +208,7 @@ export const VehicleTransportationServiceContent: React.FC<VehicleTransportation
 }) => {
   const city = selectedCity || 'Coimbatore';
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
-  
-  // Interactive Vehicle Estimator state
-  const [calcVehicleType, setCalcVehicleType] = useState<'hatchback' | 'sedan' | 'suv' | 'luxury' | 'standard-bike' | 'superbike'>('sedan');
-  const [calcDistance, setCalcDistance] = useState<number>(550);
-  const [calcCarrierType, setCalcCarrierType] = useState<'open' | 'enclosed'>('enclosed');
-
   const vehicleAreas = getVehicleTransportAreas(city);
-
-  // Dynamic pricing calculation helper
-  const calculateVehiclePrice = (
-    type: 'hatchback' | 'sedan' | 'suv' | 'luxury' | 'standard-bike' | 'superbike',
-    distanceKm: number,
-    carrier: 'open' | 'enclosed'
-  ) => {
-    let baseRate = 3500;
-    let ratePerKm = 14;
-
-    switch (type) {
-      case 'standard-bike':
-        baseRate = 2200;
-        ratePerKm = 5.5;
-        break;
-      case 'superbike':
-        baseRate = 3800;
-        ratePerKm = 8.5;
-        break;
-      case 'hatchback':
-        baseRate = 6500;
-        ratePerKm = 14.5;
-        break;
-      case 'sedan':
-        baseRate = 7500;
-        ratePerKm = 16.5;
-        break;
-      case 'suv':
-        baseRate = 9500;
-        ratePerKm = 19.5;
-        break;
-      case 'luxury':
-        baseRate = 14500;
-        ratePerKm = 26.0;
-        break;
-    }
-
-    let calculated = Math.round(baseRate + (distanceKm * ratePerKm));
-    if (carrier === 'enclosed') {
-      calculated = Math.round(calculated * 1.22);
-    }
-    return calculated;
-  };
-
-  const getEstimatedDays = (distanceKm: number) => {
-    if (distanceKm <= 400) return '1 – 2 Days';
-    if (distanceKm <= 900) return '2 – 3 Days';
-    if (distanceKm <= 1600) return '4 – 5 Days';
-    return '6 – 8 Days';
-  };
 
   const CAR_PRICING_TABLE = [
     { route: `${city} → Chennai`, dist: '500 km', hatchback: '₹9,500', sedan: '₹11,500', suv: '₹13,500', time: '1 – 2 Days' },
@@ -395,10 +339,10 @@ export const VehicleTransportationServiceContent: React.FC<VehicleTransportation
             <Car className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>2. Professional Vehicle Transport Services</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            End-to-End Car, Bike &amp; Fleet Logistics Solutions in {city}
-          </h3>
+            Vehicle Transport Services in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Driving your vehicle over thousands of highway kilometers causes extreme mechanical wear, tyre degradation, odometer inflation, and stone chip hazards. Packer Solutions provides safe, carrier-borne vehicle relocations engineered for complete peace of mind.
           </p>
@@ -652,10 +596,10 @@ export const VehicleTransportationServiceContent: React.FC<VehicleTransportation
             <Car className="w-3.5 h-3.5 text-blue-600" />
             <span>6. Car Transportation Fleet Spotlight</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Specialized Car Carriers for Every Vehicle Class in {city}
-          </h3>
+            Car Transport Service for Every Vehicle Class in {city}
+          </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -788,10 +732,10 @@ export const VehicleTransportationServiceContent: React.FC<VehicleTransportation
             <Layers className="w-3.5 h-3.5 text-blue-600" />
             <span>9. Vehicle Transport Service Models</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Tailored Transport Packages for Every Budget &amp; Requirement
-          </h3>
+            Car Transport Companies &amp; Tailored Shifting Packages in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Choose the exact level of protection, carrier configuration, and speed that matches your relocation needs.
           </p>
@@ -873,10 +817,10 @@ export const VehicleTransportationServiceContent: React.FC<VehicleTransportation
             <MapPin className="w-3.5 h-3.5 text-blue-600" />
             <span>10. Interstate Transit Standards</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            All-India Express Highway Logistics &amp; Legal Compliance
-          </h3>
+            Car Shipping Companies – All-India Express Highway Logistics &amp; Compliance in {city}
+          </h2>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs space-y-3">
@@ -908,155 +852,7 @@ export const VehicleTransportationServiceContent: React.FC<VehicleTransportation
       </section>
 
       {/* =========================================================================
-          11. INTERACTIVE VEHICLE TRANSPORT COST ESTIMATOR
-         ========================================================================= */}
-      <section id="section-cost-calculator" className="space-y-6">
-        <div className="space-y-1">
-          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
-            <DollarSign className="w-3.5 h-3.5 text-blue-600" />
-            <span>11. Live Cost Estimator</span>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Interactive Car &amp; Bike Shifting Cost Estimator
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-            Select your vehicle type, highway distance, and preferred carrier model to calculate an instant starting estimate from {city}.
-          </p>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-sm space-y-6">
-          
-          {/* Step 1: Vehicle Type Selector */}
-          <div className="space-y-3">
-            <label className="text-xs font-black uppercase text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-              <Car className="w-4 h-4 text-blue-600" />
-              <span>1. Choose Vehicle Category:</span>
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-              {[
-                { id: 'standard-bike', label: 'Commuter Bike', sub: 'Up to 200cc', icon: '🛵' },
-                { id: 'superbike', label: 'Superbike / Cruiser', sub: '350cc+ / Royal Enfield', icon: '🏍️' },
-                { id: 'hatchback', label: 'Hatchback Car', sub: 'Swift, i10, Baleno', icon: '🚗' },
-                { id: 'sedan', label: 'Sedan Car', sub: 'City, Verna, Ciaz', icon: '🚘' },
-                { id: 'suv', label: 'SUV / MUV', sub: 'Creta, Scorpio, Harrier', icon: '🚙' },
-                { id: 'luxury', label: 'Luxury / EV', sub: 'BMW, Audi, Merc, EV', icon: '✨' }
-              ].map((v) => (
-                <button
-                  key={v.id}
-                  type="button"
-                  onClick={() => setCalcVehicleType(v.id as any)}
-                  className={`p-3 rounded-2xl border text-left transition-all cursor-pointer ${
-                    calcVehicleType === v.id
-                      ? 'border-[#001261] dark:border-blue-500 bg-blue-50/70 dark:bg-blue-950/70 shadow-xs'
-                      : 'border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 hover:border-slate-300'
-                  }`}
-                >
-                  <div className="text-xl mb-1">{v.icon}</div>
-                  <div className="text-xs font-bold text-slate-900 dark:text-white leading-tight">{v.label}</div>
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">{v.sub}</div>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Step 2: Distance Slider & Carrier Type */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 border-t border-slate-100 dark:border-slate-800">
-            
-            {/* Distance Slider */}
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                  <Navigation className="w-3.5 h-3.5 text-blue-600" />
-                  <span>2. Highway Distance:</span>
-                </label>
-                <span className="text-xs font-black text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950 px-2.5 py-1 rounded-md font-mono">
-                  {calcDistance} km
-                </span>
-              </div>
-              <input
-                type="range"
-                min={100}
-                max={2800}
-                step={50}
-                value={calcDistance}
-                onChange={(e) => setCalcDistance(Number(e.target.value))}
-                className="w-full accent-[#001261] dark:accent-blue-500 cursor-pointer h-2 bg-slate-200 dark:bg-slate-800 rounded-lg"
-              />
-              <div className="flex justify-between text-[10px] text-slate-400 font-mono">
-                <span>100 km (Local Intercity)</span>
-                <span>1,200 km (Mid-Distance)</span>
-                <span>2,800 km (All-India Cross)</span>
-              </div>
-            </div>
-
-            {/* Carrier Type Toggle */}
-            <div className="space-y-3">
-              <label className="text-xs font-bold uppercase text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-                <span>3. Carrier Preference:</span>
-              </label>
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setCalcCarrierType('enclosed')}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                    calcCarrierType === 'enclosed'
-                      ? 'border-[#001261] dark:border-blue-500 bg-blue-50 dark:bg-blue-950/80 font-bold'
-                      : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400'
-                  }`}
-                >
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">Enclosed Container</div>
-                  <div className="text-[10px] text-slate-500">100% Weatherproof &amp; Sealed</div>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setCalcCarrierType('open')}
-                  className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                    calcCarrierType === 'open'
-                      ? 'border-[#001261] dark:border-blue-500 bg-blue-50 dark:bg-blue-950/80 font-bold'
-                      : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 text-slate-600 dark:text-slate-400'
-                  }`}
-                >
-                  <div className="text-xs font-bold text-slate-900 dark:text-white">Open Multi-Carrier</div>
-                  <div className="text-[10px] text-slate-500">Budget Friendly Option</div>
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Calculator Output Banner */}
-          <div className="p-5 rounded-2xl bg-gradient-to-r from-blue-900 via-[#001261] to-slate-900 text-white flex flex-col sm:flex-row items-center justify-between gap-4 shadow-md">
-            <div>
-              <span className="text-[10px] font-black uppercase tracking-widest text-blue-300">
-                Estimated Starting Freight Rate
-              </span>
-              <div className="text-2xl sm:text-3xl font-black font-mono mt-0.5">
-                ₹{calculateVehiclePrice(calcVehicleType, calcDistance, calcCarrierType).toLocaleString('en-IN')}
-                <span className="text-xs font-normal text-blue-200 ml-1.5">approx. + tax</span>
-              </div>
-              <div className="text-[11px] text-blue-200 mt-1 flex items-center gap-2">
-                <Clock className="w-3.5 h-3.5" />
-                <span>Estimated Transit Duration: <strong>{getEstimatedDays(calcDistance)}</strong></span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={onOpenEnquiry}
-              className="bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer shrink-0"
-            >
-              <span>Lock This Rate</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-
-        </div>
-      </section>
-
-      {/* =========================================================================
-          12. TRANSPARENT ROUTE PRICING & TRANSIT TIME MATRIX
+          11. TRANSPARENT ROUTE PRICING & TRANSIT TIME MATRIX
          ========================================================================= */}
       <section id="section-pricing-matrix" className="space-y-6">
         <div className="space-y-1">
@@ -1064,10 +860,10 @@ export const VehicleTransportationServiceContent: React.FC<VehicleTransportation
             <DollarSign className="w-3.5 h-3.5 text-blue-600" />
             <span>12. Route Pricing Matrix</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Popular Car &amp; Bike Relocation Routes from {city}
-          </h3>
+            Car Shipping Routes, Cost Matrix &amp; Timelines from {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Standard starting rates for frequent interstate corridors originating from {city}.
           </p>
@@ -1310,7 +1106,79 @@ export const VehicleTransportationServiceContent: React.FC<VehicleTransportation
       </section>
 
       {/* =========================================================================
-          16. 24/7 HOTLINE & RELOCATION SPECIALIST CALLOUT
+          16. AUTOMOTIVE SHIPPING & RELOCATION TOPICS (SEO DIRECTORY)
+         ========================================================================= */}
+      <section id="section-automotive-topics" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-6">
+        <div className="space-y-1.5 border-b border-slate-100 dark:border-slate-800 pb-4">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+            <span>Automotive Relocation Guide</span>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Comprehensive overview of vehicle moving, carrier options, and safety guarantees across India.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Tag 1: car shipping companies */}
+          <div className="p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              car shipping companies
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              When evaluating car shipping companies in {city}, ensure they provide dedicated closed container trailers, hydraulic tail-lift loading for low ground clearance vehicles, and certified transit insurance with live GPS tracking.
+            </p>
+          </div>
+
+          {/* Tag 2: car shipping */}
+          <div className="p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              car shipping
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Intercity car shipping eliminates highway driving fatigue, odometer inflation, tyre wear, and stone-chip damage. We coordinate express national highway transit with scheduled door-to-door delivery.
+            </p>
+          </div>
+
+          {/* Tag 3: car transport companies */}
+          <div className="p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              car transport companies
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Reputable car transport companies utilize four-point high-tensile nylon wheel tie-downs and rubber wheel chocks, ensuring your vehicle chassis never makes contact with metal chains or carrier sides.
+            </p>
+          </div>
+
+          {/* Tag 4: car transport service */}
+          <div className="p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              car transport service
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Our end-to-end car transport service includes a 15-point digital pre-transit video audit, complete documentation support for RTO &amp; toll checkpoints, and zero-scratch handling guarantee.
+            </p>
+          </div>
+
+          {/* Tag 5: vehicle transport services */}
+          <div className="md:col-span-2 p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              vehicle transport services
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Specialized vehicle transport services across India for two-wheelers, superbikes, family cars, electric vehicles, and commercial fleets, backed by weatherproof trailers and 24/7 dedicated dispatch support.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          17. 24/7 HOTLINE & RELOCATION SPECIALIST CALLOUT
          ========================================================================= */}
       <section id="section-booking-cta" className="bg-gradient-to-br from-slate-900 via-[#001261] to-slate-950 text-white rounded-3xl p-6 sm:p-8 border border-blue-500/20 shadow-xl space-y-6">
         <div className="space-y-2">

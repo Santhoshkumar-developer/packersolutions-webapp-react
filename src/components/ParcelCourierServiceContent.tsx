@@ -418,10 +418,10 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
             <Package className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>2. Professional Parcel &amp; Courier Services</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            End-to-End Parcel, Document &amp; Commercial Cargo Solutions in {city}
-          </h3>
+            Parcel Service &amp; Logistics Solutions in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Sending packages across cities shouldn’t involve endless counter queues, fragile mishandling, or unexpected delivery delays. Packer Solutions provides planned, tracked, and protective parcel logistics engineered for complete reliability.
           </p>
@@ -851,10 +851,10 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
             <DollarSign className="w-3.5 h-3.5 text-blue-600" />
             <span>7. Transparent Route Pricing Matrix</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Popular Intercity Parcel Delivery Rates from {city}
-          </h3>
+            Parcel Delivery Service &amp; Route Rates Matrix from {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Standard starting rates for key intercity corridors. All rates include doorstep collection and verified barcode scanning.
           </p>
@@ -986,10 +986,10 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
             <Layers className="w-3.5 h-3.5 text-blue-600" />
             <span>9. Parcel Service Models</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Tailored Delivery Packages for Every Requirement
-          </h3>
+            Courier Services &amp; Tailored Delivery Packages in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Choose the exact delivery speed, carrier configuration, and security level that fits your shipment.
           </p>
@@ -1091,10 +1091,10 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
             <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
             <span>10. Security &amp; Barcode Tracking</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Tamper-Proof Handling &amp; Multi-Point Transit Verification
-          </h3>
+            Courier Delivery, Tamper-Proof Handling &amp; Barcode Tracking in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Every step of your consignment’s journey is recorded on our digital logistics management system.
           </p>
@@ -1251,7 +1251,68 @@ export const ParcelCourierServiceContent: React.FC<ParcelCourierServiceContentPr
       </section>
 
       {/* =========================================================================
-          13. 24/7 HELPLINE & FAST BOOKING CALLOUT
+          13. PARCEL & COURIER LOGISTICS GUIDE (SEO DIRECTORY)
+         ========================================================================= */}
+      <section id="section-parcel-topics" className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-6">
+        <div className="space-y-1.5 border-b border-slate-100 dark:border-slate-800 pb-4">
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
+            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+            <span>Parcel &amp; Courier Logistics Guide</span>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+            Comprehensive overview of intercity parcel moving, courier transit models, and security standards across India.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {/* Tag 1: parcel service */}
+          <div className="p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              parcel service
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Our end-to-end parcel service in {city} provides scheduled doorstep pickup, certified digital weighing, heavy-duty 5-ply corrugated carton packing, and scheduled highway transit to over 100+ cities nationwide.
+            </p>
+          </div>
+
+          {/* Tag 2: courier delivery */}
+          <div className="p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              courier delivery
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Experience fast, reliable courier delivery featuring tamper-evident barcode custody tracking, verified OTP recipient handover, and automated milestone updates via SMS and WhatsApp.
+            </p>
+          </div>
+
+          {/* Tag 3: parcel delivery service */}
+          <div className="p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              parcel delivery service
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Whether sending personal luggage, books, household items, or e-commerce products, our parcel delivery service guarantees zero misplacement, complete safety cushioning, and transparent weight-based pricing.
+            </p>
+          </div>
+
+          {/* Tag 4: courier services */}
+          <div className="p-4.5 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800 space-y-2">
+            <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white capitalize flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#001261] dark:bg-blue-400 shrink-0" />
+              courier services
+            </h2>
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+              Specialized express courier services for confidential corporate documents, contracts, tenders, IT equipment, and industrial spare parts with expedited direct air cargo and green express road corridors.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          14. 24/7 HELPLINE & FAST BOOKING CALLOUT
          ========================================================================= */}
       <section id="section-final-cta" className="bg-gradient-to-br from-slate-900 via-[#001261] to-slate-950 rounded-3xl border border-blue-500/30 p-6 sm:p-8 text-white space-y-6 shadow-2xl relative overflow-hidden">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">

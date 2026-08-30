@@ -230,6 +230,21 @@ export const Navbar: React.FC<NavbarProps> = ({
               </button>
 
               <button
+                id="btn-nav-faqs"
+                type="button"
+                onClick={() => onNavigate('faq')}
+                className={`hidden md:flex font-bold text-xs px-3.5 h-11 rounded-xl transition-all items-center gap-1.5 cursor-pointer border shrink-0 ${
+                  currentPage === 'faq'
+                    ? 'bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-900/60'
+                    : 'bg-white dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700/80 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500'
+                }`}
+                title="Frequently Asked Questions"
+              >
+                <HelpCircle className="w-4 h-4 text-orange-500" />
+                <span>FAQs</span>
+              </button>
+
+              <button
                 id="btn-nav-help-center"
                 type="button"
                 onClick={() => onNavigate('contact')}
@@ -376,6 +391,20 @@ export const Navbar: React.FC<NavbarProps> = ({
               }`}
             >
               About Us
+            </button>
+
+            <button
+              onClick={() => {
+                onNavigate('faq');
+                setMobileMenuOpen(false);
+              }}
+              className={`w-full text-left px-4 py-3 rounded-xl font-bold text-sm transition-all ${
+                currentPage === 'faq'
+                  ? 'bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+              }`}
+            >
+              Frequently Asked Questions (FAQs)
             </button>
 
             <button

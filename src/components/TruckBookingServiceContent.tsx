@@ -49,10 +49,10 @@ import allTrucksFleetImg from '../assets/images/trucks/all_trucks_fleet.jpg';
 // Other service vector images
 import parcelVectorImg from '../assets/images/service_parcel_vector_1785319730384.jpg';
 import packersVectorImg from '../assets/images/service_packers_vector_1785319746387.jpg';
-import packingUnpackingVectorImg from '../assets/images/vector_packing_unpacking_1785946345528.jpg';
-import loadingUnloadingVectorImg from '../assets/images/vector_loading_unloading_1785946360593.jpg';
-import vehicleTransportVectorImg from '../assets/images/vector_vehicle_transport_1785946372441.jpg';
-import warehousingStorageVectorImg from '../assets/images/vector_warehousing_storage_1785946384931.jpg';
+import packingUnpackingVectorImg from '../assets/images/vector_packing_unpacking_1785946345528.png';
+import loadingUnloadingVectorImg from '../assets/images/vector_loading_unloading_1785946360593.png';
+import vehicleTransportVectorImg from '../assets/images/vector_vehicle_transport_1785946372441.png';
+import warehousingStorageVectorImg from '../assets/images/vector_warehousing_storage_1785946384931.png';
 
 export interface FleetVehicle {
   id: string;
@@ -503,8 +503,8 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
 
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
               <div>
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-                  Book Your Trucks in {selectedCity}
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug capitalize">
+                  online mini truck booking in {selectedCity}
                 </h2>
                 <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-2xl font-normal mt-2">
                   Choose from 13 verified vehicle classes categorized by payload capacity for seamless intra-city and intercity cargo transit.
@@ -751,12 +751,12 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
             <Building2 className="w-3.5 h-3.5 text-blue-600" />
             <span>4. Comprehensive Truck Services</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 capitalize">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Truck Booking Services in Coimbatore
-          </h3>
+            truck booking in {selectedCity}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Our Online Truck Booking service in Coimbatore helps customers book suitable vehicles for household shifting, office relocation, commercial transportation, industrial goods movement, warehouse transportation, furniture delivery, and full truck load requirements.
+            Our Online Truck Booking service in {selectedCity} helps customers book suitable vehicles for household shifting, office relocation, commercial transportation, industrial goods movement, warehouse transportation, furniture delivery, and full truck load requirements.
           </p>
         </div>
 
@@ -802,9 +802,9 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
                 <span className="w-7 h-7 rounded-xl bg-[#001261] dark:bg-blue-600 text-white font-bold text-xs flex items-center justify-center shrink-0">
                   1
                 </span>
-                <h4 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight">
-                  Local House Shifting Truck Booking
-                </h4>
+                <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight capitalize">
+                  truck booking for shifting
+                </h2>
               </div>
               <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
                 For house shifting within Coimbatore, customers can book suitable mini trucks, pickup vehicles, and container vehicles based on the size and quantity of household goods.
@@ -1036,12 +1036,12 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
             <Clock className="w-3.5 h-3.5 text-blue-600" />
             <span>5. Booking Process</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 capitalize">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            How Online Truck Booking Works
-          </h3>
+            online truck booking
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
-            Packer Solutions makes Online Truck Booking Services in Coimbatore simple through a structured booking process. Customers can request a vehicle without visiting a transport office or spending time contacting multiple vehicle owners.
+            Packer Solutions makes Online Truck Booking Services in {selectedCity} simple through a structured booking process. Customers can request a vehicle without visiting a transport office or spending time contacting multiple vehicle owners.
           </p>
         </div>
 
@@ -1169,10 +1169,10 @@ export const TruckBookingServiceContent: React.FC<TruckBookingServiceContentProp
             <CheckCircle className="w-3.5 h-3.5 text-blue-600" />
             <span>7. Easy Booking &amp; Coordination</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 capitalize">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Book Your Online Truck in Coimbatore Today
-          </h3>
+            online truck booking in {selectedCity} Today
+          </h2>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-8 shadow-xs space-y-4 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">

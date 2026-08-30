@@ -40,7 +40,7 @@ export const ParcelCourierCardForm: React.FC<ParcelCourierCardFormProps> = ({
   onOpenCityModal,
   onOpenLoginModal,
   onOpenEstimateModal,
-  serviceName = "Parcel and Courier",
+  serviceName = "Parcel Services",
   basePrice = 150
 }) => {
   // 1. Trip Scope: 'within-city' | 'between-city'

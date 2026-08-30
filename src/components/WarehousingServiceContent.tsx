@@ -332,10 +332,10 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
             <Home className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>2. Residential Household Storage</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 capitalize">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Household Storage Services in {city}
-          </h3>
+            rent storage space in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Suitable for customers who need additional space to safely store household belongings for a few weeks, months, or longer.
           </p>
@@ -373,10 +373,10 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
             <Boxes className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>3. Furniture &amp; Appliances Storage</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 capitalize">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Furniture Storage Services in {city}
-          </h3>
+            storage for rent in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Need a safe place to store furniture during relocation or renovation? Packer Solutions provides secure furniture storage for residential and commercial customers.
           </p>
@@ -459,10 +459,10 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
             <ShoppingBag className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>5. B2B &amp; Retail Warehousing</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 capitalize">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Commercial Warehouse Storage in {city}
-          </h3>
+            commercial storage units in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Customized storage plans according to storage volume, type of goods, handling requirements, and storage duration.
           </p>
@@ -708,10 +708,10 @@ export const WarehousingServiceContent: React.FC<WarehousingServiceContentProps>
             <Calendar className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>10. Flexible Storage Tenure</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2 capitalize">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Short-Term &amp; Long-Term Storage Plans
-          </h3>
+            self storage in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-normal leading-relaxed">
             Select the storage duration that matches your transition schedule. Customers requiring annual storage can request long-term discounts.
           </p>

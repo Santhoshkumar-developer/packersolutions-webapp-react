@@ -224,22 +224,22 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
 
         {/* Column 3: Contact coordinates */}
         <div className="space-y-5">
-          <h5 className="font-bold text-slate-100 text-xs uppercase tracking-widest mb-6">Headquarters</h5>
+          <h5 className="font-bold text-slate-100 text-xs uppercase tracking-widest mb-6">Head Office Address</h5>
           
           <div className="space-y-4 text-xs text-slate-400">
             <div className="flex gap-3 items-start leading-relaxed">
               <LucideIcon name="MapPin" className="w-5 h-5 text-orange-500 shrink-0 mt-0.5" />
               <span>
-                45 Corporate Logistics Boulevard, <br />
-                Suite 204, Sector 62, <br />
-                Delhi NCR, India - 110001
+                S.F. No. 508/2, TTS Gardens, <br />
+                THadagam Road, Pannimadai Village, <br />
+                Kanuvai, Coimbatore - 641108
               </span>
             </div>
 
             <div className="flex gap-3 items-center">
               <LucideIcon name="Phone" className="w-4 h-4 text-orange-500 shrink-0" />
-              <a href="tel:+919876543210" className="hover:text-orange-400 transition-colors font-mono">
-                +91 98765 43210
+              <a href="tel:+919500955237" className="hover:text-orange-400 transition-colors font-mono">
+                +91 95009-55237
               </a>
             </div>
 
@@ -366,12 +366,7 @@ export const Footer: React.FC<FooterProps> = ({ services, onNavigate }) => {
               }, 150);
             }} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Reviews</button>
             <span>•</span>
-            <button onClick={() => {
-              onNavigate('home');
-              setTimeout(() => {
-                document.getElementById('home-faqs-section')?.scrollIntoView({ behavior: 'smooth' });
-              }, 150);
-            }} className="hover:text-slate-400 transition-colors cursor-pointer text-left">FAQs</button>
+            <button onClick={() => onNavigate('faq')} className="hover:text-orange-400 transition-colors cursor-pointer text-left font-semibold">FAQs</button>
             <span>•</span>
             <button onClick={() => onNavigate('privacy-policy')} className="hover:text-slate-400 transition-colors cursor-pointer text-left">Privacy Policy</button>
             <span>•</span>

@@ -48,11 +48,11 @@ import { SavedAddressesModal } from './components/SavedAddressesModal';
 import parcelVectorImg from './assets/images/service_parcel_vector_1785319730384.jpg';
 import packersVectorImg from './assets/images/service_packers_vector_1785319746387.jpg';
 import truckVectorImg from './assets/images/service_truck_vector_1785319761125.jpg';
-import officeCorporateVectorImg from './assets/images/vector_office_corporate_1785946331412.jpg';
-import packingUnpackingVectorImg from './assets/images/vector_packing_unpacking_1785946345528.jpg';
-import loadingUnloadingVectorImg from './assets/images/vector_loading_unloading_1785946360593.jpg';
-import vehicleTransportVectorImg from './assets/images/vector_vehicle_transport_1785946372441.jpg';
-import warehousingStorageVectorImg from './assets/images/vector_warehousing_storage_1785946384931.jpg';
+import officeCorporateVectorImg from './assets/images/office_shifting_service_1788079537044.jpg';
+import packingUnpackingVectorImg from './assets/images/vector_packing_unpacking_1785946345528.png';
+import loadingUnloadingVectorImg from './assets/images/vector_loading_unloading_1785946360593.png';
+import vehicleTransportVectorImg from './assets/images/vector_vehicle_transport_1785946372441.png';
+import warehousingStorageVectorImg from './assets/images/vector_warehousing_storage_1785946384931.png';
 import brandAmbassadorImg from './assets/images/brand_ambassador_banner_1785946313841.jpg';
 import carpenterVectorImg from './assets/images/addon_carpenter_vector_1785322577003.jpg';
 import paintingVectorImg from './assets/images/addon_painting_vector_1785322592772.jpg';
@@ -78,6 +78,7 @@ import { ContactView } from './components/ContactView';
 import { CityAreaDirectory } from './components/CityAreaDirectory';
 import { LocationPromptModal } from './components/LocationPromptModal';
 import { AddonServicesView } from './components/AddonServicesView';
+import { FAQPage } from './components/faq/FAQPage';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -257,6 +258,12 @@ export default function App() {
         window.scrollTo(0, 0);
         return;
       }
+      if (hash === '#faq' || hash === '#faqs') {
+        setCurrentPage('faq');
+        setSelectedBlogSlug(null);
+        window.scrollTo(0, 0);
+        return;
+      }
       if (hash === '#driving-partner' || hash === '#partner') {
         setCurrentPage('driving-partner');
         setSelectedBlogSlug(null);
@@ -301,6 +308,8 @@ export default function App() {
       window.location.hash = '#how-it-works';
     } else if (page === 'contact') {
       window.location.hash = '#contact';
+    } else if (page === 'faq' || page === 'faqs') {
+      window.location.hash = '#faq';
     } else if (['cancellation-refund', 'terms-conditions', 'shipment-policy', 'privacy-policy'].includes(page)) {
       window.location.hash = `#${page}`;
     } else {
@@ -399,15 +408,15 @@ export default function App() {
       <main className="flex-grow">
         {currentPage === 'home' ? (
           /* ==================== HOME VIEW ==================== */
-          <div id="home-page-view" className="bg-background-app">
+          <div id="home-page-view" className="bg-background-app font-roboto">
             
             {/* 1. "Service We Offer" Section (Reference Digit Style) */}
-            <section id="services-offer-section" className="py-10 sm:py-14 bg-slate-50/50 dark:bg-slate-900/30 border-b border-slate-200/60 dark:border-slate-800/60">
+            <section id="services-offer-section" className="py-10 sm:py-14 bg-slate-50/50 dark:bg-slate-900/30 border-b border-slate-200/60 dark:border-slate-800/60 font-roboto">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 {/* Hero Header Title */}
                 <div className="text-center mb-8">
-                  <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-slate-900 dark:text-white tracking-tight font-sans leading-tight">
+                  <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-slate-900 dark:text-white tracking-tight font-roboto leading-tight">
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#001261] via-[#0321a1] to-[#ff6200] dark:from-blue-400 dark:via-orange-400 dark:to-amber-300">
                       Packersolutions
                     </span>{' '}
@@ -859,12 +868,7 @@ export default function App() {
               </div>
             </section>
 
-            {/* 6. FAQ Accordion Section */}
-            <div id="home-faqs-section">
-              <FAQSection />
-            </div>
-
-            {/* 7. City-Wise Locality Directory Section */}
+            {/* City-Wise Locality Directory Section */}
             <CityAreaDirectory onSelectArea={(city, area) => {
               setSelectedCity(city);
               const quoteElement = document.getElementById('quick-quote');
@@ -945,6 +949,17 @@ export default function App() {
             onNavigate={navigateTo}
             selectedCity={selectedCity}
           />
+        ) : currentPage === 'faq' ? (
+          /* ==================== FAQ DEDICATED PAGE VIEW ==================== */
+          <FAQPage
+            onNavigate={navigateTo}
+            selectedCity={selectedCity}
+            onOpenQuote={() => setIsEstimateModalOpen(true)}
+            onOpenBooking={(serviceId) => {
+              setActiveServiceId(serviceId || 'packers-and-movers');
+              setIsEnquiryDrawerOpen(true);
+            }}
+          />
         ) : ['cancellation-refund', 'terms-conditions', 'shipment-policy', 'privacy-policy'].includes(currentPage) ? (
           /* ==================== POLICY PAGES VIEW ==================== */
           <PolicyPages 
@@ -985,6 +1000,14 @@ export default function App() {
                       ? 'Packers and Movers' 
                       : activeService.id === 'loading-unloading'
                       ? 'Loading Services'
+                      : activeService.id === 'vehicle-transportation'
+                      ? 'Vehicle Transport Services'
+                      : activeService.id === 'parcel-courier'
+                      ? 'Parcel Services'
+                      : activeService.id === 'domestic-relocation'
+                      ? 'Truck Booking Services'
+                      : activeService.id === 'warehousing-storage'
+                      ? 'Storage Services'
                       : activeService.name.replace(/\s*\([^)]*\)/g, '')} in {selectedCity}
                   </h1>
 

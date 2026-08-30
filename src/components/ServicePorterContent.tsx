@@ -62,10 +62,10 @@ import { PackingUnpackingServiceContent } from './PackingUnpackingServiceContent
 import { LoadingUnloadingServiceContent } from './LoadingUnloadingServiceContent';
 import parcelVectorImg from '../assets/images/service_parcel_vector_1785319730384.jpg';
 import packersVectorImg from '../assets/images/service_packers_vector_1785319746387.jpg';
-import packingUnpackingVectorImg from '../assets/images/vector_packing_unpacking_1785946345528.jpg';
-import loadingUnloadingVectorImg from '../assets/images/vector_loading_unloading_1785946360593.jpg';
-import vehicleTransportVectorImg from '../assets/images/vector_vehicle_transport_1785946372441.jpg';
-import warehousingStorageVectorImg from '../assets/images/vector_warehousing_storage_1785946384931.jpg';
+import packingUnpackingVectorImg from '../assets/images/vector_packing_unpacking_1785946345528.png';
+import loadingUnloadingVectorImg from '../assets/images/vector_loading_unloading_1785946360593.png';
+import vehicleTransportVectorImg from '../assets/images/vector_vehicle_transport_1785946372441.png';
+import warehousingStorageVectorImg from '../assets/images/vector_warehousing_storage_1785946384931.png';
 
 const OTHER_SERVICES_MENU = [
   {

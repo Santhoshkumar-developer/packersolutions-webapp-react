@@ -113,7 +113,7 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'domestic-relocation',
-    name: 'Truck Booking',
+    name: 'Truck Booking Services',
     tagline: 'Instant mini truck, tempo & heavy vehicle hire with verified drivers',
     shortDescription: 'Book mini trucks (Tata Ace, Pickup, Bolero) and heavy commercial trucks for local goods transport, shifting, or intercity freight.',
     detailedDescription: 'Need a reliable truck for goods movement or household transport? Packersolution offers instant, hassle-free Truck Booking services for both local intracity trips and long-distance intercity freight. Choose from a comprehensive fleet ranging from Tata Ace (Chhota Hathi), 8ft Pickup, 14ft Eicher trucks, to 19ft/32ft multi-ton closed containers. Enjoy transparent fixed rates, real-time GPS tracking, verified professional drivers, and option for helper/labour assistance for easy loading and unloading.',
@@ -308,7 +308,7 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'vehicle-transportation',
-    name: 'Vehicle Transportation (Car & Bike)',
+    name: 'Vehicle Transport Services (Car & Bike)',
     tagline: 'Scratch-free, secure and fully enclosed vehicle carriage',
     shortDescription: 'State-of-the-art specialized multi-car carriers and secure single-bike wood crates to transport your automobiles across India.',
     detailedDescription: 'Your car or motorcycle is a valuable asset that deserves the highest security during transport. Packersolution provides specialized automobile carriage services. For motorcycles, we construct custom wooden crates with heavy tie-downs to ensure the suspension is stabilized and paintwork remains pristine. For luxury cars, we utilize modern hydraulic car-carrier trailers with robust securing mechanisms. We complete a thorough pre-transport inspection report tracking existing scratches, fluid levels, and tire condition, giving you absolute transparency before the journey begins.',
@@ -342,7 +342,7 @@ export const SERVICES_DATA: ServiceItem[] = [
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        'name': 'Vehicle Transportation (Car & Bike)',
+        'name': 'Vehicle Transport Services',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'Packersolution',
@@ -557,7 +557,7 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'warehousing-storage',
-    name: 'Warehousing & Storage Solutions',
+    name: 'Storage Services',
     tagline: 'CCTV monitored, moisture-free, pest-controlled storage',
     shortDescription: 'Safe, clean, and flexible short-term and long-term storage facilities for your home furniture, business inventory, or seasonal goods.',
     detailedDescription: 'Whether you are traveling abroad for a temporary project, waiting for your new villa to be completed, or needing additional storage space for your business merchandise, Packersolution offers premium, secure warehousing facilities. Our warehouses are climate-controlled, dry, fully pest-controlled, and under continuous 24/7 CCTV surveillance with active fire security systems. We index every single item and store them in custom palletized wooden vaults. You can store your items for a few weeks or several years, with comprehensive insurance coverage and structured pick-up and delivery services whenever you need them.',
@@ -638,7 +638,7 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'parcel-courier',
-    name: 'Parcel & Courier Services',
+    name: 'Parcel Services',
     tagline: 'Fast & Secure Intercity & Door-to-Door Parcel Delivery by Packer Solutions',
     shortDescription: 'Send documents, personal belongings, business parcels, e-commerce orders, and commercial cargo with doorstep pickup, secure 5-ply packing, and real-time tracking.',
     detailedDescription: 'Packer Solutions provides professional intercity and door-to-door Parcel Services for individuals, businesses, offices, retailers, e-commerce sellers, and commercial customers. Our parcel transportation service is designed for documents, personal belongings, small packages, business parcels, commercial goods, and other eligible shipments. Whether you need to send a parcel from your home, office, shop, warehouse, or business location to any destination across India, Packer Solutions provides a systematic process covering parcel booking, doorstep pickup, verification, multi-layer protective packaging, secure handling, scheduled transit, delivery updates, and digital delivery confirmation.',

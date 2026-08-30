@@ -21,7 +21,7 @@ export const TruckBookingCardForm: React.FC<TruckBookingCardFormProps> = ({
   onOpenCityModal,
   onOpenLoginModal,
   onOpenEstimateModal,
-  serviceName = "Truck Booking",
+  serviceName = "Truck Booking Services",
   basePrice = 850
 }) => {
   // 1. Relocate type toggle state: 'within-city' | 'between-city'

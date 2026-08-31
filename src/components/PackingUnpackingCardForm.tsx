@@ -29,8 +29,8 @@ interface PackingUnpackingCardFormProps {
   selectedCity: string;
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
-  onOpenLoginModal: () => void;
-  onOpenEstimateModal?: () => void;
+  onOpenLoginModal?: () => void;
+  onOpenEnquiryModal?: () => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -40,7 +40,7 @@ export const PackingUnpackingCardForm: React.FC<PackingUnpackingCardFormProps> =
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEstimateModal,
+  onOpenEnquiryModal,
   serviceName = "Packing & Unpacking",
   basePrice = 3000
 }) => {
@@ -109,19 +109,15 @@ export const PackingUnpackingCardForm: React.FC<PackingUnpackingCardFormProps> =
       shiftingDate: packingDate
     }));
 
-    // Check if user is logged in
-    const isLoggedIn = localStorage.getItem('ps_user_logged_in') === 'true';
-    if (!isLoggedIn) {
-      onOpenLoginModal();
-    } else if (onOpenEstimateModal) {
-      onOpenEstimateModal();
-    } else {
+    if (onOpenEnquiryModal) {
+      onOpenEnquiryModal();
+    } else if (onOpenLoginModal) {
       onOpenLoginModal();
     }
   };
 
   return (
-    <div className="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-xl overflow-visible relative p-3.5 sm:p-4.5 space-y-2.5 sm:space-y-3 text-left transition-all w-full max-w-lg sm:max-w-xl mx-auto lg:max-w-none">
+    <div id="packing-unpacking-form" className="bg-white dark:bg-slate-900 rounded-2xl sm:rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-xl overflow-visible relative p-3.5 sm:p-4.5 space-y-2.5 sm:space-y-3 text-left transition-all w-full max-w-lg sm:max-w-xl mx-auto lg:max-w-none scroll-mt-24">
       
       {/* Top Accent Bar */}
       <div className="absolute top-0 left-6 right-6 sm:left-8 sm:right-8 h-1 bg-gradient-to-r from-[#001261] via-[#0321a1] to-blue-600 rounded-b-full" />

@@ -8,7 +8,7 @@ import { LucideIcon } from './LucideIcon';
 import { ServiceItem } from '../types';
 import logoImg from '../assets/images/packersolution_logo.jpg';
 import { useAddress } from '../context/AddressContext';
-import { User, MapPin, LogOut, ChevronDown, HelpCircle, LogIn } from 'lucide-react';
+import { User, MapPin, LogOut, ChevronDown, HelpCircle, LogIn, Sparkles } from 'lucide-react';
 
 interface NavbarProps {
   currentPage: string;
@@ -18,6 +18,7 @@ interface NavbarProps {
   selectedCity?: string;
   onOpenCityModal?: () => void;
   onOpenLoginModal?: () => void;
+  onOpenEnquiryModal?: () => void;
   onOpenPartnerModal?: () => void;
 }
 
@@ -29,6 +30,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   selectedCity,
   onOpenCityModal,
   onOpenLoginModal,
+  onOpenEnquiryModal,
   onOpenPartnerModal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -254,13 +256,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <HelpCircle className="w-4 h-4 text-white" />
                 <span>Help Center</span>
               </button>
-              
+
               <button
                 id="btn-nav-login"
+                type="button"
                 onClick={onOpenLoginModal}
-                className="bg-[#0321a1] hover:bg-[#001980] active:bg-[#001261] text-white font-medium text-xs px-4 h-11 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-sm hover:shadow-md border border-[#021b85] shrink-0"
+                className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs px-4 h-11 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700 shrink-0"
+                title="Login with OTP"
               >
-                <LogIn className="w-4 h-4 text-white" />
+                <LogIn className="w-4 h-4 text-orange-500" />
                 <span>Login</span>
               </button>
             </div>
@@ -468,17 +472,31 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
               </div>
             ) : (
-              <button
-                type="button"
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  if (onOpenLoginModal) onOpenLoginModal();
-                }}
-                className="w-full h-11 rounded-xl bg-[#0321a1] hover:bg-[#001980] text-white font-medium text-xs flex items-center justify-center gap-2 transition-colors border border-[#021b85]"
-              >
-                <LogIn className="w-4 h-4 text-white" />
-                <span>Login</span>
-              </button>
+              <div className="flex flex-col gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (onOpenLoginModal) onOpenLoginModal();
+                  }}
+                  className="w-full h-11 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200 dark:border-slate-700"
+                >
+                  <LogIn className="w-4 h-4 text-orange-500" />
+                  <span>Login with OTP</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    if (onOpenEnquiryModal) onOpenEnquiryModal();
+                    else onNavigate('contact');
+                  }}
+                  className="w-full h-11 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md shadow-orange-500/20"
+                >
+                  <Sparkles className="w-4 h-4 text-amber-200" />
+                  <span>Get Free Quote / Enquiry</span>
+                </button>
+              </div>
             )}
           </div>
 

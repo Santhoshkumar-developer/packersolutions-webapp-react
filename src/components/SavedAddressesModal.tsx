@@ -34,6 +34,7 @@ const LABEL_ICONS: Record<AddressLabelType, React.ComponentType<{ className?: st
 };
 
 const ALL_SERVICE_TAGS: { id: ServiceTagType; label: string }[] = [
+  { id: 'packers-and-movers', label: 'House Shifting' },
   { id: 'household-shifting', label: 'House Shifting' },
   { id: 'office-shifting', label: 'Office Shifting' },
   { id: 'parcel-courier', label: 'Parcel & Courier' },
@@ -72,7 +73,7 @@ export const SavedAddressesModal: React.FC = () => {
   const [formPincode, setFormPincode] = useState('');
   const [formContactName, setFormContactName] = useState('');
   const [formContactPhone, setFormContactPhone] = useState('');
-  const [formServiceTags, setFormServiceTags] = useState<ServiceTagType[]>(['household-shifting']);
+  const [formServiceTags, setFormServiceTags] = useState<ServiceTagType[]>(['packers-and-movers']);
   const [formIsDefault, setFormIsDefault] = useState(false);
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -91,7 +92,7 @@ export const SavedAddressesModal: React.FC = () => {
     setFormPincode('');
     setFormContactName(currentUser?.name || '');
     setFormContactPhone(currentUser?.mobile || '');
-    setFormServiceTags(['household-shifting']);
+    setFormServiceTags(['packers-and-movers']);
     setFormIsDefault(savedAddresses.length === 0);
     setFormError('');
     setIsAddingOrEditing(true);
@@ -109,7 +110,7 @@ export const SavedAddressesModal: React.FC = () => {
     setFormPincode(addr.pincode || '');
     setFormContactName(addr.contactName || '');
     setFormContactPhone(addr.contactPhone || '');
-    setFormServiceTags(addr.serviceTags || ['household-shifting']);
+    setFormServiceTags(addr.serviceTags || ['packers-and-movers']);
     setFormIsDefault(!!addr.isDefault);
     setFormError('');
     setIsAddingOrEditing(true);

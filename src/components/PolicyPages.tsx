@@ -171,21 +171,6 @@ export const PolicyPages: React.FC<PolicyPagesProps> = ({ page, onNavigate, sele
     <div className="bg-slate-50 dark:bg-slate-950 min-h-screen py-10 font-sans transition-colors duration-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Navigation Breadcrumb Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-          <button
-            onClick={() => onNavigate('home')}
-            className="inline-flex items-center gap-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-sm font-bold transition-colors bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 px-4 py-2 rounded-full cursor-pointer shadow-sm hover:scale-[1.02] active:scale-[0.98]"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Back to Home</span>
-          </button>
-
-          <div className="bg-slate-200/60 dark:bg-slate-800/80 p-1 rounded-full flex gap-1 border border-slate-200 dark:border-slate-700">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 px-3 py-1.5">📍 City: {selectedCity}</span>
-          </div>
-        </div>
-
         {/* Dynamic Page Main Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           

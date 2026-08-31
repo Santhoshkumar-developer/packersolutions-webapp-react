@@ -41,7 +41,7 @@ export const WarehousingStorageCardForm: React.FC<WarehousingStorageCardFormProp
   onOpenCityModal,
   onOpenLoginModal,
   onOpenEstimateModal,
-  serviceName = "Warehousing & Storage",
+  serviceName = "Storage Services",
   basePrice = 3000
 }) => {
   // 1. Storage Requirement state: 'short-term' | 'long-term' + selected duration

@@ -58,6 +58,7 @@ const LABEL_ICONS: Record<AddressLabelType, React.ComponentType<{ className?: st
 };
 
 const ALL_SERVICE_TAGS: { id: ServiceTagType; label: string }[] = [
+  { id: 'packers-and-movers', label: 'House Shifting' },
   { id: 'household-shifting', label: 'House Shifting' },
   { id: 'office-shifting', label: 'Office Shifting' },
   { id: 'parcel-courier', label: 'Parcel & Courier' },
@@ -72,7 +73,7 @@ export const AddressPickerModal: React.FC<AddressPickerModalProps> = ({
   isOpen,
   onClose,
   type = 'pickup',
-  serviceId = 'household-shifting',
+  serviceId = 'packers-and-movers',
   cityContext = 'Bangalore',
   currentValue = '',
   onSelect,
@@ -114,7 +115,7 @@ export const AddressPickerModal: React.FC<AddressPickerModalProps> = ({
   const [formPincode, setFormPincode] = useState('');
   const [formContactName, setFormContactName] = useState('');
   const [formContactPhone, setFormContactPhone] = useState('');
-  const [formServiceTags, setFormServiceTags] = useState<ServiceTagType[]>([serviceId as ServiceTagType || 'household-shifting']);
+  const [formServiceTags, setFormServiceTags] = useState<ServiceTagType[]>([serviceId as ServiceTagType || 'packers-and-movers']);
   const [formIsDefault, setFormIsDefault] = useState(false);
   const [formError, setFormError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -229,7 +230,7 @@ export const AddressPickerModal: React.FC<AddressPickerModalProps> = ({
     setFormPincode(prefillLocality ? prefillLocality.pincode : '');
     setFormContactName(currentUser?.name || localStorage.getItem('ps_user_name') || '');
     setFormContactPhone(currentUser?.mobile || localStorage.getItem('ps_user_mobile') || '');
-    setFormServiceTags([serviceId as ServiceTagType || 'household-shifting']);
+    setFormServiceTags([serviceId as ServiceTagType || 'packers-and-movers']);
     setFormIsDefault(savedAddresses.length === 0);
     setFormError('');
     setView('form');
@@ -248,7 +249,7 @@ export const AddressPickerModal: React.FC<AddressPickerModalProps> = ({
     setFormPincode(addr.pincode || '');
     setFormContactName(addr.contactName || '');
     setFormContactPhone(addr.contactPhone || '');
-    setFormServiceTags(addr.serviceTags || [serviceId as ServiceTagType || 'household-shifting']);
+    setFormServiceTags(addr.serviceTags || [serviceId as ServiceTagType || 'packers-and-movers']);
     setFormIsDefault(!!addr.isDefault);
     setFormError('');
     setView('form');

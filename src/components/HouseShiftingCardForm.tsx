@@ -462,7 +462,7 @@ export const HouseShiftingCardForm: React.FC<HouseShiftingCardFormProps> = ({
                 onChange={(val) => setPickupLoc(val)}
                 placeholder="Enter Pickup locality, apartment or landmark"
                 type="pickup"
-                serviceId="household-shifting"
+                serviceId="packers-and-movers"
                 cityContext={selectedCity}
               />
 
@@ -472,7 +472,7 @@ export const HouseShiftingCardForm: React.FC<HouseShiftingCardFormProps> = ({
                 onChange={(val) => setDropLoc(val)}
                 placeholder="Enter Drop locality, apartment or landmark"
                 type="drop"
-                serviceId="household-shifting"
+                serviceId="packers-and-movers"
                 cityContext={relocateType === 'between-city' ? destinationCity : selectedCity}
               />
             </div>

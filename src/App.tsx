@@ -48,11 +48,11 @@ import { SavedAddressesModal } from './components/SavedAddressesModal';
 import parcelVectorImg from './assets/images/service_parcel_vector_1785319730384.jpg';
 import packersVectorImg from './assets/images/service_packers_vector_1785319746387.jpg';
 import truckVectorImg from './assets/images/service_truck_vector_1785319761125.jpg';
-import officeCorporateVectorImg from './assets/images/vector_office_corporate_1785946331412.jpg';
-import packingUnpackingVectorImg from './assets/images/vector_packing_unpacking_1785946345528.jpg';
-import loadingUnloadingVectorImg from './assets/images/vector_loading_unloading_1785946360593.jpg';
-import vehicleTransportVectorImg from './assets/images/vector_vehicle_transport_1785946372441.jpg';
-import warehousingStorageVectorImg from './assets/images/vector_warehousing_storage_1785946384931.jpg';
+import officeCorporateVectorImg from './assets/images/office_shifting_service_1788079537044.jpg';
+import packingUnpackingVectorImg from './assets/images/vector_packing_unpacking_1785946345528.png';
+import loadingUnloadingVectorImg from './assets/images/vector_loading_unloading_1785946360593.png';
+import vehicleTransportVectorImg from './assets/images/vector_vehicle_transport_1785946372441.png';
+import warehousingStorageVectorImg from './assets/images/vector_warehousing_storage_1785946384931.png';
 import brandAmbassadorImg from './assets/images/brand_ambassador_banner_1785946313841.jpg';
 import carpenterVectorImg from './assets/images/addon_carpenter_vector_1785322577003.jpg';
 import paintingVectorImg from './assets/images/addon_painting_vector_1785322592772.jpg';
@@ -78,7 +78,7 @@ import { ContactView } from './components/ContactView';
 import { CityAreaDirectory } from './components/CityAreaDirectory';
 import { LocationPromptModal } from './components/LocationPromptModal';
 import { AddonServicesView } from './components/AddonServicesView';
-import { DrivingPartnerView } from './components/DrivingPartnerView';
+import { FAQPage } from './components/faq/FAQPage';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -101,11 +101,11 @@ export default function App() {
   };
 
   const [currentPage, setCurrentPage] = useState<string>('home');
-  const [activeServiceId, setActiveServiceId] = useState<string>('household-shifting');
+  const [activeServiceId, setActiveServiceId] = useState<string>('packers-and-movers');
   const [selectedAddonCategory, setSelectedAddonCategory] = useState<string | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [latestTicketId, setLatestTicketId] = useState('');
-  const [quickSearchService, setQuickSearchService] = useState('household-shifting');
+  const [quickSearchService, setQuickSearchService] = useState('packers-and-movers');
   const [activeUpperSlide, setActiveUpperSlide] = useState(0);
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
   const [selectedCity, setSelectedCity] = useState('Bangalore');
@@ -197,7 +197,10 @@ export default function App() {
     const handleHashChange = () => {
       const hash = window.location.hash;
       if (hash.startsWith('#service/')) {
-        const serviceId = hash.replace('#service/', '');
+        let serviceId = hash.replace('#service/', '');
+        if (serviceId === 'household-shifting') {
+          serviceId = 'packers-and-movers';
+        }
         const exists = SERVICES_DATA.some(s => s.id === serviceId);
         if (exists) {
           setCurrentPage('service');
@@ -255,6 +258,12 @@ export default function App() {
         window.scrollTo(0, 0);
         return;
       }
+      if (hash === '#faq' || hash === '#faqs') {
+        setCurrentPage('faq');
+        setSelectedBlogSlug(null);
+        window.scrollTo(0, 0);
+        return;
+      }
       if (hash === '#driving-partner' || hash === '#partner') {
         setCurrentPage('driving-partner');
         setSelectedBlogSlug(null);
@@ -268,7 +277,7 @@ export default function App() {
         return;
       }
       setCurrentPage('home');
-      setActiveServiceId('household-shifting');
+      setActiveServiceId('packers-and-movers');
       setSelectedBlogSlug(null);
       window.scrollTo(0, 0);
     };
@@ -283,7 +292,8 @@ export default function App() {
 
   const navigateTo = (page: string, serviceId?: string) => {
     if (page === 'service' && serviceId) {
-      window.location.hash = `#service/${serviceId}`;
+      const normalizedServiceId = serviceId === 'household-shifting' ? 'packers-and-movers' : serviceId;
+      window.location.hash = `#service/${normalizedServiceId}`;
     } else if (page === 'blog') {
       window.location.hash = serviceId ? `#blog/${serviceId}` : '#blog';
     } else if (page === 'addons') {
@@ -298,6 +308,8 @@ export default function App() {
       window.location.hash = '#how-it-works';
     } else if (page === 'contact') {
       window.location.hash = '#contact';
+    } else if (page === 'faq' || page === 'faqs') {
+      window.location.hash = '#faq';
     } else if (['cancellation-refund', 'terms-conditions', 'shipment-policy', 'privacy-policy'].includes(page)) {
       window.location.hash = `#${page}`;
     } else {
@@ -396,27 +408,30 @@ export default function App() {
       <main className="flex-grow">
         {currentPage === 'home' ? (
           /* ==================== HOME VIEW ==================== */
-          <div id="home-page-view" className="bg-background-app">
+          <div id="home-page-view" className="bg-background-app font-roboto">
             
             {/* 1. "Service We Offer" Section (Reference Digit Style) */}
-            <section id="services-offer-section" className="py-10 sm:py-14 bg-slate-50/50 dark:bg-slate-900/30 border-b border-slate-200/60 dark:border-slate-800/60">
+            <section id="services-offer-section" className="py-10 sm:py-14 bg-slate-50/50 dark:bg-slate-900/30 border-b border-slate-200/60 dark:border-slate-800/60 font-roboto">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 
                 {/* Hero Header Title */}
                 <div className="text-center mb-8">
-                  <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-slate-900 dark:text-white tracking-tight font-sans leading-tight">
-                    Get Instant Packers &amp; Movers Quotes
+                  <h1 className="text-2xl sm:text-4xl lg:text-[42px] font-bold text-slate-900 dark:text-white tracking-tight font-roboto leading-tight">
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#001261] via-[#0321a1] to-[#ff6200] dark:from-blue-400 dark:via-orange-400 dark:to-amber-300">
+                      Packersolutions
+                    </span>{' '}
+                    Your Trusted Delivery Partner
                   </h1>
-                  <p className="text-sm sm:text-base font-normal sm:font-medium text-slate-600 dark:text-slate-400 mt-2.5 max-w-2xl mx-auto">
-                    Trusted by 10 Lakh+ Happy Shifting Customers across 500+ Indian Cities
-                  </p>
+                  <h2 className="text-sm sm:text-base font-normal sm:font-medium text-slate-600 dark:text-slate-400 mt-2.5 max-w-3xl mx-auto leading-relaxed">
+                    Reliable and hassle-free moving and delivery solutions for homes and businesses. From packing and shifting to parcel delivery and vehicle transportation, we ensure your belongings reach their destination safely, securely, and on time.
+                  </h2>
                 </div>
 
                 {/* 8 Services in a Single Horizontal Row */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 sm:gap-4 mb-10">
                   {[
                     {
-                      id: 'household-shifting',
+                      id: 'packers-and-movers',
                       name: 'Home Shifting',
                       image: packersVectorImg,
                       badge: 'Up to 30% Off'
@@ -561,7 +576,7 @@ export default function App() {
                   <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-400">
                     <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center sm:justify-start">
                       <button 
-                        onClick={() => navigateTo('service', 'household-shifting')}
+                        onClick={() => navigateTo('service', 'packers-and-movers')}
                         className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
                       >
                         <span>Local House Move</span>
@@ -853,12 +868,7 @@ export default function App() {
               </div>
             </section>
 
-            {/* 6. FAQ Accordion Section */}
-            <div id="home-faqs-section">
-              <FAQSection />
-            </div>
-
-            {/* 7. City-Wise Locality Directory Section */}
+            {/* City-Wise Locality Directory Section */}
             <CityAreaDirectory onSelectArea={(city, area) => {
               setSelectedCity(city);
               const quoteElement = document.getElementById('quick-quote');
@@ -905,7 +915,7 @@ export default function App() {
           <AboutUs 
             onNavigate={navigateTo} 
             onOpenBooking={() => {
-              navigateTo('service', 'household-shifting');
+              navigateTo('service', 'packers-and-movers');
               setTimeout(() => {
                 document.getElementById('booking-section')?.scrollIntoView({ behavior: 'smooth' });
               }, 150);
@@ -939,13 +949,15 @@ export default function App() {
             onNavigate={navigateTo}
             selectedCity={selectedCity}
           />
-        ) : currentPage === 'driving-partner' ? (
-          /* ==================== B2B DELIVERY PARTNER RECRUITMENT LANDING PAGE ==================== */
-          <DrivingPartnerView 
+        ) : currentPage === 'faq' ? (
+          /* ==================== FAQ DEDICATED PAGE VIEW ==================== */
+          <FAQPage
             onNavigate={navigateTo}
-            onOpenRegisterModal={() => setShowDeliveryModal(true)}
-            onRegisterSuccess={(partnerData) => {
-              setLatestTicketId(partnerData.ticketId);
+            selectedCity={selectedCity}
+            onOpenQuote={() => setIsEstimateModalOpen(true)}
+            onOpenBooking={(serviceId) => {
+              setActiveServiceId(serviceId || 'packers-and-movers');
+              setIsEnquiryDrawerOpen(true);
             }}
           />
         ) : ['cancellation-refund', 'terms-conditions', 'shipment-policy', 'privacy-policy'].includes(currentPage) ? (
@@ -984,7 +996,19 @@ export default function App() {
                   </div>
 
                   <h1 id="service-page-heading" className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight text-white mt-1 drop-shadow-md">
-                    {activeService.name.replace(/\s*\([^)]*\)/g, '')} in {selectedCity}
+                    {activeService.id === 'packers-and-movers' || activeService.id === 'household-shifting' 
+                      ? 'Packers and Movers' 
+                      : activeService.id === 'loading-unloading'
+                      ? 'Loading Services'
+                      : activeService.id === 'vehicle-transportation'
+                      ? 'Vehicle Transport Services'
+                      : activeService.id === 'parcel-courier'
+                      ? 'Parcel Services'
+                      : activeService.id === 'domestic-relocation'
+                      ? 'Truck Booking Services'
+                      : activeService.id === 'warehousing-storage'
+                      ? 'Storage Services'
+                      : activeService.name.replace(/\s*\([^)]*\)/g, '')} in {selectedCity}
                   </h1>
 
                   <p className="text-slate-200 text-xs sm:text-sm md:text-base leading-relaxed font-medium drop-shadow-xs max-w-2xl">
@@ -1412,18 +1436,6 @@ export default function App() {
           </div>
         </div>
       )}
-
-      {/* Persistent WhatsApp Widget */}
-      <a 
-        id="btn-floating-whatsapp"
-        href="https://wa.me/919876543210"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-20 right-5 z-40 bg-green-500 hover:bg-green-600 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-2xl transition-transform hover:scale-110 md:hidden"
-        title="WhatsApp Support Chat"
-      >
-        <span className="text-xl">💬</span>
-      </a>
 
       {/* Back to Top Button */}
       <AnimatePresence>

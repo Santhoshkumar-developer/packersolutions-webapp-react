@@ -146,7 +146,7 @@ export const AboutUs: React.FC<AboutUsProps> = ({ onNavigate, onOpenBooking }) =
               'Local & Domestic Moving',
               'Inter-City & Intra-City Transportation',
               'Vehicle Transport (Car & Bike)',
-              'Packing & Unpacking Services',
+              'Packing Service',
               'Loading & Unloading Services',
               'Warehousing & Storage Solutions',
               'Industrial & Commercial Logistics',

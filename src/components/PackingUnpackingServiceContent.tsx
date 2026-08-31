@@ -89,20 +89,8 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
 }) => {
   const city = selectedCity || 'Coimbatore';
   const [expandedFaq, setExpandedFaq] = useState<number | null>(0);
-  const [calcVolume, setCalcVolume] = useState<number>(250);
-  const [calcServiceType, setCalcServiceType] = useState<'packing-only' | 'packing-unpacking'>('packing-unpacking');
 
   const packingAreas = getPackingServiceAreas(city);
-
-  // Dynamic pricing calculation helper
-  const calculateEstimatedPrice = (cft: number, type: 'packing-only' | 'packing-unpacking') => {
-    if (cft <= 100) return type === 'packing-only' ? 2499 : 4499;
-    if (cft <= 200) return type === 'packing-only' ? 4499 : 7499;
-    if (cft <= 300) return type === 'packing-only' ? 6499 : 10499;
-    if (cft <= 450) return type === 'packing-only' ? 8499 : 13499;
-    if (cft <= 650) return type === 'packing-only' ? 11499 : 17999;
-    return type === 'packing-only' ? Math.round(cft * 20) : Math.round(cft * 32);
-  };
 
   return (
     <div className="space-y-12" id="packing-unpacking-details-view">
@@ -120,7 +108,7 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
           </div>
 
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-            Professional Packing &amp; Unpacking Services in {city} – Zero Damage Guarantee
+            Professional Packing Service in {city} – Zero Damage Guarantee
           </h2>
 
           <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-2xl font-normal">
@@ -156,6 +144,50 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
       </section>
 
       {/* =========================================================================
+          SEO HIGHLIGHTS / TARGET KEYWORDS BADGE GRID
+         ========================================================================= */}
+      <section id="section-seo-keywords" className="bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-4 sm:p-5 shadow-xs">
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+          <span className="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300">
+            Verified Relocation &amp; Packaging Categories
+          </span>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
+            <Package className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              packing service
+            </h2>
+          </div>
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
+            <Truck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              packing and moving companies
+            </h2>
+          </div>
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
+            <Box className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              wooden box packing company
+            </h2>
+          </div>
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5">
+            <ShieldCheck className="w-4 h-4 text-purple-600 dark:text-purple-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              professional packing service
+            </h2>
+          </div>
+          <div className="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 shadow-xs flex items-center gap-2.5 sm:col-span-2 lg:col-span-2">
+            <Award className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200">
+              best packing company in coimbatore
+            </h2>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
           2. PROFESSIONAL PACKING & UNPACKING SERVICES
          ========================================================================= */}
       <section id="section-professional-services" className="space-y-6">
@@ -164,10 +196,10 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
             <Package className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>2. Professional Packing &amp; Unpacking Services</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            End-to-End Packaging &amp; Unpacking Solutions in {city}
-          </h3>
+            Packing Service – End-to-End Packaging &amp; Unpacking Solutions in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Proper packaging is the foundation of a zero-damage move. Packer Solutions provides systematic, multi-layered packing methodologies customized for apartments, luxury villas, commercial IT hubs, and industrial establishments across {city}.
           </p>
@@ -263,10 +295,10 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
             <Award className="w-3.5 h-3.5 text-blue-600" />
             <span>3. Why Choose Packer Solutions?</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            The Gold Standard in Packaging &amp; Asset Protection
-          </h3>
+            Packing and Moving Companies – The Gold Standard in Packaging &amp; Asset Protection in {city}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Engineered packaging materials, skilled packing technicians, and transparent volume-based pricing.
           </p>
@@ -473,10 +505,10 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
             <Box className="w-3.5 h-3.5 text-blue-600" />
             <span>7. Custom Wooden Crating</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Engineered Wooden Crate Manufacturing &amp; Packing
-          </h3>
+            Wooden Box Packing Company – Custom Crate Manufacturing &amp; Packaging
+          </h2>
         </div>
 
         <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 shadow-xs flex flex-col md:flex-row items-center gap-6">
@@ -657,113 +689,13 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
       </section>
 
       {/* =========================================================================
-          11. INTERACTIVE PACKING VOLUME & COST ESTIMATOR
-         ========================================================================= */}
-      <section id="section-volume-estimator" className="space-y-4">
-        <div className="space-y-1">
-          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
-            <Calculator className="w-3.5 h-3.5 text-blue-600" />
-            <span>11. CFT Volume &amp; Cost Estimator</span>
-          </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
-            <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Instant Volume (CFT) &amp; Pricing Calculator
-          </h3>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/80 dark:border-slate-800 p-6 sm:p-7 shadow-xs space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-            
-            {/* Left: Interactive Controls */}
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 flex justify-between">
-                  <span>Shipment Volume (CFT):</span>
-                  <span className="text-[#001261] dark:text-blue-400 font-mono font-black text-sm">{calcVolume} CFT</span>
-                </label>
-                <input 
-                  type="range" 
-                  min="50" 
-                  max="800" 
-                  step="25"
-                  value={calcVolume}
-                  onChange={(e) => setCalcVolume(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#001261] mt-2"
-                />
-                <div className="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
-                  <span>50 CFT (Few Boxes)</span>
-                  <span>300 CFT (2 BHK)</span>
-                  <span>800+ CFT (Villa)</span>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300 block mb-2">
-                  Select Service Scope:
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setCalcServiceType('packing-only')}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      calcServiceType === 'packing-only'
-                        ? 'bg-[#001261] text-white shadow-md'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
-                    }`}
-                  >
-                    Packing Only
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setCalcServiceType('packing-unpacking')}
-                    className={`py-2 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                      calcServiceType === 'packing-unpacking'
-                        ? 'bg-[#001261] text-white shadow-md'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-200'
-                    }`}
-                  >
-                    Packing + Unpacking
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Right: Price Preview Card */}
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-50/50 dark:from-slate-800 dark:to-slate-800/60 p-5 rounded-2xl border border-blue-200/60 dark:border-slate-700 text-center space-y-3">
-              <div>
-                <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                  Estimated Pricing in {city}
-                </span>
-                <div className="text-2xl sm:text-3xl font-black text-[#001261] dark:text-blue-400 mt-1">
-                  ₹{calculateEstimatedPrice(calcVolume, calcServiceType).toLocaleString('en-IN')}*
-                </div>
-                <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">
-                  Includes 5-ply cartons, bubble wrap, labor crew &amp; {calcServiceType === 'packing-unpacking' ? 'room unpacking' : 'staging'}
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={onOpenEnquiry}
-                className="w-full py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs rounded-xl shadow-md transition-all flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <span>Lock This Quote for {city}</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================================
-          12. STARTING PRICE / RATE CHART
+          11. STARTING PRICE / RATE CHART
          ========================================================================= */}
       <section id="section-rate-chart" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Calculator className="w-3.5 h-3.5 text-blue-600" />
-            <span>12. Starting Price / Rate Chart</span>
+            <span>11. Starting Price / Rate Chart</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
@@ -787,48 +719,48 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
                   <th className="px-4 py-3 rounded-r-xl">Key Materials Included</th>
                 </tr>
               </thead>
-              <tbody className="text-xs divide-y divide-slate-100 dark:divide-slate-800 text-slate-700 dark:text-slate-300">
+              <tbody className="text-xs divide-y divide-slate-200 dark:divide-slate-800 text-slate-900 dark:text-slate-100">
                 <tr className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
                   <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">1 RK / Studio Apartment</td>
-                  <td className="px-4 py-3.5 text-slate-500 font-mono">80 – 120 CFT</td>
-                  <td className="px-4 py-3.5 font-bold text-emerald-600 dark:text-emerald-400">₹2,499 – ₹3,499</td>
-                  <td className="px-4 py-3.5 font-bold text-[#001261] dark:text-blue-400">₹4,499 – ₹5,999</td>
-                  <td className="px-4 py-3.5 text-[11px] text-slate-500">10-15 Cartons, Bubble roll, Stretch wrap</td>
+                  <td className="px-4 py-3.5 font-mono text-slate-900 dark:text-slate-100">80 – 120 CFT</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹2,499 – ₹3,499</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹4,499 – ₹5,999</td>
+                  <td className="px-4 py-3.5 text-[11px] text-slate-900 dark:text-slate-200">10-15 Cartons, Bubble roll, Stretch wrap</td>
                 </tr>
                 <tr className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
                   <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">1 BHK Standard Home</td>
-                  <td className="px-4 py-3.5 text-slate-500 font-mono">150 – 220 CFT</td>
-                  <td className="px-4 py-3.5 font-bold text-emerald-600 dark:text-emerald-400">₹3,999 – ₹5,499</td>
-                  <td className="px-4 py-3.5 font-bold text-[#001261] dark:text-blue-400">₹6,999 – ₹8,999</td>
-                  <td className="px-4 py-3.5 text-[11px] text-slate-500">20-25 5-Ply Boxes, Crockery foam, Tape</td>
+                  <td className="px-4 py-3.5 font-mono text-slate-900 dark:text-slate-100">150 – 220 CFT</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹3,999 – ₹5,499</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹6,999 – ₹8,999</td>
+                  <td className="px-4 py-3.5 text-[11px] text-slate-900 dark:text-slate-200">20-25 5-Ply Boxes, Crockery foam, Tape</td>
                 </tr>
                 <tr className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
                   <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">2 BHK Family House / Flat</td>
-                  <td className="px-4 py-3.5 text-slate-500 font-mono">250 – 380 CFT</td>
-                  <td className="px-4 py-3.5 font-bold text-emerald-600 dark:text-emerald-400">₹5,999 – ₹8,499</td>
-                  <td className="px-4 py-3.5 font-bold text-[#001261] dark:text-blue-400">₹9,999 – ₹13,499</td>
-                  <td className="px-4 py-3.5 text-[11px] text-slate-500">35-45 Boxes, Edge guards, Double bubble</td>
+                  <td className="px-4 py-3.5 font-mono text-slate-900 dark:text-slate-100">250 – 380 CFT</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹5,999 – ₹8,499</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹9,999 – ₹13,499</td>
+                  <td className="px-4 py-3.5 text-[11px] text-slate-900 dark:text-slate-200">35-45 Boxes, Edge guards, Double bubble</td>
                 </tr>
                 <tr className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
                   <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">3 BHK Premium Apartment</td>
-                  <td className="px-4 py-3.5 text-slate-500 font-mono">400 – 600 CFT</td>
-                  <td className="px-4 py-3.5 font-bold text-emerald-600 dark:text-emerald-400">₹8,499 – ₹12,999</td>
-                  <td className="px-4 py-3.5 font-bold text-[#001261] dark:text-blue-400">₹14,999 – ₹19,999</td>
-                  <td className="px-4 py-3.5 text-[11px] text-slate-500">55-70 Boxes, Custom TV case, Kitchen kit</td>
+                  <td className="px-4 py-3.5 font-mono text-slate-900 dark:text-slate-100">400 – 600 CFT</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹8,499 – ₹12,999</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹14,999 – ₹19,999</td>
+                  <td className="px-4 py-3.5 text-[11px] text-slate-900 dark:text-slate-200">55-70 Boxes, Custom TV case, Kitchen kit</td>
                 </tr>
                 <tr className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
                   <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">4+ BHK / Luxury Villa</td>
-                  <td className="px-4 py-3.5 text-slate-500 font-mono">650 – 1000+ CFT</td>
-                  <td className="px-4 py-3.5 font-bold text-emerald-600 dark:text-emerald-400">₹13,999 – ₹22,999</td>
-                  <td className="px-4 py-3.5 font-bold text-[#001261] dark:text-blue-400">₹22,999 – ₹34,999</td>
-                  <td className="px-4 py-3.5 text-[11px] text-slate-500">80+ Boxes, Wooden crating, Female crew</td>
+                  <td className="px-4 py-3.5 font-mono text-slate-900 dark:text-slate-100">650 – 1000+ CFT</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹13,999 – ₹22,999</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹22,999 – ₹34,999</td>
+                  <td className="px-4 py-3.5 text-[11px] text-slate-900 dark:text-slate-200">80+ Boxes, Wooden crating, Female crew</td>
                 </tr>
                 <tr className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50">
                   <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">Office / Commercial (10-30 Desks)</td>
-                  <td className="px-4 py-3.5 text-slate-500 font-mono">300 – 700 CFT</td>
-                  <td className="px-4 py-3.5 font-bold text-emerald-600 dark:text-emerald-400">₹7,999 – ₹16,999</td>
-                  <td className="px-4 py-3.5 font-bold text-[#001261] dark:text-blue-400">₹13,999 – ₹26,999</td>
-                  <td className="px-4 py-3.5 text-[11px] text-slate-500">Anti-static IT wrap, Archive boxes, Labels</td>
+                  <td className="px-4 py-3.5 font-mono text-slate-900 dark:text-slate-100">300 – 700 CFT</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹7,999 – ₹16,999</td>
+                  <td className="px-4 py-3.5 font-bold text-slate-900 dark:text-white">₹13,999 – ₹26,999</td>
+                  <td className="px-4 py-3.5 text-[11px] text-slate-900 dark:text-slate-200">Anti-static IT wrap, Archive boxes, Labels</td>
                 </tr>
               </tbody>
             </table>
@@ -850,13 +782,13 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
       </section>
 
       {/* =========================================================================
-          13. ITEMS WE PACK & UNPACK (12 CATEGORIES)
+          12. ITEMS WE PACK & UNPACK (12 CATEGORIES)
          ========================================================================= */}
       <section id="section-inventory-items" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <Boxes className="w-3.5 h-3.5 text-blue-600" />
-            <span>13. Inventory Items We Pack</span>
+            <span>12. Inventory Items We Pack</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
@@ -904,18 +836,18 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
       </section>
 
       {/* =========================================================================
-          14. POPULAR CITIES & SERVICE AREAS
+          13. POPULAR CITIES & SERVICE AREAS
          ========================================================================= */}
       <section id="section-popular-cities" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <MapPin className="w-3.5 h-3.5 text-blue-600" />
-            <span>14. Service Network &amp; Locations</span>
+            <span>13. Service Network &amp; Locations</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            Packing &amp; Unpacking Hubs Across India
-          </h3>
+            Best Packing Company in Coimbatore &amp; Pan-India Service Hubs
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Select a city to view local residential neighborhoods and commercial zones serviced by our packing crews.
           </p>
@@ -960,13 +892,13 @@ export const PackingUnpackingServiceContent: React.FC<PackingUnpackingServiceCon
       </section>
 
       {/* =========================================================================
-          15. FREQUENTLY ASKED QUESTIONS (FAQ)
+          14. FREQUENTLY ASKED QUESTIONS (FAQ)
          ========================================================================= */}
       <section id="section-faqs" className="space-y-6">
         <div className="space-y-1">
           <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-950/70 text-[#001261] dark:text-blue-300 border border-blue-200 dark:border-blue-800/80 px-3 py-1 rounded-full text-[11px] font-bold">
             <HelpCircle className="w-3.5 h-3.5 text-blue-600" />
-            <span>15. FAQ</span>
+            <span>14. FAQ</span>
           </div>
           <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />

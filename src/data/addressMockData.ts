@@ -493,6 +493,7 @@ export const MOCK_LOCALITIES_DATABASE: LocationSearchResult[] = [
 ];
 
 export const SERVICE_TAG_LABELS: Record<ServiceTagType, string> = {
+  'packers-and-movers': 'House Shifting',
   'household-shifting': 'House Shifting',
   'office-shifting': 'Office Shifting',
   'parcel-courier': 'Parcel & Courier',

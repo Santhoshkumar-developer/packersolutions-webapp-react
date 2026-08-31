@@ -22,7 +22,7 @@ export const EstimateModal: React.FC<EstimateModalProps> = ({
   
   // Selection States
   const [selectedCity, setSelectedCity] = useState(defaultCity);
-  const [activeServiceId, setActiveServiceId] = useState<'household-shifting' | 'domestic-relocation' | 'office-relocation'>('household-shifting');
+  const [activeServiceId, setActiveServiceId] = useState<'packers-and-movers' | 'household-shifting' | 'domestic-relocation' | 'office-relocation'>('packers-and-movers');
   const [isCityDropdownOpen, setIsCityDropdownOpen] = useState(false);
   const [citySearchQuery, setCitySearchQuery] = useState('');
   
@@ -45,7 +45,7 @@ export const EstimateModal: React.FC<EstimateModalProps> = ({
   // Filter service items to match our three main buttons
   const mainServices = useMemo(() => {
     return SERVICES_DATA.filter(service => 
-      ['household-shifting', 'domestic-relocation', 'office-relocation'].includes(service.id)
+      ['packers-and-movers', 'household-shifting', 'domestic-relocation', 'office-relocation'].includes(service.id)
     );
   }, []);
 
@@ -74,7 +74,7 @@ export const EstimateModal: React.FC<EstimateModalProps> = ({
     if (isOpen) {
       setStep(1);
       setSelectedCity(defaultCity);
-      setActiveServiceId('household-shifting');
+      setActiveServiceId('packers-and-movers');
       setCustomerName('');
       setCustomerEmail('');
       setCustomerPhone('');
@@ -98,7 +98,7 @@ export const EstimateModal: React.FC<EstimateModalProps> = ({
   useEffect(() => {
     let cost = activeService.basePrice;
 
-    if (activeServiceId === 'household-shifting') {
+    if (activeServiceId === 'packers-and-movers' || activeServiceId === 'household-shifting') {
       const size = details['apartmentSize'];
       if (size === '2 BHK Apartment') cost += 2500;
       else if (size === '3 BHK Apartment') cost += 5000;
@@ -428,15 +428,15 @@ export const EstimateModal: React.FC<EstimateModalProps> = ({
                     {/* Button 1: Household Local */}
                     <button
                       type="button"
-                      onClick={() => setActiveServiceId('household-shifting')}
+                      onClick={() => setActiveServiceId('packers-and-movers')}
                       className={`p-4 rounded-2xl border text-left flex flex-col justify-between h-36 transition-all cursor-pointer group ${
-                        activeServiceId === 'household-shifting'
+                        activeServiceId === 'packers-and-movers' || activeServiceId === 'household-shifting'
                           ? 'border-orange-500 bg-orange-50/50 dark:bg-orange-950/20 shadow-sm'
                           : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50/50'
                       }`}
                     >
                       <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-colors ${
-                        activeServiceId === 'household-shifting'
+                        activeServiceId === 'packers-and-movers' || activeServiceId === 'household-shifting'
                           ? 'bg-orange-500 text-white'
                           : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 group-hover:bg-slate-200'
                       }`}>

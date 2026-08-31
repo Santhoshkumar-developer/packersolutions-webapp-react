@@ -62,14 +62,14 @@ import { PackingUnpackingServiceContent } from './PackingUnpackingServiceContent
 import { LoadingUnloadingServiceContent } from './LoadingUnloadingServiceContent';
 import parcelVectorImg from '../assets/images/service_parcel_vector_1785319730384.jpg';
 import packersVectorImg from '../assets/images/service_packers_vector_1785319746387.jpg';
-import packingUnpackingVectorImg from '../assets/images/vector_packing_unpacking_1785946345528.jpg';
-import loadingUnloadingVectorImg from '../assets/images/vector_loading_unloading_1785946360593.jpg';
-import vehicleTransportVectorImg from '../assets/images/vector_vehicle_transport_1785946372441.jpg';
-import warehousingStorageVectorImg from '../assets/images/vector_warehousing_storage_1785946384931.jpg';
+import packingUnpackingVectorImg from '../assets/images/vector_packing_unpacking_1785946345528.png';
+import loadingUnloadingVectorImg from '../assets/images/vector_loading_unloading_1785946360593.png';
+import vehicleTransportVectorImg from '../assets/images/vector_vehicle_transport_1785946372441.png';
+import warehousingStorageVectorImg from '../assets/images/vector_warehousing_storage_1785946384931.png';
 
 const OTHER_SERVICES_MENU = [
   {
-    id: 'household-shifting',
+    id: 'packers-and-movers',
     name: 'House Shifting',
     image: packersVectorImg,
     badge: 'Up to 30% Off'
@@ -344,7 +344,7 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
           </div>
 
           <h2 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight leading-snug">
-            House Shifting Services – Safe, Reliable &amp; Hassle-Free in {selectedCity}
+            House Shifting Services in {selectedCity}
           </h2>
 
           <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-2xl font-normal">
@@ -386,10 +386,10 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <Home className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
             <span>2. Professional House Shifting Services</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            End-to-End Household Relocation Solutions
-          </h3>
+            Professional Packers and Movers in {selectedCity}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
             Moving your home requires careful planning, professional packing and reliable transportation. Packer Solutions provides end-to-end house shifting and household relocation services for apartments, villas, independent houses and residential properties.
           </p>
@@ -485,10 +485,10 @@ export const ServicePorterContent: React.FC<ServicePorterContentProps> = ({
             <Award className="w-3.5 h-3.5 text-blue-600" />
             <span>3. Why Choose Packer Solutions?</span>
           </div>
-          <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
             <span className="w-1.5 h-6 bg-[#001261] dark:bg-blue-500 rounded-full" />
-            The Packer Solutions Standard of Excellence
-          </h3>
+            Best Packers and Movers in {selectedCity}
+          </h2>
           <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
             Engineered relocation workflows prioritizing safety, transparent pricing, and digital tracking.
           </p>

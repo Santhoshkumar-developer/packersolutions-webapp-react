@@ -8,7 +8,7 @@ import householdShiftingImg from '../assets/images/household_shifting_packers_17
 
 export const SERVICES_DATA: ServiceItem[] = [
   {
-    id: 'household-shifting',
+    id: 'packers-and-movers',
     name: 'Household Shifting',
     tagline: 'Fast & Safe Relocation',
     shortDescription: 'Reliable and affordable household relocation for apartments, villas, and independent houses — whether moving locally within your city or intercity nationwide with multi-layer protective packing.',
@@ -37,14 +37,14 @@ export const SERVICES_DATA: ServiceItem[] = [
       { question: 'Do you disassemble and reassemble furniture like beds and wardrobes?', answer: 'Yes, our trained carpenters disassemble and reassemble standard furniture such as wooden beds, dining tables, and modular wardrobes at both source and destination.' }
     ],
     seo: {
-      title: 'Household Shifting Services - Within City & Between City | Packersolution',
-      description: 'Book professional household shifting services for local within city moves or intercity relocation across India. Safe multi-layer packing, container trucks, and carpenter assistance.',
-      keywords: ['household shifting', 'local home moving', 'intercity packers and movers', 'within city house shifting', 'between city packers movers', 'packers and movers near me'],
-      canonicalUrl: 'https://packersolution.com/services/household-shifting',
+      title: 'Professional Packers and Movers & House Shifting Services | Packersolution',
+      description: 'Book professional packers and movers & household shifting services for local within city moves or intercity relocation across India. Safe multi-layer packing, container trucks, and carpenter assistance.',
+      keywords: ['packers and movers', 'household shifting', 'local home moving', 'intercity packers and movers', 'within city house shifting', 'best packers and movers', 'packers and movers near me'],
+      canonicalUrl: 'https://packersolution.com/#service/packers-and-movers',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        'name': 'Household Shifting (Within / Between City)',
+        'name': 'Packers and Movers & Household Shifting',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'Packersolution',
@@ -113,7 +113,7 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'domestic-relocation',
-    name: 'Truck Booking',
+    name: 'Truck Booking Services',
     tagline: 'Instant mini truck, tempo & heavy vehicle hire with verified drivers',
     shortDescription: 'Book mini trucks (Tata Ace, Pickup, Bolero) and heavy commercial trucks for local goods transport, shifting, or intercity freight.',
     detailedDescription: 'Need a reliable truck for goods movement or household transport? Packersolution offers instant, hassle-free Truck Booking services for both local intracity trips and long-distance intercity freight. Choose from a comprehensive fleet ranging from Tata Ace (Chhota Hathi), 8ft Pickup, 14ft Eicher trucks, to 19ft/32ft multi-ton closed containers. Enjoy transparent fixed rates, real-time GPS tracking, verified professional drivers, and option for helper/labour assistance for easy loading and unloading.',
@@ -202,12 +202,12 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'office-relocation',
-    name: 'Office & Corporate Relocation',
+    name: 'Office Shifting Services',
     tagline: 'Zero-downtime, safe and planned IT & office space relocation',
     shortDescription: 'Professional workspace transition handling server racks, IT networks, premium executive furniture, and office files with minimal operational disruption.',
     detailedDescription: 'Corporate relocation requires meticulous timeline coordination and structural precision to eliminate operational downtime. Packersolution provides specialized commercial moving solutions tailored to your organization. Our teams are highly trained to handle delicate IT infrastructure, server racks, network equipment, modular workstations, secure documents, and glass cabins. We work during weekends, overnight shifts, or holidays to ensure your business remains functional. With asset tagging, barcode tracking, and expert project managers, we guarantee a structured transition that gets your company back to work immediately.',
     iconName: 'Building',
-    image: 'https://www.w3schools.com/tools/tool_placeholder_img.php?type=png&text=Office+Corporate+Relocation',
+    image: 'https://www.w3schools.com/tools/tool_placeholder_img.php?type=png&text=Office+Shifting+Services',
     benefits: [
       'Tailored timeline planning including overnight or weekend shifting',
       'Advanced anti-static wrapping for computers, servers, and sensitive electronics',
@@ -236,7 +236,7 @@ export const SERVICES_DATA: ServiceItem[] = [
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        'name': 'Office & Corporate Relocation',
+        'name': 'Office Shifting Services',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'Packersolution',
@@ -308,7 +308,7 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'vehicle-transportation',
-    name: 'Vehicle Transportation (Car & Bike)',
+    name: 'Vehicle Transport Services (Car & Bike)',
     tagline: 'Scratch-free, secure and fully enclosed vehicle carriage',
     shortDescription: 'State-of-the-art specialized multi-car carriers and secure single-bike wood crates to transport your automobiles across India.',
     detailedDescription: 'Your car or motorcycle is a valuable asset that deserves the highest security during transport. Packersolution provides specialized automobile carriage services. For motorcycles, we construct custom wooden crates with heavy tie-downs to ensure the suspension is stabilized and paintwork remains pristine. For luxury cars, we utilize modern hydraulic car-carrier trailers with robust securing mechanisms. We complete a thorough pre-transport inspection report tracking existing scratches, fluid levels, and tire condition, giving you absolute transparency before the journey begins.',
@@ -342,7 +342,7 @@ export const SERVICES_DATA: ServiceItem[] = [
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        'name': 'Vehicle Transportation (Car & Bike)',
+        'name': 'Vehicle Transport Services',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'Packersolution',
@@ -396,12 +396,12 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'packing-unpacking',
-    name: 'Packing & Unpacking Services',
+    name: 'Packing Service',
     tagline: 'Expert packing using industry-standard durable materials',
     shortDescription: 'Avoid physical stress. Hire our specialized crew to pack your entire household items securely, or unpack them neatly into shelves.',
     detailedDescription: 'The foundation of any successful move lies in the quality of packing. At Packersolution, we offer dedicated Packing and Unpacking services as standalone options or add-ons. Our packing specialists are trained in the science of item protection. We use specific box styles, including wardrobe boxes that let you hang your suits, heavy-duty double-wall cartons for heavy kitchen books, bubble wrap for exquisite dinner sets, and stretch film to shield sofas from ambient dust. Once delivered, our unpacking specialists unbox, wipe, organize, and sort your items, placing them into your cupboards, wardrobes, and kitchen counters so your new house feels like home instantly.',
     iconName: 'Package',
-    image: 'https://www.w3schools.com/tools/tool_placeholder_img.php?type=png&text=Packing+Unpacking+Services',
+    image: 'https://www.w3schools.com/tools/tool_placeholder_img.php?type=png&text=Packing+Service',
     benefits: [
       'Trained packing experts with specialized knowledge of fragile items',
       'Premium industrial-grade materials: five-ply carton boxes, foam sheets, bubble wraps',
@@ -423,14 +423,14 @@ export const SERVICES_DATA: ServiceItem[] = [
       { question: 'Do you take back the empty carton boxes after unpacking?', answer: 'Yes, if you choose our full unpacking service, our team will pack, clean up, and remove all empty boxes and packing waste from your home, keeping it clutter-free.' }
     ],
     seo: {
-      title: 'Professional Packing & Unpacking | Packersolution Material Experts',
-      description: 'Ensure safety with expert packing and unpacking services from Packersolution. We utilize heavy-duty 5-ply cartons, bubble wrap, and wardrobe boxes for maximum item safety.',
-      keywords: ['packing services', 'unpacking service', 'professional home packers', 'bubble wrapping service', 'box packing movers'],
+      title: 'Professional Packing Service | Packersolution Material Experts',
+      description: 'Ensure safety with expert packing services from Packersolution. We utilize heavy-duty 5-ply cartons, bubble wrap, and wardrobe boxes for maximum item safety.',
+      keywords: ['packing service', 'packing and moving companies', 'wooden box packing company', 'professional packing service', 'best packing company in coimbatore', 'packing services', 'professional home packers', 'bubble wrapping service', 'box packing movers'],
       canonicalUrl: 'https://packersolution.com/services/packing-unpacking',
       structuredData: {
         '@context': 'https://schema.org',
         '@type': 'Service',
-        'name': 'Packing & Unpacking Services',
+        'name': 'Packing Service',
         'provider': {
           '@type': 'LocalBusiness',
           'name': 'Packersolution',
@@ -505,7 +505,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     seo: {
       title: 'Movers for Loading & Unloading | Packersolution Heavy Lifters',
       description: 'Hire trained, physically fit loaders from Packersolution. We utilize specialized appliance dollies, loading ramps, and lifting belts to handle heavy furniture with ease.',
-      keywords: ['loading services', 'unloading movers', 'heavy furniture lifting', 'hire movers only', 'truck loading packers'],
+      keywords: ['best machinery loading service company in coimbatore', 'loading and unloading services', 'small load movers', 'loading and unloading movers in coimbatore', 'loading services', 'unloading movers', 'heavy furniture lifting', 'hire movers only', 'truck loading packers'],
       canonicalUrl: 'https://packersolution.com/services/loading-unloading',
       structuredData: {
         '@context': 'https://schema.org',
@@ -557,7 +557,7 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'warehousing-storage',
-    name: 'Warehousing & Storage Solutions',
+    name: 'Storage Services',
     tagline: 'CCTV monitored, moisture-free, pest-controlled storage',
     shortDescription: 'Safe, clean, and flexible short-term and long-term storage facilities for your home furniture, business inventory, or seasonal goods.',
     detailedDescription: 'Whether you are traveling abroad for a temporary project, waiting for your new villa to be completed, or needing additional storage space for your business merchandise, Packersolution offers premium, secure warehousing facilities. Our warehouses are climate-controlled, dry, fully pest-controlled, and under continuous 24/7 CCTV surveillance with active fire security systems. We index every single item and store them in custom palletized wooden vaults. You can store your items for a few weeks or several years, with comprehensive insurance coverage and structured pick-up and delivery services whenever you need them.',
@@ -638,7 +638,7 @@ export const SERVICES_DATA: ServiceItem[] = [
   },
   {
     id: 'parcel-courier',
-    name: 'Parcel & Courier Services',
+    name: 'Parcel Services',
     tagline: 'Fast & Secure Intercity & Door-to-Door Parcel Delivery by Packer Solutions',
     shortDescription: 'Send documents, personal belongings, business parcels, e-commerce orders, and commercial cargo with doorstep pickup, secure 5-ply packing, and real-time tracking.',
     detailedDescription: 'Packer Solutions provides professional intercity and door-to-door Parcel Services for individuals, businesses, offices, retailers, e-commerce sellers, and commercial customers. Our parcel transportation service is designed for documents, personal belongings, small packages, business parcels, commercial goods, and other eligible shipments. Whether you need to send a parcel from your home, office, shop, warehouse, or business location to any destination across India, Packer Solutions provides a systematic process covering parcel booking, doorstep pickup, verification, multi-layer protective packaging, secure handling, scheduled transit, delivery updates, and digital delivery confirmation.',
@@ -762,7 +762,7 @@ export const TESTIMONIALS_DATA = [
     location: 'Hyderabad',
     rating: 5,
     comment: 'Corporate shifting is a nightmare, but Packersolution finished shifting our 40-seater office over a single Sunday! No downtime for our developers. All server racks and workstations were color-tagged and placed perfectly.',
-    service: 'Office & Corporate Relocation'
+    service: 'Office Shifting Services'
   },
   {
     id: 't4',

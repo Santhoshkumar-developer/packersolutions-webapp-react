@@ -83,6 +83,7 @@ export interface BlogPost {
 export type AddressLabelType = 'Home' | 'Office' | 'Warehouse' | 'Shop' | 'Factory' | 'Other';
 
 export type ServiceTagType = 
+  | 'packers-and-movers'
   | 'household-shifting'
   | 'office-shifting'
   | 'parcel-courier'

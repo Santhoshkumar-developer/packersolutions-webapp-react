@@ -112,7 +112,6 @@ interface ServicePorterContentProps {
   onSelectCity: (city: string) => void;
   onSelectService: (serviceId: string) => void;
   onOpenEnquiry: () => void;
-  onOpenLoginModal?: () => void;
 }
 
 // Service Areas Helper based on selected city

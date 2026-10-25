@@ -10,7 +10,6 @@ interface TruckBookingCardFormProps {
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -20,7 +19,6 @@ export const TruckBookingCardForm: React.FC<TruckBookingCardFormProps> = ({
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
   serviceName = "Truck Booking Services",
   basePrice = 850
 }) => {
@@ -80,9 +78,7 @@ export const TruckBookingCardForm: React.FC<TruckBookingCardFormProps> = ({
     };
     localStorage.setItem('ps_truck_booking_draft', JSON.stringify(truckBookingData));
 
-    if (onOpenEnquiryModal) {
-      onOpenEnquiryModal();
-    } else if (onOpenLoginModal) {
+    if (onOpenLoginModal) {
       onOpenLoginModal();
     }
   };

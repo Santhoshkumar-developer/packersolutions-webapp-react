@@ -8,7 +8,7 @@ import { LucideIcon } from './LucideIcon';
 import { ServiceItem } from '../types';
 import logoImg from '../assets/images/packersolution_logo.jpg';
 import { useAddress } from '../context/AddressContext';
-import { User, MapPin, LogOut, ChevronDown, HelpCircle, LogIn, Sparkles } from 'lucide-react';
+import { User, MapPin, LogOut, ChevronDown, HelpCircle, LogIn, Sparkles, Luggage, Gift, Tag, Truck, FileText, Navigation, Coins, Headphones, ArrowRight, ChevronRight, BadgePercent, GraduationCap, Package, Wallet, ClipboardCheck, Award } from 'lucide-react';
 
 interface NavbarProps {
   currentPage: string;
@@ -18,7 +18,6 @@ interface NavbarProps {
   selectedCity?: string;
   onOpenCityModal?: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
   onOpenPartnerModal?: () => void;
 }
 
@@ -30,13 +29,35 @@ export const Navbar: React.FC<NavbarProps> = ({
   selectedCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
   onOpenPartnerModal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
-  const accountMenuRef = useRef<HTMLDivElement>(null);
+  const [authPopoverOpen, setAuthPopoverOpen] = useState(false);
+  const authPopoverRef = useRef<HTMLDivElement>(null);
+  const authTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleAuthMouseEnter = () => {
+    if (authTimeoutRef.current) {
+      clearTimeout(authTimeoutRef.current);
+      authTimeoutRef.current = null;
+    }
+    setAuthPopoverOpen(true);
+  };
+
+  const handleAuthMouseLeave = () => {
+    authTimeoutRef.current = setTimeout(() => {
+      setAuthPopoverOpen(false);
+    }, 200);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (authTimeoutRef.current) {
+        clearTimeout(authTimeoutRef.current);
+      }
+    };
+  }, []);
   
   const { isLoggedIn, currentUser, logoutUser, openSavedAddressesModal, savedAddresses } = useAddress();
 
@@ -49,11 +70,11 @@ export const Navbar: React.FC<NavbarProps> = ({
     return false;
   });
 
-  // Close account menu on click outside
+  // Close popover on click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (accountMenuRef.current && !accountMenuRef.current.contains(event.target as Node)) {
-        setAccountMenuOpen(false);
+      if (authPopoverRef.current && !authPopoverRef.current.contains(event.target as Node)) {
+        setAuthPopoverOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -126,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Action button */}
-        <div className="hidden lg:flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-4">
           {/* Global Dark Mode Toggle */}
           <button
             id="btn-dark-mode-toggle"
@@ -142,133 +163,315 @@ export const Navbar: React.FC<NavbarProps> = ({
             )}
           </button>
 
-          {/* User Account / Login Button */}
-          {isLoggedIn ? (
-            <div className="relative" ref={accountMenuRef}>
-              <button
-                id="btn-nav-account"
-                type="button"
-                onClick={() => setAccountMenuOpen(!accountMenuOpen)}
-                className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-extrabold text-xs px-3.5 h-11 rounded-xl transition-all flex items-center gap-2 cursor-pointer border border-slate-200 dark:border-slate-700 shrink-0"
-              >
-                <div className="w-6 h-6 rounded-full bg-orange-500 text-white flex items-center justify-center text-[11px] font-black">
-                  {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
-                </div>
-                <div className="text-left leading-tight hidden xl:block">
-                  <div className="text-xs font-black truncate max-w-[90px]">
-                    {currentUser?.name || 'My Account'}
-                  </div>
-                  <div className="text-[10px] text-slate-500 dark:text-slate-400">
-                    {savedAddresses.length} saved addr
-                  </div>
-                </div>
-                <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${accountMenuOpen ? 'rotate-180' : ''}`} />
-              </button>
+          {/* Manage Booking Button (navigates to OrderTrackingPage) */}
+          <button
+            id="btn-nav-manage-booking"
+            type="button"
+            onClick={() => {
+              onNavigate('order-tracking');
+            }}
+            className={`flex items-center gap-2.5 px-3 py-1.5 rounded-xl transition-colors text-left group cursor-pointer select-none ${
+              currentPage === 'order-tracking'
+                ? 'bg-blue-50 dark:bg-blue-950/60 ring-1 ring-blue-400/50'
+                : 'hover:bg-slate-100 dark:hover:bg-slate-800/60'
+            }`}
+            title="Manage Booking & Live Fleet Tracking"
+          >
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform ${
+              currentPage === 'order-tracking'
+                ? 'bg-blue-600 text-white'
+                : 'bg-slate-100 dark:bg-slate-800'
+            }`}>
+              <Luggage className={`w-5 h-5 ${
+                currentPage === 'order-tracking'
+                  ? 'text-white'
+                  : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200'
+              }`} />
+            </div>
+            <div className="flex flex-col leading-tight">
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400 leading-tight">
+                Manage Booking
+              </span>
+              <span className="text-xs sm:text-[13px] font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                My Trips
+              </span>
+            </div>
+          </button>
 
-              {/* Account Dropdown */}
-              {accountMenuOpen && (
-                <div className="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 py-2 z-50 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-                  <div className="px-4 py-2.5 border-b border-slate-100 dark:border-slate-800">
-                    <div className="text-xs font-black text-slate-900 dark:text-white">
-                      {currentUser?.name || 'Valued User'}
+          {/* Login or Create Account Pill Button with Popover on Hover */}
+          <div 
+            className="relative" 
+            ref={authPopoverRef}
+            onMouseEnter={handleAuthMouseEnter}
+            onMouseLeave={handleAuthMouseLeave}
+          >
+            <button
+              id="btn-nav-auth-trigger"
+              type="button"
+              onClick={() => {
+                // Click does not show the popover; only hover does
+                if (!isLoggedIn && onOpenLoginModal) {
+                  onOpenLoginModal();
+                }
+              }}
+              className={`h-8 sm:h-8.5 px-2.5 sm:px-3 rounded-lg border border-blue-500 bg-white dark:bg-slate-900 hover:bg-blue-50/40 dark:hover:bg-blue-950/30 transition-all flex items-center gap-1.5 sm:gap-2 cursor-pointer shadow-xs ${
+                authPopoverOpen ? 'ring-2 ring-blue-400/40' : ''
+              }`}
+            >
+              <div className="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/60 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                <User className="w-3 h-3 fill-current" />
+              </div>
+              <span className="text-[11px] sm:text-xs font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">
+                {isLoggedIn ? (currentUser?.name || 'My Account') : 'Login or Create Account'}
+              </span>
+            </button>
+
+            {/* Popover Dropdown on Hover - House Shifting & Relocation Theme */}
+            {authPopoverOpen && (
+              <div className="absolute right-0 top-full pt-1.5 w-[260px] sm:w-[275px] z-50 animate-in fade-in zoom-in-95 duration-150">
+                <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200/90 dark:border-slate-800 p-4 relative">
+                  {/* Triangular caret pointing to the button */}
+                  <div className="absolute -top-1.5 right-6 w-3 h-3 bg-white dark:bg-slate-900 border-t border-l border-slate-200/90 dark:border-slate-800 rotate-45 z-20" />
+
+                  {/* Header: Hey, Packer! */}
+                  <div className="text-left mb-3">
+                    <div className="text-[15px] font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                      {isLoggedIn && currentUser?.name ? `Hey ${currentUser.name}` : 'Hey, Packer! 👋'}
                     </div>
-                    <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                      +91 {currentUser?.mobile}
-                    </div>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 font-normal mt-1 leading-snug">
+                      Exclusive deals &amp; manage your moves
+                    </p>
                   </div>
 
-                  <div className="py-1">
+                  {/* Login/SignUp Button */}
+                  {!isLoggedIn ? (
                     <button
-                      id="btn-nav-saved-addresses"
+                      id="btn-popover-login"
                       type="button"
                       onClick={() => {
-                        setAccountMenuOpen(false);
-                        openSavedAddressesModal();
+                        setAuthPopoverOpen(false);
+                        if (onOpenLoginModal) onOpenLoginModal();
                       }}
-                      className="w-full px-4 py-2.5 text-left text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center justify-between transition-colors"
+                      className="w-full py-2.5 rounded-xl bg-[#1e74e6] hover:bg-blue-600 active:bg-blue-700 text-white font-bold text-sm transition-colors shadow-xs flex items-center justify-center cursor-pointer mb-3"
                     >
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-6 h-6 rounded-lg bg-orange-100 dark:bg-orange-950/80 text-orange-600 dark:text-orange-400 flex items-center justify-center">
-                          <MapPin className="w-3.5 h-3.5" />
+                      Login/SignUp
+                    </button>
+                  ) : (
+                    <div className="mb-3 p-2.5 rounded-xl bg-blue-50/80 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/50 flex items-center justify-between">
+                      <div className="min-w-0 pr-1.5 text-left">
+                        <div className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                          +91 {currentUser?.mobile}
                         </div>
-                        <span>Saved Addresses</span>
+                        <div className="text-[10px] text-blue-600 dark:text-blue-400 font-medium">
+                          Active Account
+                        </div>
                       </div>
-                      <span className="text-[10px] font-extrabold bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-300">
-                        {savedAddresses.length}
-                      </span>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setAuthPopoverOpen(false);
+                          logoutUser();
+                        }}
+                        className="text-xs font-bold text-rose-600 dark:text-rose-400 hover:text-rose-700 px-2 py-1 rounded hover:bg-rose-100/60 dark:hover:bg-rose-950/60 transition-colors shrink-0 cursor-pointer"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
 
+                  {/* List of Menu Items */}
+                  <div className="flex flex-col text-left">
+                    {/* 1. PackerPlus */}
                     <button
+                      id="btn-popover-packerplus"
                       type="button"
                       onClick={() => {
-                        setAccountMenuOpen(false);
-                        logoutUser();
+                        setAuthPopoverOpen(false);
+                        onNavigate('home');
+                        setTimeout(() => {
+                          const el = document.getElementById('discount-offers');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
                       }}
-                      className="w-full px-4 py-2 text-left text-xs font-bold text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 flex items-center gap-2.5 transition-colors"
+                      className="w-full text-left py-2 px-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-3 cursor-pointer group"
                     >
-                      <LogOut className="w-3.5 h-3.5" />
-                      <span>Logout</span>
+                      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <Package className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                          Packer<span className="text-orange-500 font-bold">Plus</span>
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-tight mt-0.5">
+                          Save more on every move
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* 2. Offers */}
+                    <button
+                      id="btn-popover-offers"
+                      type="button"
+                      onClick={() => {
+                        setAuthPopoverOpen(false);
+                        onNavigate('home');
+                        setTimeout(() => {
+                          const el = document.getElementById('discount-offers');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }}
+                      className="w-full text-left py-2 px-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-3 cursor-pointer group"
+                    >
+                      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <BadgePercent className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                          Offers
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-tight mt-0.5">
+                          Exclusive shifting deals
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* 3. Move Rewards */}
+                    <button
+                      id="btn-popover-move-rewards"
+                      type="button"
+                      onClick={() => {
+                        setAuthPopoverOpen(false);
+                        if (isLoggedIn) {
+                          openSavedAddressesModal();
+                        } else if (onOpenLoginModal) {
+                          onOpenLoginModal();
+                        }
+                      }}
+                      className="w-full text-left py-2 px-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-3 cursor-pointer group"
+                    >
+                      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <ClipboardCheck className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                          Move Rewards
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-tight mt-0.5">
+                          Get rewards on your bookings
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* Subtle Divider Line */}
+                    <div className="border-b border-slate-100 dark:border-slate-800 my-1" />
+
+                    {/* 4. My Moves */}
+                    <button
+                      id="btn-popover-my-moves"
+                      type="button"
+                      onClick={() => {
+                        setAuthPopoverOpen(false);
+                        onNavigate('order-tracking');
+                      }}
+                      className="w-full text-left py-2 px-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-3 cursor-pointer group"
+                    >
+                      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <Truck className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                          My Moves &amp; Tracking
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-tight mt-0.5">
+                          Manage bookings &amp; live GPS
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* 5. PackerCredits */}
+                    <button
+                      id="btn-popover-packercredits"
+                      type="button"
+                      onClick={() => {
+                        setAuthPopoverOpen(false);
+                        if (isLoggedIn) {
+                          openSavedAddressesModal();
+                        } else if (onOpenLoginModal) {
+                          onOpenLoginModal();
+                        }
+                      }}
+                      className="w-full text-left py-2 px-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-3 cursor-pointer group"
+                    >
+                      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <Coins className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                          PackerCredits
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-tight mt-0.5">
+                          Earn credits on every move
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* Subtle Divider Line */}
+                    <div className="border-b border-slate-100 dark:border-slate-800 my-1" />
+
+                    {/* 6. Gift Vouchers */}
+                    <button
+                      id="btn-popover-gift-vouchers"
+                      type="button"
+                      onClick={() => {
+                        setAuthPopoverOpen(false);
+                        onNavigate('home');
+                        setTimeout(() => {
+                          const el = document.getElementById('discount-offers');
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }, 100);
+                      }}
+                      className="w-full text-left py-2 px-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-3 cursor-pointer group"
+                    >
+                      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <Gift className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                          Gift Vouchers
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-tight mt-0.5">
+                          View and redeem your vouchers
+                        </div>
+                      </div>
+                    </button>
+
+                    {/* 7. Help & Support */}
+                    <button
+                      id="btn-popover-help-support"
+                      type="button"
+                      onClick={() => {
+                        setAuthPopoverOpen(false);
+                        onNavigate('contact');
+                      }}
+                      className="w-full text-left py-2 px-1 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors flex items-start gap-3 cursor-pointer group"
+                    >
+                      <div className="w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                        <Headphones className="w-4.5 h-4.5" />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">
+                          Help &amp; Support
+                        </div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-normal leading-tight mt-0.5">
+                          We&apos;re here to help with your move
+                        </div>
+                      </div>
                     </button>
                   </div>
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <button
-                id="btn-nav-saved-addresses-guest"
-                type="button"
-                onClick={openSavedAddressesModal}
-                className="relative bg-slate-50 dark:bg-slate-800/60 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs w-11 h-11 rounded-xl transition-all flex items-center justify-center cursor-pointer border border-slate-200 dark:border-slate-700/80 shrink-0"
-                title="Saved Addresses"
-                aria-label="Saved Addresses"
-              >
-                <MapPin className="w-4 h-4 text-orange-500" />
-                {savedAddresses.length > 0 && (
-                  <span className="absolute -top-1 -right-1 text-[9px] bg-orange-500 text-white rounded-full w-4 h-4 flex items-center justify-center font-black shadow-sm">
-                    {savedAddresses.length}
-                  </span>
-                )}
-              </button>
-
-              <button
-                id="btn-nav-faqs"
-                type="button"
-                onClick={() => onNavigate('faq')}
-                className={`hidden md:flex font-bold text-xs px-3.5 h-11 rounded-xl transition-all items-center gap-1.5 cursor-pointer border shrink-0 ${
-                  currentPage === 'faq'
-                    ? 'bg-orange-50 dark:bg-orange-950/40 text-orange-600 dark:text-orange-400 border-orange-200 dark:border-orange-900/60'
-                    : 'bg-white dark:bg-slate-800/60 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700/80 hover:bg-slate-50 dark:hover:bg-slate-800 hover:text-orange-500'
-                }`}
-                title="Frequently Asked Questions"
-              >
-                <HelpCircle className="w-4 h-4 text-orange-500" />
-                <span>FAQs</span>
-              </button>
-
-              <button
-                id="btn-nav-help-center"
-                type="button"
-                onClick={() => onNavigate('contact')}
-                className="hidden sm:flex bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-medium text-xs px-4 h-11 rounded-xl transition-all items-center gap-1.5 cursor-pointer shadow-sm hover:shadow-md border border-red-700 shrink-0"
-                title="Help Center & 24x7 Support"
-              >
-                <HelpCircle className="w-4 h-4 text-white" />
-                <span>Help Center</span>
-              </button>
-
-              <button
-                id="btn-nav-login"
-                type="button"
-                onClick={onOpenLoginModal}
-                className="bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-bold text-xs px-4 h-11 rounded-xl transition-all flex items-center gap-1.5 cursor-pointer border border-slate-200 dark:border-slate-700 shrink-0"
-                title="Login with OTP"
-              >
-                <LogIn className="w-4 h-4 text-orange-500" />
-                <span>Login</span>
-              </button>
-            </div>
-          )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Mobile menu trigger */}
@@ -425,6 +628,30 @@ export const Navbar: React.FC<NavbarProps> = ({
               Contact Us
             </button>
 
+            {/* Manage Booking in Mobile Navigation */}
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onNavigate('order-tracking');
+              }}
+              className={`w-full text-left px-4 py-3 rounded-xl font-bold text-sm flex items-center justify-between transition-all ${
+                currentPage === 'order-tracking'
+                  ? 'bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400'
+                  : 'text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800/40'
+              }`}
+            >
+              <span className="flex items-center gap-2.5">
+                <Luggage className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <span className="flex flex-col">
+                  <span className="text-[11px] font-medium text-slate-500 leading-none mb-0.5">Manage Booking</span>
+                  <span className="text-sm font-bold text-slate-800 dark:text-slate-100 leading-tight">My Trips &amp; Live Tracking</span>
+                </span>
+              </span>
+              <span className="text-xs bg-blue-600 text-white font-extrabold px-2.5 py-1 rounded-lg">
+                Track
+              </span>
+            </button>
+
             {/* Saved Addresses in Mobile Navigation */}
             <button
               onClick={() => {
@@ -448,7 +675,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {isLoggedIn ? (
               <div className="p-3 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center font-bold text-xs shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0">
                     {currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : 'U'}
                   </div>
                   <div className="min-w-0">
@@ -479,23 +706,26 @@ export const Navbar: React.FC<NavbarProps> = ({
                     setMobileMenuOpen(false);
                     if (onOpenLoginModal) onOpenLoginModal();
                   }}
-                  className="w-full h-11 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 font-bold text-xs flex items-center justify-center gap-2 transition-colors border border-slate-200 dark:border-slate-700"
+                  className="w-full h-11 rounded-xl bg-[#1a73e8] hover:bg-blue-600 active:bg-blue-700 text-white font-extrabold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-colors shadow-sm"
                 >
-                  <LogIn className="w-4 h-4 text-orange-500" />
-                  <span>Login with OTP</span>
+                  <User className="w-4 h-4 fill-current" />
+                  <span>LOGIN / SIGNUP</span>
                 </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileMenuOpen(false);
-                    if (onOpenEnquiryModal) onOpenEnquiryModal();
-                    else onNavigate('contact');
-                  }}
-                  className="w-full h-11 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-md shadow-orange-500/20"
-                >
-                  <Sparkles className="w-4 h-4 text-amber-200" />
-                  <span>Get Free Quote / Enquiry</span>
-                </button>
+
+                {/* Offer banner for mobile */}
+                <div className="bg-[#e8f7f5] dark:bg-teal-950/40 border border-[#b8ece5] dark:border-teal-900/60 rounded-xl p-3 flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-white dark:bg-slate-800 shadow-sm flex items-center justify-center shrink-0 border border-teal-100 dark:border-teal-900/50">
+                    <Gift className="w-4 h-4 text-rose-500" />
+                  </div>
+                  <div className="flex flex-col text-left">
+                    <div className="text-[#0d8272] dark:text-teal-300 font-extrabold text-xs tracking-tight leading-tight">
+                      FLAT 25% OFF*
+                    </div>
+                    <div className="text-[11px] text-slate-600 dark:text-slate-300 leading-tight font-medium mt-0.5">
+                      on your first booking
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

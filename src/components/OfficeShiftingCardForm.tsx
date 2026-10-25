@@ -67,7 +67,6 @@ interface OfficeShiftingCardFormProps {
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -77,7 +76,6 @@ export const OfficeShiftingCardForm: React.FC<OfficeShiftingCardFormProps> = ({
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
   serviceName = "Office & Corporate Shifting",
   basePrice = 8999
 }) => {
@@ -151,9 +149,7 @@ export const OfficeShiftingCardForm: React.FC<OfficeShiftingCardFormProps> = ({
       dropLoc: dropAddress
     }));
 
-    if (onOpenEnquiryModal) {
-      onOpenEnquiryModal();
-    } else if (onOpenLoginModal) {
+    if (onOpenLoginModal) {
       onOpenLoginModal();
     }
   };

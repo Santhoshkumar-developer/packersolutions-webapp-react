@@ -43,8 +43,11 @@ import { ExpertPromoSlider } from './components/ExpertPromoSlider';
 import { LucideIcon } from './components/LucideIcon';
 import { BlogView } from './components/BlogView';
 import { PolicyPages } from './components/PolicyPages';
-import { ServiceEnquiryModal } from './components/ServiceEnquiryModal';
 import { SavedAddressesModal } from './components/SavedAddressesModal';
+import { DiscountOffersSection } from './components/DiscountOffersSection';
+import { StressFreeMovingSection } from './components/StressFreeMovingSection';
+import { ComprehensiveServicesSection } from './components/ComprehensiveServicesSection';
+import { StressFreeBenefitsSection } from './components/StressFreeBenefitsSection';
 import parcelVectorImg from './assets/images/service_parcel_vector_1785319730384.jpg';
 import packersVectorImg from './assets/images/service_packers_vector_1785319746387.jpg';
 import truckVectorImg from './assets/images/service_truck_vector_1785319761125.jpg';
@@ -60,6 +63,8 @@ import acVectorImg from './assets/images/addon_ac_vector_1785322607775.jpg';
 import electricalVectorImg from './assets/images/addon_electrical_vector_1785322619284.jpg';
 import southIndiaSkylineImg from './assets/images/Coimbatore-Skyline-Banner.png';
 import { LoginOtpModal } from './components/LoginOtpModal';
+import { PickupDateTimePage, BookingDraft } from './components/PickupDateTimePage';
+import { PaymentGatewayPage } from './components/PaymentGatewayPage';
 import { HouseShiftingCardForm } from './components/HouseShiftingCardForm';
 import { OfficeShiftingCardForm } from './components/OfficeShiftingCardForm';
 import { TruckBookingCardForm } from './components/TruckBookingCardForm';
@@ -78,6 +83,7 @@ import { CityAreaDirectory } from './components/CityAreaDirectory';
 import { LocationPromptModal } from './components/LocationPromptModal';
 import { AddonServicesView } from './components/AddonServicesView';
 import { FAQPage } from './components/faq/FAQPage';
+import { OrderTrackingPage } from './components/OrderTrackingPage';
 import { motion, AnimatePresence } from 'motion/react';
 
 export default function App() {
@@ -104,6 +110,7 @@ export default function App() {
   const [selectedAddonCategory, setSelectedAddonCategory] = useState<string | null>(null);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [latestTicketId, setLatestTicketId] = useState('');
+  const [trackingTicketId, setTrackingTicketId] = useState('');
   const [quickSearchService, setQuickSearchService] = useState('packers-and-movers');
   const [activeUpperSlide, setActiveUpperSlide] = useState(0);
   const [expandedFaqIndex, setExpandedFaqIndex] = useState<number | null>(null);
@@ -130,11 +137,8 @@ export default function App() {
   const [selectedBlogSlug, setSelectedBlogSlug] = useState<string | null>(null);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-  const [isServiceEnquiryModalOpen, setIsServiceEnquiryModalOpen] = useState(false);
-  const [enquiryModalServiceId, setEnquiryModalServiceId] = useState('packers-and-movers');
-  const [heroPickupInput, setHeroPickupInput] = useState('');
-  const [heroMobileInput, setHeroMobileInput] = useState('');
-  const [heroErrors, setHeroErrors] = useState<{ pickup?: string; mobile?: string }>({});
+  const [scheduleDraft, setScheduleDraft] = useState<BookingDraft | null>(null);
+  const [pendingScheduleAfterLogin, setPendingScheduleAfterLogin] = useState(false);
   const [testimonialTab, setTestimonialTab] = useState<'video' | 'written'>('written');
   const [isServicesLoading, setIsServicesLoading] = useState(true);
   const [isTestimonialsLoading, setIsTestimonialsLoading] = useState(true);
@@ -194,10 +198,74 @@ export default function App() {
     });
   };
 
+  const handleInitiateBookingFlow = (customDraft?: any) => {
+    const isLoggedIn = localStorage.getItem('ps_user_logged_in') === 'true';
+    let draft = customDraft;
+    if (!draft) {
+      try {
+        const storedDraft = localStorage.getItem('ps_house_shifting_draft');
+        if (storedDraft) draft = JSON.parse(storedDraft);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    if (!draft) {
+      draft = {
+        originCity: selectedCity,
+        destinationCity: selectedCity,
+        serviceName: activeService.name,
+        basePrice: activeService.basePrice,
+        houseSize: '2 BHK',
+        pickupLoc: '',
+        dropLoc: ''
+      };
+    }
+    setScheduleDraft(draft);
+
+    if (isLoggedIn) {
+      navigateTo('booking');
+    } else {
+      setPendingScheduleAfterLogin(true);
+      setIsLoginModalOpen(true);
+    }
+  };
+
+  const handleCardFormSubmit = () => {
+    const isLoggedIn = localStorage.getItem('ps_user_logged_in') === 'true';
+    if (isLoggedIn) {
+      handleInitiateBookingFlow();
+    } else {
+      setPendingScheduleAfterLogin(true);
+      setIsLoginModalOpen(true);
+    }
+  };
+
   // Simple client-side hash routing for dynamic SEO crawling simulation
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
+      if (hash === '#order-tracking' || hash.startsWith('#order-tracking') || hash === '#tracking' || hash.startsWith('#tracking') || hash === '#manage-booking') {
+        setCurrentPage('order-tracking');
+        if (hash.includes('/')) {
+          const tid = hash.split('/')[1];
+          if (tid) setTrackingTicketId(tid);
+        }
+        setSelectedBlogSlug(null);
+        window.scrollTo(0, 0);
+        return;
+      }
+      if (hash === '#payment' || hash.startsWith('#payment') || hash === '#checkout' || hash === '#payment-gateway') {
+        setCurrentPage('payment');
+        setSelectedBlogSlug(null);
+        window.scrollTo(0, 0);
+        return;
+      }
+      if (hash === '#booking' || hash.startsWith('#booking') || hash === '#pickup-schedule') {
+        setCurrentPage('booking');
+        setSelectedBlogSlug(null);
+        window.scrollTo(0, 0);
+        return;
+      }
       if (hash.startsWith('#service/')) {
         let serviceId = hash.replace('#service/', '');
         if (serviceId === 'household-shifting') {
@@ -293,7 +361,18 @@ export default function App() {
   }, []);
 
   const navigateTo = (page: string, serviceId?: string) => {
-    if (page === 'service' && serviceId) {
+    if (page === 'order-tracking' || page === 'track-order' || page === 'manage-booking') {
+      if (serviceId) {
+        setTrackingTicketId(serviceId);
+        window.location.hash = `#order-tracking/${serviceId}`;
+      } else {
+        window.location.hash = '#order-tracking';
+      }
+    } else if (page === 'payment' || page === 'checkout') {
+      window.location.hash = '#payment';
+    } else if (page === 'booking') {
+      window.location.hash = '#booking';
+    } else if (page === 'service' && serviceId) {
       const normalizedServiceId = serviceId === 'household-shifting' ? 'packers-and-movers' : serviceId;
       window.location.hash = `#service/${normalizedServiceId}`;
     } else if (page === 'blog') {
@@ -334,7 +413,6 @@ export default function App() {
     }
     
     setBookingSuccess(true);
-    setIsServiceEnquiryModalOpen(false);
     window.scrollTo(0, 0);
   };
 
@@ -416,31 +494,6 @@ export default function App() {
     }
   };
 
-  const handleHeroGetEstimate = () => {
-    const errors: { pickup?: string; mobile?: string } = {};
-    const effectivePickup = heroPickupInput.trim() || selectedCity.trim();
-
-    if (!effectivePickup || effectivePickup.length < 2) {
-      errors.pickup = 'Please enter Pickup City or Pincode';
-    }
-
-    const cleanMobile = heroMobileInput.replace(/\D/g, '');
-    if (!cleanMobile) {
-      errors.mobile = 'Please enter 10-digit Mobile Number';
-    } else if (cleanMobile.length !== 10 || !/^[6-9]/.test(cleanMobile)) {
-      errors.mobile = 'Please enter a valid 10-digit mobile number';
-    }
-
-    if (Object.keys(errors).length > 0) {
-      setHeroErrors(errors);
-      return;
-    }
-
-    setHeroErrors({});
-    setEnquiryModalServiceId(activeServiceId || 'packers-and-movers');
-    setIsServiceEnquiryModalOpen(true);
-  };
-
   const activeService = SERVICES_DATA.find(s => s.id === activeServiceId) || SERVICES_DATA[0];
 
   return (
@@ -458,10 +511,6 @@ export default function App() {
         selectedCity={selectedCity}
         onOpenCityModal={() => setShowCityModal(true)}
         onOpenLoginModal={() => setIsLoginModalOpen(true)}
-        onOpenEnquiryModal={() => {
-          setEnquiryModalServiceId('packers-and-movers');
-          setIsServiceEnquiryModalOpen(true);
-        }}
         onOpenPartnerModal={() => setShowDeliveryModal(true)}
       />
 
@@ -486,6 +535,153 @@ export default function App() {
                   <h2 className="text-sm sm:text-base font-normal sm:font-medium text-slate-600 dark:text-slate-400 mt-2.5 max-w-3xl mx-auto leading-relaxed">
                     Reliable and hassle-free moving and delivery solutions for homes and businesses. From packing and shifting to parcel delivery and vehicle transportation, we ensure your belongings reach their destination safely, securely, and on time.
                   </h2>
+                </div>
+
+                {/* Centered Pickup City / Pincode Dropdown above Services Cards */}
+                <div className="max-w-md sm:max-w-lg mx-auto mb-8 relative z-30">
+                  <div 
+                    id="hero-pickup-city-dropdown-trigger"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsCityDropdownOpen(!isCityDropdownOpen);
+                    }}
+                    className="bg-white dark:bg-slate-900 border-2 border-orange-500/40 hover:border-orange-500 dark:border-slate-700 dark:hover:border-orange-500 rounded-2xl p-2.5 sm:p-3 shadow-lg shadow-orange-500/5 hover:shadow-xl hover:shadow-orange-500/10 flex items-center justify-between gap-3 cursor-pointer transition-all duration-200"
+                  >
+                    <div className="flex items-center gap-3 min-w-0 flex-1">
+                      <div className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400 flex items-center justify-center shrink-0 border border-orange-200/60 dark:border-orange-800/60">
+                        <MapPin className="w-5 h-5" />
+                      </div>
+                      <div className="text-left min-w-0 flex-1">
+                        <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400 block">
+                          Pickup City / Pincode
+                        </span>
+                        <div className="flex items-center gap-1.5 truncate">
+                          <span className="text-sm sm:text-base font-bold text-slate-900 dark:text-white truncate">
+                            {selectedCity || 'Select City or Enter Pincode'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setShowCityModal(true);
+                        }}
+                        className="text-[11px] font-bold text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/80 hover:bg-orange-100 dark:hover:bg-orange-900/60 px-2.5 py-1 rounded-lg border border-orange-200/80 dark:border-orange-800/80 transition-colors cursor-pointer"
+                      >
+                        Change
+                      </button>
+                      <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${isCityDropdownOpen ? 'rotate-180 text-orange-500' : ''}`} />
+                    </div>
+                  </div>
+
+                  {/* Dropdown Menu Panel */}
+                  <AnimatePresence>
+                    {isCityDropdownOpen && (
+                      <motion.div
+                        id="hero-pickup-city-dropdown-menu"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.15 }}
+                        onClick={(e) => e.stopPropagation()}
+                        className="absolute left-0 right-0 top-full mt-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl p-4 z-50 text-left"
+                      >
+                        {/* Search input for quick city/pincode filter */}
+                        <div className="relative mb-3">
+                          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                          <input
+                            id="dropdown-city-search-input"
+                            type="text"
+                            placeholder="Type city or 6-digit pincode..."
+                            value={citySearch}
+                            onChange={(e) => setCitySearch(e.target.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' && citySearch.trim()) {
+                                const val = citySearch.trim();
+                                setSelectedCity(val);
+                                localStorage.setItem('ps_user_city', val);
+                                localStorage.setItem('ps_location_set', 'true');
+                                setIsCityDropdownOpen(false);
+                                setCitySearch('');
+                              }
+                            }}
+                            autoFocus
+                            className="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500"
+                          />
+                        </div>
+
+                        {/* Top quick action: detect GPS location or modal */}
+                        <div className="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setIsCityDropdownOpen(false);
+                              setShowCityModal(true);
+                            }}
+                            className="flex items-center gap-1.5 text-xs font-bold text-orange-600 dark:text-orange-400 hover:text-orange-700 transition-colors cursor-pointer"
+                          >
+                            <MapPin className="w-3.5 h-3.5" />
+                            <span>Auto-detect via GPS or view all</span>
+                          </button>
+                          <span className="text-[11px] text-slate-400 font-medium">Popular Cities</span>
+                        </div>
+
+                        {/* Filtered / Popular Cities List */}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5 max-h-56 overflow-y-auto pr-1">
+                          {CITIES_DATA
+                            .filter(c => c.name.toLowerCase().includes(citySearch.toLowerCase()))
+                            .slice(0, 12)
+                            .map((city) => (
+                              <button
+                                key={city.id}
+                                type="button"
+                                onClick={() => {
+                                  setSelectedCity(city.name);
+                                  localStorage.setItem('ps_user_city', city.name);
+                                  localStorage.setItem('ps_location_set', 'true');
+                                  setIsCityDropdownOpen(false);
+                                  setCitySearch('');
+                                }}
+                                className={`flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-semibold text-left transition-all cursor-pointer ${
+                                  selectedCity.toLowerCase() === city.name.toLowerCase()
+                                    ? 'bg-orange-500 text-white shadow-sm'
+                                    : 'bg-slate-50 dark:bg-slate-800/60 hover:bg-orange-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-orange-600'
+                                }`}
+                              >
+                                <span className="truncate">{city.name}</span>
+                                {selectedCity.toLowerCase() === city.name.toLowerCase() && (
+                                  <CheckCircle2 className="w-3.5 h-3.5 shrink-0 ml-1" />
+                                )}
+                              </button>
+                            ))}
+                        </div>
+
+                        {/* If user typed a 6-digit pincode or custom city not in list */}
+                        {citySearch.trim().length > 0 && !CITIES_DATA.some(c => c.name.toLowerCase() === citySearch.toLowerCase()) && (
+                          <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const val = citySearch.trim();
+                                setSelectedCity(val);
+                                localStorage.setItem('ps_user_city', val);
+                                localStorage.setItem('ps_location_set', 'true');
+                                setIsCityDropdownOpen(false);
+                                setCitySearch('');
+                              }}
+                              className="w-full flex items-center justify-center gap-2 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                            >
+                              <span>Set "{citySearch.trim()}" as Pickup Location</span>
+                            </button>
+                          </div>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 {/* 8 Services in a Single Horizontal Row */}
@@ -574,145 +770,17 @@ export default function App() {
                   ))}
                 </div>
 
-                {/* Horizontal Floating Quote Calculator Bar (Reference Style) */}
-                <div className="bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 rounded-3xl p-4 sm:p-5 shadow-xl max-w-5xl mx-auto">
-                  <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 sm:gap-4">
-                    {/* Pickup City / Pincode Input */}
-                    <div 
-                      className={`flex-1 w-full bg-slate-50 dark:bg-slate-800/80 border ${
-                        heroErrors.pickup ? 'border-red-500 ring-2 ring-red-500/20' : 'border-slate-200 dark:border-slate-700/80 hover:border-orange-400 dark:hover:border-orange-500/80'
-                      } rounded-2xl p-3.5 flex items-center gap-3 transition-all group`}
-                    >
-                      <MapPin className={`w-5 h-5 ${heroErrors.pickup ? 'text-red-500' : 'text-orange-500'} shrink-0 group-hover:scale-110 transition-transform`} />
-                      <div className="w-full text-left">
-                        <label className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
-                          Pickup City / Pincode
-                        </label>
-                        <div className="flex items-center justify-between">
-                          <input 
-                            id="hero-input-pickup-city"
-                            type="text" 
-                            placeholder="Enter City or 6-digit Pincode" 
-                            value={heroPickupInput || selectedCity}
-                            onChange={(e) => {
-                              setHeroPickupInput(e.target.value);
-                              if (heroErrors.pickup) {
-                                setHeroErrors((prev) => ({ ...prev, pickup: undefined }));
-                              }
-                            }}
-                            className="w-full bg-transparent border-none outline-none text-xs sm:text-sm font-semibold text-slate-800 dark:text-slate-100 placeholder-slate-400 p-0"
-                          />
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setShowCityModal(true);
-                            }}
-                            className="text-[10px] font-bold text-orange-600 dark:text-orange-400 bg-orange-100/80 dark:bg-orange-950/60 px-2 py-0.5 rounded-md shrink-0 ml-1.5 cursor-pointer hover:bg-orange-200 dark:hover:bg-orange-900 transition-colors"
-                          >
-                            Change
-                          </button>
-                        </div>
-                        {heroErrors.pickup && (
-                          <span className="text-[10px] font-bold text-red-500 block mt-0.5">
-                            {heroErrors.pickup}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Mobile Number Input */}
-                    <div 
-                      className={`flex-1 w-full bg-slate-50 dark:bg-slate-800/80 border ${
-                        heroErrors.mobile ? 'border-red-500 ring-2 ring-red-500/20' : 'border-slate-200 dark:border-slate-700/80'
-                      } rounded-2xl p-3.5 flex items-center gap-3 transition-all`}
-                    >
-                      <PhoneCall className={`w-5 h-5 ${heroErrors.mobile ? 'text-red-500' : 'text-orange-500'} shrink-0`} />
-                      <div className="w-full text-left">
-                        <label className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
-                          Mobile Number
-                        </label>
-                        <div className="flex items-center gap-1">
-                          <span className="text-xs font-bold text-slate-500 dark:text-slate-400">+91</span>
-                          <input 
-                            id="hero-input-mobile"
-                            type="tel"
-                            maxLength={10}
-                            placeholder="Enter 10-digit Mobile" 
-                            value={heroMobileInput}
-                            onChange={(e) => {
-                              const val = e.target.value.replace(/\D/g, '').slice(0, 10);
-                              setHeroMobileInput(val);
-                              if (heroErrors.mobile) {
-                                setHeroErrors((prev) => ({ ...prev, mobile: undefined }));
-                              }
-                            }}
-                            className="w-full bg-transparent border-none outline-none text-xs sm:text-sm font-medium text-slate-800 dark:text-slate-100 placeholder-slate-400 p-0 font-mono"
-                          />
-                        </div>
-                        {heroErrors.mobile && (
-                          <span className="text-[10px] font-bold text-red-500 block mt-0.5">
-                            {heroErrors.mobile}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Calculate Shifting Price Primary CTA Button */}
-                    <button
-                      id="btn-view-prices-hero"
-                      type="button"
-                      onClick={handleHeroGetEstimate}
-                      className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-orange-600 via-brand-orange to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-bold text-sm sm:text-base rounded-2xl shadow-lg shadow-orange-500/25 flex items-center justify-center gap-2 transition-all cursor-pointer whitespace-nowrap shrink-0 hover:scale-[1.02] active:scale-[0.98]"
-                    >
-                      <span>Get Estimate</span>
-                      <ArrowRight className="w-4 h-4 stroke-[2.5]" />
-                    </button>
-                  </div>
-
-                  {/* Bottom Quick Links & Terms Checkbox */}
-                  <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs font-semibold text-slate-500 dark:text-slate-400">
-                    <div className="flex items-center gap-2 sm:gap-4 flex-wrap justify-center sm:justify-start">
-                      <button 
-                        onClick={() => navigateTo('service', 'packers-and-movers')}
-                        className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-                      >
-                        <span>Local House Move</span>
-                        <ChevronRight className="w-3 h-3 text-slate-400" />
-                      </button>
-
-                      <button 
-                        onClick={() => navigateTo('service', 'domestic-relocation')}
-                        className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-                      >
-                        <span>Truck Booking</span>
-                        <ChevronRight className="w-3 h-3 text-slate-400" />
-                      </button>
-
-                      <button 
-                        onClick={() => {
-                          setEnquiryModalServiceId(activeServiceId || 'packers-and-movers');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
-                        className="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 px-3 py-1.5 rounded-full text-xs font-bold transition-colors cursor-pointer flex items-center gap-1"
-                      >
-                        <span>Download Rate Card</span>
-                        <ChevronRight className="w-3 h-3 text-slate-400" />
-                      </button>
-                    </div>
-
-                    <div className="flex items-center gap-1.5 text-[11px] text-slate-500 dark:text-slate-400">
-                      <input type="checkbox" id="hero-terms-check" defaultChecked className="rounded text-amber-500 focus:ring-amber-400 accent-amber-500" />
-                      <label htmlFor="hero-terms-check" className="cursor-pointer">
-                        I agree to the <a href="#" onClick={(e) => { e.preventDefault(); navigateTo('privacy'); }} className="underline hover:text-amber-500">Terms &amp; Conditions</a>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-
               </div>
             </section>
-
+              
+            <DiscountOffersSection 
+              onOpenBooking={(serviceId) => {
+                if (serviceId) setActiveServiceId(serviceId);
+                scrollToServiceForm();
+              }}
+              onNavigate={navigateTo}
+            />
+            
             {/* 3. Why People Trust Packer Solutions & Add on Services columns */}
             <section id="trust-and-addons" className="py-16 bg-transparent border-t border-slate-200/50 dark:border-slate-800/60">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -896,7 +964,14 @@ export default function App() {
                 </div>
               </div>
             </section>
+             {/* Stress-Free Moving Solutions Section matching reference image */}
+            <StressFreeMovingSection />
 
+            {/* Stress-Free Moving Solutions - Local & Nationwide with Comprehensive Services List */}
+            <ComprehensiveServicesSection />
+
+            {/* Why Choose Our Stress-Free Moving Services? Section */}
+            <StressFreeBenefitsSection />
             {/* 4. Interactive Carousel Promo Banners */}
             <section id="promo-banners" className="py-12 bg-transparent font-sans">
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -992,6 +1067,58 @@ export default function App() {
             </section>
 
           </div>
+        ) : currentPage === 'order-tracking' ? (
+          /* ==================== ORDER TRACKING PAGE VIEW ==================== */
+          <OrderTrackingPage 
+            ticketId={trackingTicketId || latestTicketId || undefined} 
+            onNavigate={navigateTo} 
+          />
+        ) : currentPage === 'payment' ? (
+          /* ==================== PAYMENT GATEWAY STANDALONE / DIRECT ROUTE ==================== */
+          <PaymentGatewayPage 
+            bookingData={
+              scheduleDraft ? {
+                ticketId: 'PS-' + Math.floor(100000 + Math.random() * 900000),
+                pickupAddress: scheduleDraft.pickupLoc || `${selectedCity} Central Hub`,
+                dropAddress: scheduleDraft.dropLoc || (scheduleDraft.multiDropAddresses && scheduleDraft.multiDropAddresses[0]) || `${selectedCity} Delivery Point`,
+                dropOption: scheduleDraft.dropOption,
+                multiDropAddresses: scheduleDraft.multiDropAddresses,
+                pickupDate: scheduleDraft.shiftingDate || 'Tomorrow',
+                pickupSlot: '9AM - 11AM',
+                serviceName: scheduleDraft.serviceName || 'Household Shifting',
+                houseSize: scheduleDraft.houseSize || '2 BHK',
+                basePrice: scheduleDraft.basePrice || 6050,
+                totalOrderAmount: 6050,
+                finalTotalAmount: 6050,
+                bookingAdvanceAmount: Math.round(6050 * 0.15),
+                remainingAtUnloading: 6050 - Math.round(6050 * 0.15),
+                isProtectAdded: true,
+                isPackagingAdded: true,
+                isCashRedeemed: true,
+                totalItemCount: 14,
+              } : undefined
+            }
+            onBack={() => {
+              navigateTo('booking');
+            }}
+            onPaymentSuccess={(result) => {
+              setLatestTicketId(result.transactionId);
+              setBookingSuccess(true);
+            }}
+            onNavigate={navigateTo}
+          />
+        ) : currentPage === 'booking' ? (
+          /* ==================== BOOKING FLOW: PICKUP DATE & TIME PAGE ==================== */
+          <PickupDateTimePage 
+            bookingDraft={scheduleDraft}
+            onBack={() => {
+              navigateTo('home');
+            }}
+            onProceed={(bookingRecord) => {
+              setLatestTicketId(bookingRecord.ticketId);
+            }}
+            onNavigate={navigateTo}
+          />
         ) : currentPage === 'blog' ? (
           /* ==================== BLOG / MOVING TIPS VIEW ==================== */
           <BlogView 
@@ -1028,10 +1155,9 @@ export default function App() {
             onNavigate={navigateTo}
             onOpenBooking={(serviceId, city) => {
               setSelectedCity(city);
-              setHeroPickupInput(city);
               setActiveServiceId(serviceId);
-              setEnquiryModalServiceId(serviceId);
-              setIsServiceEnquiryModalOpen(true);
+              navigateTo('home', serviceId);
+              setTimeout(() => scrollToServiceForm(), 100);
             }}
             selectedCity={selectedCity}
             setSelectedCity={setSelectedCity}
@@ -1042,10 +1168,9 @@ export default function App() {
             onNavigate={navigateTo}
             onOpenBooking={(serviceId, city) => {
               setSelectedCity(city);
-              setHeroPickupInput(city);
               setActiveServiceId(serviceId);
-              setEnquiryModalServiceId(serviceId);
-              setIsServiceEnquiryModalOpen(true);
+              navigateTo('home', serviceId);
+              setTimeout(() => scrollToServiceForm(), 100);
             }}
           />
         ) : currentPage === 'contact' ? (
@@ -1060,14 +1185,14 @@ export default function App() {
             onNavigate={navigateTo}
             selectedCity={selectedCity}
             onOpenQuote={() => {
-              setEnquiryModalServiceId('packers-and-movers');
-              setIsServiceEnquiryModalOpen(true);
+              navigateTo('home');
+              setTimeout(() => scrollToServiceForm(), 100);
             }}
             onOpenBooking={(serviceId) => {
               const targetService = serviceId || 'packers-and-movers';
               setActiveServiceId(targetService);
-              setEnquiryModalServiceId(targetService);
-              setIsServiceEnquiryModalOpen(true);
+              navigateTo('home', targetService);
+              setTimeout(() => scrollToServiceForm(), 100);
             }}
           />
         ) : ['cancellation-refund', 'terms-conditions', 'shipment-policy', 'privacy-policy'].includes(currentPage) ? (
@@ -1167,10 +1292,7 @@ export default function App() {
                         selectedCity={selectedCity}
                         onSelectCity={setSelectedCity}
                         onOpenCityModal={() => setShowCityModal(true)}
-                        onOpenEnquiryModal={() => {
-                          setEnquiryModalServiceId('domestic-relocation');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
+                        onOpenLoginModal={handleCardFormSubmit}
                         serviceName={activeService.name}
                         basePrice={activeService.basePrice}
                       />
@@ -1179,10 +1301,7 @@ export default function App() {
                         selectedCity={selectedCity}
                         onSelectCity={setSelectedCity}
                         onOpenCityModal={() => setShowCityModal(true)}
-                        onOpenEnquiryModal={() => {
-                          setEnquiryModalServiceId('office-relocation');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
+                        onOpenLoginModal={handleCardFormSubmit}
                         serviceName={activeService.name}
                         basePrice={activeService.basePrice}
                       />
@@ -1191,10 +1310,7 @@ export default function App() {
                         selectedCity={selectedCity}
                         onSelectCity={setSelectedCity}
                         onOpenCityModal={() => setShowCityModal(true)}
-                        onOpenEnquiryModal={() => {
-                          setEnquiryModalServiceId('packing-unpacking');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
+                        onOpenLoginModal={handleCardFormSubmit}
                         serviceName={activeService.name}
                         basePrice={activeService.basePrice}
                       />
@@ -1203,10 +1319,7 @@ export default function App() {
                         selectedCity={selectedCity}
                         onSelectCity={setSelectedCity}
                         onOpenCityModal={() => setShowCityModal(true)}
-                        onOpenEnquiryModal={() => {
-                          setEnquiryModalServiceId('loading-unloading');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
+                        onOpenLoginModal={handleCardFormSubmit}
                         serviceName={activeService.name}
                         basePrice={activeService.basePrice}
                       />
@@ -1215,10 +1328,7 @@ export default function App() {
                         selectedCity={selectedCity}
                         onSelectCity={setSelectedCity}
                         onOpenCityModal={() => setShowCityModal(true)}
-                        onOpenEnquiryModal={() => {
-                          setEnquiryModalServiceId('warehousing-storage');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
+                        onOpenLoginModal={handleCardFormSubmit}
                         serviceName={activeService.name}
                         basePrice={activeService.basePrice}
                       />
@@ -1227,10 +1337,7 @@ export default function App() {
                         selectedCity={selectedCity}
                         onSelectCity={setSelectedCity}
                         onOpenCityModal={() => setShowCityModal(true)}
-                        onOpenEnquiryModal={() => {
-                          setEnquiryModalServiceId('vehicle-transportation');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
+                        onOpenLoginModal={handleCardFormSubmit}
                         serviceName={activeService.name}
                         basePrice={activeService.basePrice}
                       />
@@ -1239,10 +1346,7 @@ export default function App() {
                         selectedCity={selectedCity}
                         onSelectCity={setSelectedCity}
                         onOpenCityModal={() => setShowCityModal(true)}
-                        onOpenEnquiryModal={() => {
-                          setEnquiryModalServiceId('parcel-courier');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
+                        onOpenLoginModal={handleCardFormSubmit}
                         serviceName={activeService.name}
                         basePrice={activeService.basePrice}
                       />
@@ -1251,10 +1355,8 @@ export default function App() {
                         selectedCity={selectedCity}
                         onSelectCity={setSelectedCity}
                         onOpenCityModal={() => setShowCityModal(true)}
-                        onOpenEnquiryModal={() => {
-                          setEnquiryModalServiceId('packers-and-movers');
-                          setIsServiceEnquiryModalOpen(true);
-                        }}
+                        onOpenLoginModal={handleCardFormSubmit}
+                        onProceedToSchedule={handleInitiateBookingFlow}
                         serviceName={activeService.name}
                         basePrice={activeService.basePrice}
                       />
@@ -1295,8 +1397,8 @@ export default function App() {
         )}
       </main>
 
-      {/* Prominent Footer */}
-      <Footer services={SERVICES_DATA} onNavigate={navigateTo} />
+      {/* Prominent Footer - Hidden on clean booking flow page */}
+      {currentPage !== 'booking' && <Footer services={SERVICES_DATA} onNavigate={navigateTo} />}
 
       {/* ==================== QUOTE SUBMISSION SUCCESS MODAL ==================== */}
       {bookingSuccess && (
@@ -1334,11 +1436,23 @@ export default function App() {
               </span>
             </div>
 
-            <div className="mt-6">
+            <div className="mt-6 flex flex-col sm:flex-row gap-2">
+              <button
+                id="btn-track-booking-modal"
+                type="button"
+                onClick={() => {
+                  setBookingSuccess(false);
+                  navigateTo('order-tracking', latestTicketId || undefined);
+                }}
+                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white rounded-xl h-11 text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
+              >
+                <span>Track Live Progress →</span>
+              </button>
               <button
                 id="btn-success-dismiss"
+                type="button"
                 onClick={() => setBookingSuccess(false)}
-                className="w-full bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white rounded-xl h-11 text-xs font-bold transition-all cursor-pointer"
+                className="flex-1 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-xl h-11 text-xs font-bold transition-all cursor-pointer"
               >
                 Close Window
               </button>
@@ -1603,17 +1717,27 @@ export default function App() {
       {/* ==================== LOGIN OTP MODAL ==================== */}
       <LoginOtpModal
         isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
+        onClose={() => {
+          setIsLoginModalOpen(false);
+          setPendingScheduleAfterLogin(false);
+        }}
+        onSuccess={() => {
+          setIsLoginModalOpen(false);
+          if (pendingScheduleAfterLogin) {
+            setPendingScheduleAfterLogin(false);
+            if (!scheduleDraft) {
+              try {
+                const stored = localStorage.getItem('ps_house_shifting_draft');
+                if (stored) setScheduleDraft(JSON.parse(stored));
+              } catch (e) {
+                console.error(e);
+              }
+            }
+            navigateTo('booking');
+          }
+        }}
       />
 
-      {/* ==================== SERVICE ENQUIRY MODAL (POPUP WITH SERVICE LIST & FORMS) ==================== */}
-      <ServiceEnquiryModal
-        isOpen={isServiceEnquiryModalOpen}
-        onClose={() => setIsServiceEnquiryModalOpen(false)}
-        initialServiceId={enquiryModalServiceId}
-        initialCity={heroPickupInput || selectedCity}
-        initialMobile={heroMobileInput}
-      />
       {/* ==================== SAVED ADDRESSES MODAL ==================== */}
       <SavedAddressesModal />
       </div>

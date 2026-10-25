@@ -29,7 +29,6 @@ interface ParcelCourierCardFormProps {
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -39,7 +38,6 @@ export const ParcelCourierCardForm: React.FC<ParcelCourierCardFormProps> = ({
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
   serviceName = "Parcel Services",
   basePrice = 150
 }) => {
@@ -141,9 +139,7 @@ export const ParcelCourierCardForm: React.FC<ParcelCourierCardFormProps> = ({
       shiftingDate: new Date().toISOString().split('T')[0]
     }));
 
-    if (onOpenEnquiryModal) {
-      onOpenEnquiryModal();
-    } else if (onOpenLoginModal) {
+    if (onOpenLoginModal) {
       onOpenLoginModal();
     }
   };

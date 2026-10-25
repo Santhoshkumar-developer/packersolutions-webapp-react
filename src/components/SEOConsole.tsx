@@ -10,6 +10,15 @@ interface SEOConsoleProps {
 
 export const SEOConsole: React.FC<SEOConsoleProps> = ({ currentPage, activeService }) => {
   const getSEOConfig = () => {
+    if (currentPage === 'booking') {
+      return {
+        title: 'Select Pickup Date & Time | Packersolution Booking',
+        description: 'Schedule your relocation pickup date, choose a convenient moving time slot, and confirm route details with Packersolution.',
+        keywords: ['book shifting', 'schedule pickup time', 'packers and movers slot booking', 'relocation date selection', 'pickup date'],
+        canonicalUrl: 'https://packersolution.com/#booking'
+      };
+    }
+
     if (currentPage === 'service' && activeService) {
       return activeService.seo;
     }

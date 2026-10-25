@@ -30,7 +30,6 @@ interface LoadingUnloadingCardFormProps {
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -40,7 +39,6 @@ export const LoadingUnloadingCardForm: React.FC<LoadingUnloadingCardFormProps> =
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
   serviceName = "Loading & Unloading",
   basePrice = 2000
 }) => {
@@ -109,9 +107,7 @@ export const LoadingUnloadingCardForm: React.FC<LoadingUnloadingCardFormProps> =
       shiftingDate: loadingDate
     }));
 
-    if (onOpenEnquiryModal) {
-      onOpenEnquiryModal();
-    } else if (onOpenLoginModal) {
+    if (onOpenLoginModal) {
       onOpenLoginModal();
     }
   };

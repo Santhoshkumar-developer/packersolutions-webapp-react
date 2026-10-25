@@ -30,7 +30,6 @@ interface PackingUnpackingCardFormProps {
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -40,7 +39,6 @@ export const PackingUnpackingCardForm: React.FC<PackingUnpackingCardFormProps> =
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
   serviceName = "Packing & Unpacking",
   basePrice = 3000
 }) => {
@@ -109,9 +107,7 @@ export const PackingUnpackingCardForm: React.FC<PackingUnpackingCardFormProps> =
       shiftingDate: packingDate
     }));
 
-    if (onOpenEnquiryModal) {
-      onOpenEnquiryModal();
-    } else if (onOpenLoginModal) {
+    if (onOpenLoginModal) {
       onOpenLoginModal();
     }
   };

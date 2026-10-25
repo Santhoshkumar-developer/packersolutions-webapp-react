@@ -68,7 +68,6 @@ interface VehicleTransportCardFormProps {
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -78,7 +77,6 @@ export const VehicleTransportCardForm: React.FC<VehicleTransportCardFormProps> =
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
   serviceName = "Vehicle Transportation",
   basePrice = 3200
 }) => {
@@ -162,9 +160,7 @@ export const VehicleTransportCardForm: React.FC<VehicleTransportCardFormProps> =
     };
     localStorage.setItem('ps_booking_draft', JSON.stringify(commonDraft));
 
-    if (onOpenEnquiryModal) {
-      onOpenEnquiryModal();
-    } else if (onOpenLoginModal) {
+    if (onOpenLoginModal) {
       onOpenLoginModal();
     }
   };

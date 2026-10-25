@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MapPin, Truck, ChevronDown, Calendar, ArrowRight, ShieldCheck, Sparkles, Check, Navigation, Building2, Search } from 'lucide-react';
 import { CITIES_DATA } from '../data/cities';
-import { LocationInputSelector } from './LocationInputSelector';
 
 const SERVICED_CITIES = ['bangalore', 'chennai', 'coimbatore', 'mumbai', 'pune', 'delhi', 'delhi ncr', 'hyderabad', 'mysore', 'kochi'];
 
@@ -18,7 +17,7 @@ interface HouseShiftingCardFormProps {
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
+  onProceedToSchedule?: (draft: any) => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -28,7 +27,7 @@ export const HouseShiftingCardForm: React.FC<HouseShiftingCardFormProps> = ({
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
+  onProceedToSchedule,
   serviceName = "Household Shifting",
   basePrice = 3500
 }) => {
@@ -72,11 +71,7 @@ export const HouseShiftingCardForm: React.FC<HouseShiftingCardFormProps> = ({
   // 3. BHK House size selection
   const [houseSize, setHouseSize] = useState<string>('2 BHK');
 
-  // 4. Pickup & Drop Locations
-  const [pickupLoc, setPickupLoc] = useState<string>('');
-  const [dropLoc, setDropLoc] = useState<string>('');
-
-  // 5. Moving Date & Flexibility
+  // 4. Moving Date & Flexibility (for between-city)
   const [shiftingDate, setShiftingDate] = useState<string>(() => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
@@ -93,15 +88,15 @@ export const HouseShiftingCardForm: React.FC<HouseShiftingCardFormProps> = ({
       originCity: selectedCity,
       destinationCity: relocateType === 'between-city' ? destinationCity : selectedCity,
       houseSize,
-      pickupLoc,
-      dropLoc,
       shiftingDate,
-      isFlexibleDate
+      isFlexibleDate,
+      serviceName,
+      basePrice: calculatedBasePrice
     };
     localStorage.setItem('ps_house_shifting_draft', JSON.stringify(shiftingData));
 
-    if (onOpenEnquiryModal) {
-      onOpenEnquiryModal();
+    if (onProceedToSchedule) {
+      onProceedToSchedule(shiftingData);
     } else if (onOpenLoginModal) {
       onOpenLoginModal();
     }
@@ -424,59 +419,6 @@ export const HouseShiftingCardForm: React.FC<HouseShiftingCardFormProps> = ({
         </div>
       </div>
 
-      {/* 4. PICKUP AND DROP LOCATION TEXTBOXES WITH GOOGLE MAP CONNECTOR */}
-      <div className="space-y-1">
-        <label className="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 dark:text-slate-400 block">
-          Pickup &amp; Drop Address
-        </label>
-
-        <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200/80 dark:border-slate-800 rounded-xl p-2 sm:p-2.5 space-y-1.5 relative">
-          
-          {/* Visual Route Connector Axis (Left Line with Markers) */}
-          <div className="flex items-center gap-2.5">
-            {/* Left Marker Column */}
-            <div className="flex flex-col items-center justify-between py-0.5 shrink-0">
-              {/* Pickup Location Marker */}
-              <div className="w-4 h-4 rounded-full bg-emerald-100 dark:bg-emerald-950/80 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-2xs">
-                <MapPin className="w-2.5 h-2.5 text-emerald-600 dark:text-emerald-400" />
-              </div>
-
-              {/* Dotted Line Connector */}
-              <div className="w-0.5 h-5 border-l-2 border-dashed border-slate-300 dark:border-slate-700 my-0.5" />
-
-              {/* Drop Location Marker */}
-              <div className="w-4 h-4 rounded-full bg-rose-100 dark:bg-rose-950/80 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 shadow-2xs">
-                <MapPin className="w-2.5 h-2.5 text-rose-600 dark:text-rose-400" />
-              </div>
-            </div>
-
-            {/* Input Fields Column */}
-            <div className="flex-1 space-y-1.5 min-w-0">
-              {/* Pickup Location Selector */}
-              <LocationInputSelector
-                value={pickupLoc}
-                onChange={(val) => setPickupLoc(val)}
-                placeholder="Enter Pickup locality, apartment or landmark"
-                type="pickup"
-                serviceId="packers-and-movers"
-                cityContext={selectedCity}
-              />
-
-              {/* Drop Location Selector */}
-              <LocationInputSelector
-                value={dropLoc}
-                onChange={(val) => setDropLoc(val)}
-                placeholder="Enter Drop locality, apartment or landmark"
-                type="drop"
-                serviceId="packers-and-movers"
-                cityContext={relocateType === 'between-city' ? destinationCity : selectedCity}
-              />
-            </div>
-          </div>
-
-        </div>
-      </div>
-
       {/* 5. MOVING DATE SELECTION (For between-city or date planning) */}
       {relocateType === 'between-city' && (
         <div className="space-y-1">
@@ -513,9 +455,10 @@ export const HouseShiftingCardForm: React.FC<HouseShiftingCardFormProps> = ({
       {/* 6. GET ESTIMATE BUTTON */}
       <div className="pt-1 space-y-1.5">
         <button
+          id="btn-calculate-shifting-price"
           type="button"
           onClick={handleGetEstimate}
-          className="w-full bg-gradient-to-r from-[#001261] via-[#0321a1] to-blue-800 hover:from-[#000d47] hover:to-blue-900 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm py-2.5 sm:py-3 rounded-xl shadow-md shadow-blue-950/20 hover:shadow-blue-950/40 transition-all cursor-pointer flex items-center justify-center gap-2 group"
+          className="w-full bg-gradient-to-r from-[#001261] via-[#0321a1] to-blue-800 hover:from-[#000d47] hover:to-blue-900 active:scale-[0.98] text-white font-extrabold text-xs sm:text-sm py-3 sm:py-3.5 rounded-xl shadow-md shadow-blue-950/20 hover:shadow-blue-950/40 transition-all cursor-pointer flex items-center justify-center gap-2 group ring-2 ring-transparent hover:ring-blue-400/30"
         >
           <span>Calculate Shifting Price</span>
           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform stroke-[2.5]" />

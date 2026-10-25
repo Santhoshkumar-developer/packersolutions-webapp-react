@@ -30,7 +30,6 @@ interface WarehousingStorageCardFormProps {
   onSelectCity?: (city: string) => void;
   onOpenCityModal: () => void;
   onOpenLoginModal?: () => void;
-  onOpenEnquiryModal?: () => void;
   serviceName?: string;
   basePrice?: number;
 }
@@ -40,7 +39,6 @@ export const WarehousingStorageCardForm: React.FC<WarehousingStorageCardFormProp
   onSelectCity,
   onOpenCityModal,
   onOpenLoginModal,
-  onOpenEnquiryModal,
   serviceName = "Storage Services",
   basePrice = 3000
 }) => {
@@ -113,9 +111,7 @@ export const WarehousingStorageCardForm: React.FC<WarehousingStorageCardFormProp
       shiftingDate: new Date().toISOString().split('T')[0]
     }));
 
-    if (onOpenEnquiryModal) {
-      onOpenEnquiryModal();
-    } else if (onOpenLoginModal) {
+    if (onOpenLoginModal) {
       onOpenLoginModal();
     }
   };
